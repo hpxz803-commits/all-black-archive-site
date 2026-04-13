@@ -66,8 +66,16 @@ body.is-search-open {
   overflow: hidden;
 }
 
+body.is-mobile-menu-open {
+  overflow: hidden;
+}
+
 body.is-transitioning-home::after {
   opacity: 1;
+}
+
+body.is-mobile-menu-open::after {
+  opacity: 0.58;
 }
 
 .page-shell {
@@ -1633,6 +1641,11 @@ html.home-transition-armed body[data-page="home"].is-home-entered .hero-copy > h
     height: 18px;
   }
 
+  .is-mobile-menu-open.hero-topbar,
+  .is-mobile-menu-open.subpage-topbar {
+    z-index: 130;
+  }
+
   .mobile-search-trigger::after,
   .mobile-menu-button::after {
     display: none;
@@ -1641,17 +1654,30 @@ html.home-transition-armed body[data-page="home"].is-home-entered .hero-copy > h
   .header-menu-shell {
     position: static;
     grid-area: menu;
-    display: none;
+    display: grid;
     gap: 18px;
     padding: 8px 0 0;
     border: 0;
     background: transparent;
     backdrop-filter: none;
     box-shadow: none;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    pointer-events: none;
+    transform: translateY(-8px);
+    transition:
+      max-height 280ms ease,
+      opacity 220ms ease,
+      transform 220ms ease;
   }
 
   .is-mobile-menu-open .header-menu-shell {
-    display: grid;
+    max-height: 80vh;
+    opacity: 1;
+    overflow-y: auto;
+    pointer-events: auto;
+    transform: translateY(0);
   }
 
   .subpage-main {
@@ -1741,15 +1767,24 @@ html.home-transition-armed body[data-page="home"].is-home-entered .hero-copy > h
     box-shadow: none;
     opacity: 0;
     pointer-events: none;
-    transform: none;
+    max-height: 0;
+    overflow: hidden;
+    transform: translateY(-4px);
     backdrop-filter: none;
     display: none;
+    transition:
+      max-height 220ms ease,
+      opacity 180ms ease,
+      transform 180ms ease;
   }
 
   .nav-dropdown.is-open .nav-menu {
     display: grid;
+    max-height: 240px;
     opacity: 1;
+    overflow: visible;
     pointer-events: auto;
+    transform: translateY(0);
   }
 
   .language-menu {

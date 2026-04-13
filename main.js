@@ -155,15 +155,15 @@ const mobileNavQuery = window.matchMedia("(max-width: 720px)");
 const navDropdowns = document.querySelectorAll(".nav-dropdown");
 const mobileHeaders = document.querySelectorAll("[data-mobile-header]");
 
-if (mobileHeaders.length > 0) {
-  const closeMobileHeaderMenus = () => {
-    mobileHeaders.forEach((header) => {
-      header.classList.remove("is-mobile-menu-open");
-      header.querySelector("[data-mobile-menu-button]")?.setAttribute("aria-expanded", "false");
-    });
-    document.body.classList.remove("is-mobile-menu-open");
-  };
+function closeMobileHeaderMenus() {
+  mobileHeaders.forEach((header) => {
+    header.classList.remove("is-mobile-menu-open");
+    header.querySelector("[data-mobile-menu-button]")?.setAttribute("aria-expanded", "false");
+  });
+  document.body.classList.remove("is-mobile-menu-open");
+}
 
+if (mobileHeaders.length > 0) {
   mobileHeaders.forEach((header) => {
     const toggleButton = header.querySelector("[data-mobile-menu-button]");
     const panel = header.querySelector("[data-mobile-menu-panel]");
@@ -632,6 +632,7 @@ function updateSearchUi() {
 
 if (searchOverlay && searchInput && searchResults) {
   const openSearch = () => {
+    closeMobileHeaderMenus();
     searchOverlay.hidden = false;
     document.body.classList.add("is-search-open");
     updateSearchUi();
