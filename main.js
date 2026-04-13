@@ -15,7 +15,68 @@ const supportedLanguages = {
   ko: { label: "한국어", tag: "ko" },
 };
 
-const catalogProducts = window.catalogData?.products || [];
+const rawCatalogProducts = window.catalogData?.products || [];
+
+function formatCatalogPrice(pricing, fallbackCurrency = window.catalogData?.currency || "EUR") {
+  if (!pricing || typeof pricing !== "object") {
+    return "";
+  }
+
+  const amount = Number(pricing.amount);
+  if (!Number.isFinite(amount)) {
+    return "";
+  }
+
+  const currency = pricing.currency || fallbackCurrency;
+  const locale = window.catalogData?.locale || "en-US";
+
+  try {
+    return new Intl.NumberFormat(locale, {
+      style: "currency",
+      currency,
+      maximumFractionDigits: 0,
+    }).format(amount);
+  } catch (error) {
+    return `${currency} ${amount}`;
+  }
+}
+
+function normalizeCatalogProduct(product) {
+  return {
+    id: product.id,
+    slug: product.slug,
+    category: product.category,
+    image: product.media?.cover || "",
+    price: formatCatalogPrice(product.pricing),
+    delivery: product.fulfillment?.type || "ready",
+    color: product.attributes?.color || "",
+    availability: product.inventory?.quantityLabel || "",
+    shipping: product.fulfillment?.leadTime || "",
+    sizes: product.sizing?.options || [],
+    defaultSize: product.sizing?.default || "",
+    name: product.copy?.name || "",
+    cardCategory: product.copy?.categoryLabel || "",
+    cardCaption: product.copy?.cardCaption || "",
+    intro: product.copy?.intro || "",
+    features: product.copy?.features || [],
+    details: {
+      condition: product.notes?.condition || "",
+      source: product.notes?.source || "",
+    },
+    metadata: {
+      conditionGrade: product.attributes?.conditionGrade || "",
+      designer: product.attributes?.designer || "",
+      origin: product.attributes?.origin || "",
+      era: product.attributes?.era || "",
+      status: product.inventory?.status || "",
+      quantityLabel: product.inventory?.quantityLabel || "",
+      oneOfAKind: Boolean(product.inventory?.oneOfAKind),
+    },
+    searchTokens: product.searchTokens || [],
+  };
+}
+
+const catalogProducts = rawCatalogProducts.map(normalizeCatalogProduct);
 
 function pickCatalogText(value, languageCode = currentLanguageCode) {
   if (typeof value === "string") {
