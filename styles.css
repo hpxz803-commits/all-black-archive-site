@@ -1130,11 +1130,22 @@ html.home-transition-armed body[data-page="home"].is-home-entered .hero-copy > h
   transition: transform 180ms ease, border-color 180ms ease;
 }
 
+.product-card.is-clickable {
+  cursor: pointer;
+}
+
 .product-card[hidden] {
   display: none;
 }
 
 .product-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+.product-card:focus-visible {
+  outline: 1px solid rgba(255, 255, 255, 0.36);
+  outline-offset: 2px;
   transform: translateY(-4px);
   border-color: rgba(255, 255, 255, 0.22);
 }

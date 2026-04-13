@@ -517,20 +517,49 @@ function renderShopCatalog() {
       const name = pickCatalogText(product.name);
       const category = pickCatalogText(product.cardCategory);
       const caption = pickCatalogText(product.cardCaption);
+      const href = `product.html?item=${product.slug}`;
       return `
-        <article class="product-card" data-category="${product.category}" data-delivery="${product.delivery}" data-item="${product.slug}">
+        <article class="product-card is-clickable" data-category="${product.category}" data-delivery="${product.delivery}" data-item="${product.slug}" data-href="${href}" tabindex="0" role="link" aria-label="${name}">
           <img src="${product.image}" alt="${name}">
           <div class="product-card-copy">
             <p>${category}</p>
             <h3 class="editorial-title">${name}</h3>
             <span class="product-price">${product.price}</span>
             <span class="product-caption">${caption}</span>
-            <a class="inline-link" href="product.html?item=${product.slug}">${ui.viewDetails}</a>
+            <a class="inline-link" href="${href}">${ui.viewDetails}</a>
           </div>
         </article>
       `;
     })
     .join("");
+
+  shopGrid.querySelectorAll(".product-card.is-clickable").forEach((card) => {
+    const href = card.dataset.href;
+    if (!href) {
+      return;
+    }
+
+    card.addEventListener("click", (event) => {
+      if (event.target.closest("a, button")) {
+        return;
+      }
+
+      window.location.href = href;
+    });
+
+    card.addEventListener("keydown", (event) => {
+      if (event.key !== "Enter" && event.key !== " ") {
+        return;
+      }
+
+      if (event.target.closest("a, button")) {
+        return;
+      }
+
+      event.preventDefault();
+      window.location.href = href;
+    });
+  });
 }
 
 function getActiveProduct() {
