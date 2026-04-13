@@ -1584,6 +1584,11 @@ html.home-transition-armed body[data-page="home"].is-home-entered .hero-copy > h
   opacity: 1;
 }
 
+.gallery-image-shell.is-resetting .gallery-image,
+.gallery-image-shell.is-resetting::after {
+  transition: none;
+}
+
 .gallery-nav {
   position: absolute;
   top: 50%;

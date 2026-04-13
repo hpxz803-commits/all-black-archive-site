@@ -620,6 +620,7 @@ function bindProductGallery(product) {
   let activeIndex = 0;
   let thumbButtons = [];
   let currentDirection = "next";
+  let transitionTimer = 0;
 
   thumbs.innerHTML = gallery
     .map((item, index) => {
@@ -656,21 +657,30 @@ function bindProductGallery(product) {
     const activeImage = gallery[activeIndex] || gallery[0];
 
     if (withTransition) {
+      window.clearTimeout(transitionTimer);
       shell.dataset.direction = currentDirection;
       nextImage.src = activeImage.src;
       nextImage.alt = activeImage.alt || pickCatalogText(product.name);
       shell.classList.add("is-transitioning");
 
-      window.setTimeout(() => {
+      transitionTimer = window.setTimeout(() => {
+        shell.classList.add("is-resetting");
         image.src = activeImage.src;
         image.alt = activeImage.alt || pickCatalogText(product.name);
         shell.classList.remove("is-transitioning");
+        nextImage.src = activeImage.src;
+        nextImage.alt = activeImage.alt || pickCatalogText(product.name);
+        window.requestAnimationFrame(() => {
+          shell.classList.remove("is-resetting");
+        });
       }, 420);
     } else {
+      window.clearTimeout(transitionTimer);
       image.src = activeImage.src;
       image.alt = activeImage.alt || pickCatalogText(product.name);
       nextImage.src = activeImage.src;
       nextImage.alt = activeImage.alt || pickCatalogText(product.name);
+      shell.classList.remove("is-resetting");
       shell.classList.remove("is-transitioning");
     }
 
