@@ -616,6 +616,36 @@ function bindProductGallery(product) {
 
   const gallery = product.gallery?.length ? product.gallery : [{ src: product.image, alt: pickCatalogText(product.name) }];
   let activeIndex = 0;
+  let thumbButtons = [];
+
+  thumbs.innerHTML = gallery
+    .map((item, index) => {
+      const isActive = index === activeIndex;
+      return `
+        <button class="gallery-thumb${isActive ? " is-active" : ""}" type="button" data-gallery-index="${index}" aria-pressed="${isActive}" aria-label="View image ${index + 1}">
+          <img src="${item.src}" alt="${item.alt || pickCatalogText(product.name)}">
+        </button>
+      `;
+    })
+    .join("");
+
+  thumbButtons = Array.from(thumbs.querySelectorAll("[data-gallery-index]"));
+
+  thumbButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      activeIndex = Number(button.dataset.galleryIndex) || 0;
+      renderGallery();
+    });
+  });
+
+  const syncThumbState = () => {
+    thumbButtons.forEach((button) => {
+      const index = Number(button.dataset.galleryIndex) || 0;
+      const isActive = index === activeIndex;
+      button.classList.toggle("is-active", isActive);
+      button.setAttribute("aria-pressed", String(isActive));
+    });
+  };
 
   const renderGallery = () => {
     const activeImage = gallery[activeIndex] || gallery[0];
@@ -629,27 +659,11 @@ function bindProductGallery(product) {
       counter.textContent = `${current} / ${total}`;
     }
 
-    thumbs.innerHTML = gallery
-      .map((item, index) => {
-        const isActive = index === activeIndex;
-        return `
-          <button class="gallery-thumb${isActive ? " is-active" : ""}" type="button" data-gallery-index="${index}" aria-pressed="${isActive}" aria-label="View image ${index + 1}">
-            <img src="${item.src}" alt="${item.alt || pickCatalogText(product.name)}">
-          </button>
-        `;
-      })
-      .join("");
+    syncThumbState();
 
-    window.requestAnimationFrame(() => {
+    window.setTimeout(() => {
       image.classList.remove("is-switching");
-    });
-
-    thumbs.querySelectorAll("[data-gallery-index]").forEach((button) => {
-      button.addEventListener("click", () => {
-        activeIndex = Number(button.dataset.galleryIndex) || 0;
-        renderGallery();
-      });
-    });
+    }, 180);
 
     const showNav = gallery.length > 1;
     if (prevButton) {
