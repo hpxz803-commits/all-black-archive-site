@@ -11,8 +11,22 @@
 </head>
 <body data-page="about">
   <div class="page-shell">
-    <header class="subpage-topbar">
+    <header class="subpage-topbar" data-mobile-header>
       <div class="brand-mark">ALL BLACK</div>
+      <div class="mobile-header-actions">
+        <button class="header-tool-button search-trigger mobile-search-trigger" type="button" data-search-trigger aria-label="Search">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="11" cy="11" r="6.5"></circle>
+            <path d="M16 16L21 21"></path>
+          </svg>
+        </button>
+        <button class="mobile-menu-button" type="button" data-mobile-menu-button aria-expanded="false" aria-label="Open menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+      <div class="header-menu-shell" data-mobile-menu-panel>
       <nav class="nav" aria-label="Primary">
         <div class="nav-item">
           <a class="nav-link" href="index.html">Home</a>
@@ -70,6 +84,7 @@
             <button class="language-option" type="button" data-language-option data-lang="ko" data-lang-tag="ko" data-lang-label="한국어" role="menuitemradio" aria-checked="false">한국어</button>
           </div>
         </div>
+      </div>
       </div>
     </header>
 

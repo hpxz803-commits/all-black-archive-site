@@ -153,6 +153,75 @@ if (languagePickers.length === 0) {
 
 const mobileNavQuery = window.matchMedia("(max-width: 720px)");
 const navDropdowns = document.querySelectorAll(".nav-dropdown");
+const mobileHeaders = document.querySelectorAll("[data-mobile-header]");
+
+if (mobileHeaders.length > 0) {
+  const closeMobileHeaderMenus = () => {
+    mobileHeaders.forEach((header) => {
+      header.classList.remove("is-mobile-menu-open");
+      header.querySelector("[data-mobile-menu-button]")?.setAttribute("aria-expanded", "false");
+    });
+    document.body.classList.remove("is-mobile-menu-open");
+  };
+
+  mobileHeaders.forEach((header) => {
+    const toggleButton = header.querySelector("[data-mobile-menu-button]");
+    const panel = header.querySelector("[data-mobile-menu-panel]");
+
+    toggleButton?.addEventListener("click", () => {
+      if (!mobileNavQuery.matches) {
+        return;
+      }
+
+      const willOpen = !header.classList.contains("is-mobile-menu-open");
+      closeMobileHeaderMenus();
+
+      if (willOpen) {
+        header.classList.add("is-mobile-menu-open");
+        toggleButton.setAttribute("aria-expanded", "true");
+        document.body.classList.add("is-mobile-menu-open");
+      }
+    });
+
+    panel?.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", (event) => {
+        if (!mobileNavQuery.matches || event.defaultPrevented) {
+          return;
+        }
+
+        closeMobileHeaderMenus();
+      });
+    });
+
+    panel?.querySelectorAll("[data-language-option]").forEach((option) => {
+      option.addEventListener("click", () => {
+        if (!mobileNavQuery.matches) {
+          return;
+        }
+
+        closeMobileHeaderMenus();
+      });
+    });
+  });
+
+  document.addEventListener("click", (event) => {
+    if (!mobileNavQuery.matches || event.target.closest("[data-mobile-header]")) {
+      return;
+    }
+
+    closeMobileHeaderMenus();
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      closeMobileHeaderMenus();
+    }
+  });
+
+  mobileNavQuery.addEventListener("change", () => {
+    closeMobileHeaderMenus();
+  });
+}
 
 if (navDropdowns.length > 0) {
   const closeMobileNavMenus = () => {
