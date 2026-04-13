@@ -151,6 +151,51 @@ if (languagePickers.length === 0) {
   });
 }
 
+const mobileNavQuery = window.matchMedia("(max-width: 720px)");
+const navDropdowns = document.querySelectorAll(".nav-dropdown");
+
+if (navDropdowns.length > 0) {
+  const closeMobileNavMenus = () => {
+    navDropdowns.forEach((dropdown) => dropdown.classList.remove("is-open"));
+  };
+
+  navDropdowns.forEach((dropdown) => {
+    const trigger = dropdown.querySelector(":scope > .nav-link");
+    const menu = dropdown.querySelector(".nav-menu");
+
+    trigger?.addEventListener("click", (event) => {
+      if (!mobileNavQuery.matches || !menu) {
+        return;
+      }
+
+      const isOpen = dropdown.classList.contains("is-open");
+      if (!isOpen) {
+        event.preventDefault();
+        closeMobileNavMenus();
+        dropdown.classList.add("is-open");
+      }
+    });
+
+    menu?.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => {
+        closeMobileNavMenus();
+      });
+    });
+  });
+
+  document.addEventListener("click", (event) => {
+    if (event.target.closest(".nav-dropdown")) {
+      return;
+    }
+
+    closeMobileNavMenus();
+  });
+
+  mobileNavQuery.addEventListener("change", () => {
+    closeMobileNavMenus();
+  });
+}
+
 const armHomeEntryAnimation = () => {
   if (document.body?.dataset.page !== "home") {
     return;
