@@ -243,11 +243,11 @@ body.is-transitioning-home::after {
 
 .mobile-menu-button {
   display: inline-flex;
-  flex-direction: column;
+  position: relative;
+  align-items: center;
   justify-content: center;
-  gap: 4px;
-  width: 22px;
-  height: 22px;
+  width: 28px;
+  height: 28px;
   padding: 0;
   border: 0;
   background: transparent;
@@ -256,16 +256,30 @@ body.is-transitioning-home::after {
 }
 
 .mobile-menu-button span {
+  position: absolute;
+  left: 3px;
+  right: 3px;
   display: block;
-  width: 22px;
   height: 1.5px;
   border-radius: 999px;
   background: currentColor;
   transition: transform 180ms ease, opacity 180ms ease;
 }
 
+.mobile-menu-button span:nth-child(1) {
+  top: 8px;
+}
+
+.mobile-menu-button span:nth-child(2) {
+  top: 13px;
+}
+
+.mobile-menu-button span:nth-child(3) {
+  top: 18px;
+}
+
 .is-mobile-menu-open .mobile-menu-button span:nth-child(1) {
-  transform: translateY(5.5px) rotate(45deg);
+  transform: translateY(5px) rotate(45deg);
 }
 
 .is-mobile-menu-open .mobile-menu-button span:nth-child(2) {
@@ -273,7 +287,7 @@ body.is-transitioning-home::after {
 }
 
 .is-mobile-menu-open .mobile-menu-button span:nth-child(3) {
-  transform: translateY(-5.5px) rotate(-45deg);
+  transform: translateY(-5px) rotate(-45deg);
 }
 
 .search-trigger::after {
@@ -1588,19 +1602,30 @@ html.home-transition-armed body[data-page="home"].is-home-entered .hero-copy > h
     right: auto;
     display: grid;
     grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "brand actions"
+      "menu menu";
     justify-content: stretch;
-    align-items: center;
+    align-items: start;
     gap: 12px;
     min-height: auto;
     padding-top: 18px;
     padding-bottom: 14px;
   }
 
+  .brand-mark {
+    grid-area: brand;
+    width: auto;
+    flex: none;
+  }
+
   .mobile-header-actions {
     display: inline-flex;
+    grid-area: actions;
     align-items: center;
     justify-content: flex-end;
     gap: 16px;
+    align-self: center;
   }
 
   .mobile-header-actions .search-trigger {
@@ -1614,18 +1639,15 @@ html.home-transition-armed body[data-page="home"].is-home-entered .hero-copy > h
   }
 
   .header-menu-shell {
-    position: absolute;
-    top: calc(100% + 8px);
-    left: 0;
-    right: 0;
-    z-index: 45;
+    position: static;
+    grid-area: menu;
     display: none;
     gap: 18px;
-    padding: 18px 14px 20px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(10, 10, 10, 0.97);
-    backdrop-filter: blur(18px);
-    box-shadow: 0 18px 46px rgba(0, 0, 0, 0.42);
+    padding: 8px 0 0;
+    border: 0;
+    background: transparent;
+    backdrop-filter: none;
+    box-shadow: none;
   }
 
   .is-mobile-menu-open .header-menu-shell {
@@ -1643,9 +1665,9 @@ html.home-transition-armed body[data-page="home"].is-home-entered .hero-copy > h
     top: auto;
     transform: none;
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     align-items: start;
-    gap: 10px 12px;
+    gap: 10px 18px;
     width: 100%;
     white-space: normal;
   }
@@ -1732,6 +1754,7 @@ html.home-transition-armed body[data-page="home"].is-home-entered .hero-copy > h
 
   .language-menu {
     min-width: 0;
+    padding-left: 0;
   }
 
   .hero-grid {
@@ -1951,8 +1974,7 @@ html.home-transition-armed body[data-page="home"].is-home-entered .hero-copy > h
   }
 
   .nav {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 8px 12px;
+    gap: 8px 14px;
   }
 
   .hero-grid {
