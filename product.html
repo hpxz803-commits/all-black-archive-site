@@ -91,7 +91,12 @@
     <main class="subpage-main">
       <section class="product-layout" data-reveal>
         <div class="product-gallery">
-          <img src="assets/editorial-model.jpg" alt="Archive product view" data-product-image>
+          <div class="product-gallery-stage">
+            <button class="gallery-nav gallery-nav-prev" type="button" data-gallery-prev aria-label="Previous image">Prev</button>
+            <img src="assets/editorial-model.jpg" alt="Archive product view" data-product-image>
+            <button class="gallery-nav gallery-nav-next" type="button" data-gallery-next aria-label="Next image">Next</button>
+          </div>
+          <div class="product-gallery-thumbs" data-gallery-thumbs></div>
         </div>
         <div class="product-copy" data-product-panel>
           <p class="section-kicker">Featured product</p>

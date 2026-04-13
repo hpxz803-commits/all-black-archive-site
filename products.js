@@ -9,6 +9,11 @@ window.catalogData = {
       category: "outerwear",
       media: {
         cover: "assets/editorial-model.jpg",
+        gallery: [
+          "assets/editorial-model.jpg",
+          "assets/poster-reference.jpg",
+          "assets/motion-reference.jpg",
+        ],
       },
       pricing: {
         currency: "EUR",
@@ -76,6 +81,11 @@ window.catalogData = {
       category: "outerwear",
       media: {
         cover: "assets/poster-reference.jpg",
+        gallery: [
+          "assets/poster-reference.jpg",
+          "assets/editorial-model.jpg",
+          "assets/hero-reference.jpg",
+        ],
       },
       pricing: {
         currency: "EUR",
@@ -143,6 +153,11 @@ window.catalogData = {
       category: "set",
       media: {
         cover: "assets/hero-reference.jpg",
+        gallery: [
+          "assets/hero-reference.jpg",
+          "assets/motion-reference.jpg",
+          "assets/poster-reference.jpg",
+        ],
       },
       pricing: {
         currency: "EUR",
@@ -210,6 +225,11 @@ window.catalogData = {
       category: "layering",
       media: {
         cover: "assets/motion-reference.jpg",
+        gallery: [
+          "assets/motion-reference.jpg",
+          "assets/hero-reference.jpg",
+          "assets/editorial-model.jpg",
+        ],
       },
       pricing: {
         currency: "EUR",
@@ -277,6 +297,11 @@ window.catalogData = {
       category: "eyewear",
       media: {
         cover: "assets/poster-reference.jpg",
+        gallery: [
+          "assets/poster-reference.jpg",
+          "assets/motion-reference.jpg",
+          "assets/hero-reference.jpg",
+        ],
       },
       pricing: {
         currency: "EUR",
@@ -344,6 +369,11 @@ window.catalogData = {
       category: "tshirt",
       media: {
         cover: "assets/hero-reference.jpg",
+        gallery: [
+          "assets/hero-reference.jpg",
+          "assets/editorial-model.jpg",
+          "assets/poster-reference.jpg",
+        ],
       },
       pricing: {
         currency: "EUR",
@@ -411,6 +441,11 @@ window.catalogData = {
       category: "shoes",
       media: {
         cover: "assets/editorial-model.jpg",
+        gallery: [
+          "assets/editorial-model.jpg",
+          "assets/motion-reference.jpg",
+          "assets/poster-reference.jpg",
+        ],
       },
       pricing: {
         currency: "EUR",

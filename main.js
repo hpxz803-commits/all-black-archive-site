@@ -42,11 +42,19 @@ function formatCatalogPrice(pricing, fallbackCurrency = window.catalogData?.curr
 }
 
 function normalizeCatalogProduct(product) {
+  const gallery = (product.media?.gallery || [product.media?.cover || ""])
+    .filter(Boolean)
+    .map((src, index) => ({
+      src,
+      alt: pickCatalogText(product.copy?.name || "") || `Gallery image ${index + 1}`,
+    }));
+
   return {
     id: product.id,
     slug: product.slug,
     category: product.category,
     image: product.media?.cover || "",
+    gallery,
     price: formatCatalogPrice(product.pricing),
     delivery: product.fulfillment?.type || "ready",
     color: product.attributes?.color || "",
@@ -595,6 +603,71 @@ function getActiveProduct() {
   return catalogProducts.find((product) => product.slug === requested) || catalogProducts[0] || null;
 }
 
+function bindProductGallery(product) {
+  const image = document.querySelector("[data-product-image]");
+  const thumbs = document.querySelector("[data-gallery-thumbs]");
+  const prevButton = document.querySelector("[data-gallery-prev]");
+  const nextButton = document.querySelector("[data-gallery-next]");
+
+  if (!image || !thumbs || !product) {
+    return;
+  }
+
+  const gallery = product.gallery?.length ? product.gallery : [{ src: product.image, alt: pickCatalogText(product.name) }];
+  let activeIndex = 0;
+
+  const renderGallery = () => {
+    const activeImage = gallery[activeIndex] || gallery[0];
+    image.src = activeImage.src;
+    image.alt = activeImage.alt || pickCatalogText(product.name);
+
+    thumbs.innerHTML = gallery
+      .map((item, index) => {
+        const isActive = index === activeIndex;
+        return `
+          <button class="gallery-thumb${isActive ? " is-active" : ""}" type="button" data-gallery-index="${index}" aria-pressed="${isActive}" aria-label="View image ${index + 1}">
+            <img src="${item.src}" alt="${item.alt || pickCatalogText(product.name)}">
+          </button>
+        `;
+      })
+      .join("");
+
+    thumbs.querySelectorAll("[data-gallery-index]").forEach((button) => {
+      button.addEventListener("click", () => {
+        activeIndex = Number(button.dataset.galleryIndex) || 0;
+        renderGallery();
+      });
+    });
+
+    const showNav = gallery.length > 1;
+    if (prevButton) {
+      prevButton.hidden = !showNav;
+      prevButton.disabled = !showNav;
+    }
+
+    if (nextButton) {
+      nextButton.hidden = !showNav;
+      nextButton.disabled = !showNav;
+    }
+  };
+
+  if (prevButton) {
+    prevButton.onclick = () => {
+      activeIndex = (activeIndex - 1 + gallery.length) % gallery.length;
+      renderGallery();
+    };
+  }
+
+  if (nextButton) {
+    nextButton.onclick = () => {
+      activeIndex = (activeIndex + 1) % gallery.length;
+      renderGallery();
+    };
+  }
+
+  renderGallery();
+}
+
 function renderProductCatalog() {
   const productPanel = document.querySelector("[data-product-panel]");
   if (!productPanel) {
@@ -622,10 +695,7 @@ function renderProductCatalog() {
   const nextLink = productPanel.querySelector("[data-product-next]");
   const interactionUi = getCatalogInteractionPack();
 
-  if (image) {
-    image.src = product.image;
-    image.alt = pickCatalogText(product.name);
-  }
+  bindProductGallery(product);
 
   if (title) title.textContent = pickCatalogText(product.name);
   document.title = `all black - ${pickCatalogText(product.name)}`;
