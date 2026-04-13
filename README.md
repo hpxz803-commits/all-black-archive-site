@@ -17,6 +17,10 @@ This site includes:
 - multilingual navigation and shared interface copy
 - search for categories and individual items
 
+## Preview
+
+![all black homepage preview](assets/readme-home.png)
+
 ## Pages
 
 - `index.html` — homepage / brand visual
@@ -72,6 +76,29 @@ You can run the project by opening:
 
 Or serve the folder with any simple static server if you prefer.
 
+## Deploy
+
+The project is ready to be deployed as a static site.
+
+### GitHub Pages
+
+1. open the repository on GitHub
+2. go to `Settings` -> `Pages`
+3. under `Build and deployment`, choose `Deploy from a branch`
+4. select the `main` branch and the `/ (root)` folder
+5. save the settings
+
+After that, GitHub Pages will publish the site from the root HTML files.
+
+### Vercel
+
+1. import the repository into Vercel
+2. keep the project as a static site with no build command
+3. set the output directory to empty or leave it unset
+4. deploy
+
+Because the project uses plain HTML, CSS, and JavaScript, no framework-specific setup is required.
+
 ## Notes
 
 - preview images are intentionally excluded from version control
@@ -81,7 +108,6 @@ Or serve the folder with any simple static server if you prefer.
 
 Potential next improvements:
 
-- deploy the site with GitHub Pages or Vercel
 - connect product data to a CMS or JSON feed
 - expand full-page multilingual content beyond the shared UI layer
-- add README screenshots and live demo links
+- add a live demo link after deployment
