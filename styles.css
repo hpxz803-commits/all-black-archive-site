@@ -1539,6 +1539,10 @@ html.home-transition-armed body[data-page="home"].is-home-entered .hero-copy > h
 
   .hero-topbar,
   .subpage-topbar {
+    position: relative;
+    top: auto;
+    left: auto;
+    right: auto;
     display: grid;
     grid-template-columns: 1fr;
     justify-content: stretch;
@@ -1551,7 +1555,7 @@ html.home-transition-armed body[data-page="home"].is-home-entered .hero-copy > h
 
   .subpage-main {
     width: calc(100% - 20px);
-    padding-top: 12px;
+    padding-top: 8px;
   }
 
   .nav {
@@ -1645,7 +1649,8 @@ html.home-transition-armed body[data-page="home"].is-home-entered .hero-copy > h
 
   .hero-grid {
     gap: 22px;
-    padding: 112px 16px 126px;
+    min-height: auto;
+    padding: 24px 16px 126px;
   }
 
   .hero-copy {
@@ -1871,7 +1876,7 @@ html.home-transition-armed body[data-page="home"].is-home-entered .hero-copy > h
   }
 
   .hero-grid {
-    padding: 104px 14px 122px;
+    padding: 18px 14px 122px;
   }
 
   .hero h1 {
