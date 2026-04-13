@@ -92,9 +92,17 @@
       <section class="product-layout" data-reveal>
         <div class="product-gallery">
           <div class="product-gallery-stage">
-            <button class="gallery-nav gallery-nav-prev" type="button" data-gallery-prev aria-label="Previous image">Prev</button>
+            <div class="gallery-stage-meta">
+              <span class="gallery-stage-kicker">Archive views</span>
+              <span class="gallery-stage-counter" data-gallery-counter>01 / 03</span>
+            </div>
+            <button class="gallery-nav gallery-nav-prev" type="button" data-gallery-prev aria-label="Previous image">
+              <span aria-hidden="true">‹</span>
+            </button>
             <img src="assets/editorial-model.jpg" alt="Archive product view" data-product-image>
-            <button class="gallery-nav gallery-nav-next" type="button" data-gallery-next aria-label="Next image">Next</button>
+            <button class="gallery-nav gallery-nav-next" type="button" data-gallery-next aria-label="Next image">
+              <span aria-hidden="true">›</span>
+            </button>
           </div>
           <div class="product-gallery-thumbs" data-gallery-thumbs></div>
         </div>

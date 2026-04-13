@@ -1473,11 +1473,16 @@ html.home-transition-armed body[data-page="home"].is-home-entered .hero-copy > h
 
 .product-gallery {
   border: 1px solid rgba(255, 255, 255, 0.08);
-  background: linear-gradient(180deg, #141414, #080808);
+  background:
+    radial-gradient(circle at top, rgba(255, 255, 255, 0.05), transparent 32%),
+    linear-gradient(180deg, #141414, #080808);
   display: grid;
   gap: 16px;
   min-height: 720px;
   padding: 18px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.03),
+    0 24px 54px rgba(0, 0, 0, 0.28);
 }
 
 .product-gallery-stage {
@@ -1487,7 +1492,31 @@ html.home-transition-armed body[data-page="home"].is-home-entered .hero-copy > h
   justify-content: center;
   min-height: 560px;
   border: 1px solid rgba(255, 255, 255, 0.06);
-  background: rgba(255, 255, 255, 0.02);
+  background:
+    radial-gradient(circle at 50% 12%, rgba(255, 255, 255, 0.06), transparent 34%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.025), rgba(255, 255, 255, 0.01));
+  overflow: hidden;
+}
+
+.gallery-stage-meta {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  right: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.gallery-stage-kicker,
+.gallery-stage-counter {
+  color: rgba(255, 255, 255, 0.58);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
 }
 
 .product-gallery img {
@@ -1495,28 +1524,51 @@ html.home-transition-armed body[data-page="home"].is-home-entered .hero-copy > h
   height: auto;
   display: block;
   object-fit: contain;
+  transition:
+    opacity 260ms ease,
+    transform 420ms cubic-bezier(0.2, 0.7, 0.16, 1),
+    filter 260ms ease;
+}
+
+.product-gallery img.is-switching {
+  opacity: 0.68;
+  transform: scale(0.985);
+  filter: blur(4px);
 }
 
 .gallery-nav {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  min-width: 54px;
-  min-height: 54px;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  background: rgba(8, 8, 8, 0.72);
+  width: 56px;
+  height: 56px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.07), transparent),
+    rgba(8, 8, 8, 0.72);
   color: var(--text);
-  font-size: 11px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  font-size: 32px;
+  line-height: 1;
   cursor: pointer;
-  transition: background 180ms ease, border-color 180ms ease, opacity 180ms ease;
+  transition:
+    background 180ms ease,
+    border-color 180ms ease,
+    opacity 180ms ease,
+    transform 180ms ease;
+  z-index: 2;
 }
 
 .gallery-nav:hover,
 .gallery-nav:focus-visible {
   background: rgba(18, 18, 18, 0.92);
   border-color: rgba(255, 255, 255, 0.26);
+  transform: translateY(-50%) scale(1.03);
+}
+
+.gallery-nav span {
+  display: inline-block;
+  transform: translateY(-1px);
 }
 
 .gallery-nav-prev {
@@ -1531,14 +1583,22 @@ html.home-transition-armed body[data-page="home"].is-home-entered .hero-copy > h
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
+  padding-top: 2px;
 }
 
 .gallery-thumb {
   padding: 0;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.02);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035), transparent),
+    rgba(255, 255, 255, 0.02);
   cursor: pointer;
-  transition: transform 180ms ease, border-color 180ms ease, opacity 180ms ease;
+  opacity: 0.66;
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    opacity 180ms ease,
+    box-shadow 180ms ease;
 }
 
 .gallery-thumb:hover,
@@ -1546,6 +1606,8 @@ html.home-transition-armed body[data-page="home"].is-home-entered .hero-copy > h
 .gallery-thumb.is-active {
   border-color: rgba(255, 255, 255, 0.26);
   transform: translateY(-2px);
+  opacity: 1;
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.22);
 }
 
 .gallery-thumb img {
@@ -2171,8 +2233,9 @@ html.home-transition-armed body[data-page="home"].is-home-entered .hero-copy > h
   }
 
   .gallery-nav {
-    min-width: 42px;
-    min-height: 42px;
+    width: 42px;
+    height: 42px;
+    font-size: 24px;
   }
 
   .gallery-nav-prev {
@@ -2189,6 +2252,12 @@ html.home-transition-armed body[data-page="home"].is-home-entered .hero-copy > h
 
   .gallery-thumb img {
     height: 88px;
+  }
+
+  .gallery-stage-meta {
+    top: 12px;
+    left: 12px;
+    right: 12px;
   }
 
   .product-copy {

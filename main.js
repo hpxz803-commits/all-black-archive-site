@@ -608,6 +608,7 @@ function bindProductGallery(product) {
   const thumbs = document.querySelector("[data-gallery-thumbs]");
   const prevButton = document.querySelector("[data-gallery-prev]");
   const nextButton = document.querySelector("[data-gallery-next]");
+  const counter = document.querySelector("[data-gallery-counter]");
 
   if (!image || !thumbs || !product) {
     return;
@@ -618,8 +619,15 @@ function bindProductGallery(product) {
 
   const renderGallery = () => {
     const activeImage = gallery[activeIndex] || gallery[0];
+    image.classList.add("is-switching");
     image.src = activeImage.src;
     image.alt = activeImage.alt || pickCatalogText(product.name);
+
+    if (counter) {
+      const current = String(activeIndex + 1).padStart(2, "0");
+      const total = String(gallery.length).padStart(2, "0");
+      counter.textContent = `${current} / ${total}`;
+    }
 
     thumbs.innerHTML = gallery
       .map((item, index) => {
@@ -631,6 +639,10 @@ function bindProductGallery(product) {
         `;
       })
       .join("");
+
+    window.requestAnimationFrame(() => {
+      image.classList.remove("is-switching");
+    });
 
     thumbs.querySelectorAll("[data-gallery-index]").forEach((button) => {
       button.addEventListener("click", () => {
