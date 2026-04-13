@@ -1518,24 +1518,56 @@ html.home-transition-armed body[data-page="home"].is-home-entered .hero-copy > h
   text-transform: uppercase;
 }
 
-.product-gallery img {
-  width: auto;
-  max-width: min(100%, 680px);
-  max-height: calc(100% - 120px);
-  height: auto;
-  display: block;
+.gallery-image-shell {
+  position: relative;
+  width: min(100%, 680px);
+  height: calc(100% - 120px);
+  min-height: 0;
+  overflow: hidden;
+}
+
+.gallery-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
   transition:
-    opacity 180ms ease,
-    transform 280ms cubic-bezier(0.2, 0.7, 0.16, 1),
-    filter 180ms ease;
+    opacity 260ms ease,
+    transform 420ms cubic-bezier(0.2, 0.7, 0.16, 1),
+    filter 260ms ease;
   will-change: opacity, transform, filter;
 }
 
-.product-gallery img.is-switching {
-  opacity: 0.8;
-  transform: scale(0.992);
-  filter: blur(2px);
+.gallery-image-shell .is-current {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.gallery-image-shell .is-next {
+  opacity: 0;
+  transform: translateX(12%);
+  filter: blur(1px);
+}
+
+.gallery-image-shell[data-direction="prev"] .is-next {
+  transform: translateX(-12%);
+}
+
+.gallery-image-shell.is-transitioning .is-current {
+  opacity: 0;
+  transform: translateX(-10%);
+  filter: blur(1px);
+}
+
+.gallery-image-shell[data-direction="prev"].is-transitioning .is-current {
+  transform: translateX(10%);
+}
+
+.gallery-image-shell.is-transitioning .is-next {
+  opacity: 1;
+  transform: translateX(0);
+  filter: blur(0);
 }
 
 .gallery-nav {

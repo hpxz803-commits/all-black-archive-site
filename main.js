@@ -605,18 +605,21 @@ function getActiveProduct() {
 
 function bindProductGallery(product) {
   const image = document.querySelector("[data-product-image]");
+  const nextImage = document.querySelector("[data-product-image-next]");
+  const shell = document.querySelector("[data-gallery-shell]");
   const thumbs = document.querySelector("[data-gallery-thumbs]");
   const prevButton = document.querySelector("[data-gallery-prev]");
   const nextButton = document.querySelector("[data-gallery-next]");
   const counter = document.querySelector("[data-gallery-counter]");
 
-  if (!image || !thumbs || !product) {
+  if (!image || !nextImage || !shell || !thumbs || !product) {
     return;
   }
 
   const gallery = product.gallery?.length ? product.gallery : [{ src: product.image, alt: pickCatalogText(product.name) }];
   let activeIndex = 0;
   let thumbButtons = [];
+  let currentDirection = "next";
 
   thumbs.innerHTML = gallery
     .map((item, index) => {
@@ -633,8 +636,10 @@ function bindProductGallery(product) {
 
   thumbButtons.forEach((button) => {
     button.addEventListener("click", () => {
-      activeIndex = Number(button.dataset.galleryIndex) || 0;
-      renderGallery();
+      const nextIndex = Number(button.dataset.galleryIndex) || 0;
+      currentDirection = nextIndex >= activeIndex ? "next" : "prev";
+      activeIndex = nextIndex;
+      renderGallery(true);
     });
   });
 
@@ -647,11 +652,27 @@ function bindProductGallery(product) {
     });
   };
 
-  const renderGallery = () => {
+  const renderGallery = (withTransition = false) => {
     const activeImage = gallery[activeIndex] || gallery[0];
-    image.classList.add("is-switching");
-    image.src = activeImage.src;
-    image.alt = activeImage.alt || pickCatalogText(product.name);
+
+    if (withTransition) {
+      shell.dataset.direction = currentDirection;
+      nextImage.src = activeImage.src;
+      nextImage.alt = activeImage.alt || pickCatalogText(product.name);
+      shell.classList.add("is-transitioning");
+
+      window.setTimeout(() => {
+        image.src = activeImage.src;
+        image.alt = activeImage.alt || pickCatalogText(product.name);
+        shell.classList.remove("is-transitioning");
+      }, 260);
+    } else {
+      image.src = activeImage.src;
+      image.alt = activeImage.alt || pickCatalogText(product.name);
+      nextImage.src = activeImage.src;
+      nextImage.alt = activeImage.alt || pickCatalogText(product.name);
+      shell.classList.remove("is-transitioning");
+    }
 
     if (counter) {
       const current = String(activeIndex + 1).padStart(2, "0");
@@ -660,10 +681,6 @@ function bindProductGallery(product) {
     }
 
     syncThumbState();
-
-    window.setTimeout(() => {
-      image.classList.remove("is-switching");
-    }, 180);
 
     const showNav = gallery.length > 1;
     if (prevButton) {
@@ -679,19 +696,21 @@ function bindProductGallery(product) {
 
   if (prevButton) {
     prevButton.onclick = () => {
+      currentDirection = "prev";
       activeIndex = (activeIndex - 1 + gallery.length) % gallery.length;
-      renderGallery();
+      renderGallery(true);
     };
   }
 
   if (nextButton) {
     nextButton.onclick = () => {
+      currentDirection = "next";
       activeIndex = (activeIndex + 1) % gallery.length;
-      renderGallery();
+      renderGallery(true);
     };
   }
 
-  renderGallery();
+  renderGallery(false);
 }
 
 function renderProductCatalog() {
