@@ -665,7 +665,7 @@ function bindProductGallery(product) {
         image.src = activeImage.src;
         image.alt = activeImage.alt || pickCatalogText(product.name);
         shell.classList.remove("is-transitioning");
-      }, 260);
+      }, 420);
     } else {
       image.src = activeImage.src;
       image.alt = activeImage.alt || pickCatalogText(product.name);

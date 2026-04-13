@@ -1526,6 +1526,16 @@ html.home-transition-armed body[data-page="home"].is-home-entered .hero-copy > h
   overflow: hidden;
 }
 
+.gallery-image-shell::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(0, 0, 0, 0.04));
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 420ms ease;
+}
+
 .gallery-image {
   position: absolute;
   inset: 0;
@@ -1533,9 +1543,9 @@ html.home-transition-armed body[data-page="home"].is-home-entered .hero-copy > h
   height: 100%;
   object-fit: contain;
   transition:
-    opacity 260ms ease,
-    transform 420ms cubic-bezier(0.2, 0.7, 0.16, 1),
-    filter 260ms ease;
+    opacity 420ms ease,
+    transform 620ms cubic-bezier(0.22, 0.7, 0.16, 1),
+    filter 420ms ease;
   will-change: opacity, transform, filter;
 }
 
@@ -1546,7 +1556,7 @@ html.home-transition-armed body[data-page="home"].is-home-entered .hero-copy > h
 
 .gallery-image-shell .is-next {
   opacity: 0;
-  transform: translateX(12%);
+  transform: translateX(9%);
   filter: blur(1px);
 }
 
@@ -1556,18 +1566,22 @@ html.home-transition-armed body[data-page="home"].is-home-entered .hero-copy > h
 
 .gallery-image-shell.is-transitioning .is-current {
   opacity: 0;
-  transform: translateX(-10%);
+  transform: translateX(-8%);
   filter: blur(1px);
 }
 
 .gallery-image-shell[data-direction="prev"].is-transitioning .is-current {
-  transform: translateX(10%);
+  transform: translateX(8%);
 }
 
 .gallery-image-shell.is-transitioning .is-next {
   opacity: 1;
   transform: translateX(0);
   filter: blur(0);
+}
+
+.gallery-image-shell.is-transitioning::after {
+  opacity: 1;
 }
 
 .gallery-nav {
