@@ -611,6 +611,12 @@ function bindProductGallery(product) {
   const prevButton = document.querySelector("[data-gallery-prev]");
   const nextButton = document.querySelector("[data-gallery-next]");
   const counter = document.querySelector("[data-gallery-counter]");
+  const lightbox = document.querySelector("[data-gallery-lightbox]");
+  const lightboxImage = document.querySelector("[data-gallery-lightbox-image]");
+  const lightboxCounter = document.querySelector("[data-gallery-lightbox-counter]");
+  const lightboxPrev = document.querySelector("[data-gallery-lightbox-prev]");
+  const lightboxNext = document.querySelector("[data-gallery-lightbox-next]");
+  const lightboxCloseButtons = document.querySelectorAll("[data-gallery-lightbox-close]");
 
   if (!image || !nextImage || !shell || !thumbs || !product) {
     return;
@@ -621,6 +627,7 @@ function bindProductGallery(product) {
   let thumbButtons = [];
   let currentDirection = "next";
   let transitionTimer = 0;
+  let zoomOpen = false;
 
   thumbs.innerHTML = gallery
     .map((item, index) => {
@@ -651,6 +658,43 @@ function bindProductGallery(product) {
       button.classList.toggle("is-active", isActive);
       button.setAttribute("aria-pressed", String(isActive));
     });
+  };
+
+  const renderLightbox = () => {
+    if (!lightbox || !lightboxImage) {
+      return;
+    }
+
+    const activeImage = gallery[activeIndex] || gallery[0];
+    lightboxImage.src = activeImage.src;
+    lightboxImage.alt = activeImage.alt || pickCatalogText(product.name);
+
+    if (lightboxCounter) {
+      const current = String(activeIndex + 1).padStart(2, "0");
+      const total = String(gallery.length).padStart(2, "0");
+      lightboxCounter.textContent = `${current} / ${total}`;
+    }
+  };
+
+  const closeLightbox = () => {
+    if (!lightbox) {
+      return;
+    }
+
+    zoomOpen = false;
+    lightbox.hidden = true;
+    document.body.classList.remove("is-gallery-zoom-open");
+  };
+
+  const openLightbox = () => {
+    if (!lightbox) {
+      return;
+    }
+
+    zoomOpen = true;
+    renderLightbox();
+    lightbox.hidden = false;
+    document.body.classList.add("is-gallery-zoom-open");
   };
 
   const renderGallery = (withTransition = false) => {
@@ -691,6 +735,9 @@ function bindProductGallery(product) {
     }
 
     syncThumbState();
+    if (zoomOpen) {
+      renderLightbox();
+    }
 
     const showNav = gallery.length > 1;
     if (prevButton) {
@@ -719,6 +766,34 @@ function bindProductGallery(product) {
       renderGallery(true);
     };
   }
+
+  shell.onclick = (event) => {
+    if (event.target.closest("[data-gallery-prev], [data-gallery-next]")) {
+      return;
+    }
+
+    openLightbox();
+  };
+
+  if (lightboxPrev) {
+    lightboxPrev.onclick = () => {
+      currentDirection = "prev";
+      activeIndex = (activeIndex - 1 + gallery.length) % gallery.length;
+      renderGallery(false);
+    };
+  }
+
+  if (lightboxNext) {
+    lightboxNext.onclick = () => {
+      currentDirection = "next";
+      activeIndex = (activeIndex + 1) % gallery.length;
+      renderGallery(false);
+    };
+  }
+
+  lightboxCloseButtons.forEach((button) => {
+    button.onclick = closeLightbox;
+  });
 
   renderGallery(false);
 }
@@ -1001,6 +1076,7 @@ if (searchOverlay && searchInput && searchResults) {
   const openSearch = () => {
     closeMobileHeaderMenus();
     closeQuickView();
+    document.querySelector("[data-gallery-lightbox-close]")?.click();
     searchOverlay.hidden = false;
     document.body.classList.add("is-search-open");
     updateSearchUi();
@@ -1046,6 +1122,12 @@ if (searchOverlay && searchInput && searchResults) {
 
     if (event.key === "Escape" && quickViewOverlay && !quickViewOverlay.hidden) {
       closeQuickView();
+      return;
+    }
+
+    const galleryLightbox = document.querySelector("[data-gallery-lightbox]");
+    if (event.key === "Escape" && galleryLightbox && !galleryLightbox.hidden) {
+      document.querySelector("[data-gallery-lightbox-close]")?.click();
     }
   });
 }

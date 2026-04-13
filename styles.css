@@ -74,6 +74,10 @@ body.is-quick-view-open {
   overflow: hidden;
 }
 
+body.is-gallery-zoom-open {
+  overflow: hidden;
+}
+
 body.is-transitioning-home::after {
   opacity: 1;
 }
@@ -1524,6 +1528,7 @@ html.home-transition-armed body[data-page="home"].is-home-entered .hero-copy > h
   height: calc(100% - 120px);
   min-height: 0;
   overflow: hidden;
+  cursor: zoom-in;
 }
 
 .gallery-image-shell::after {
@@ -1630,6 +1635,61 @@ html.home-transition-armed body[data-page="home"].is-home-entered .hero-copy > h
 
 .gallery-nav-next {
   right: 18px;
+}
+
+.gallery-lightbox[hidden] {
+  display: none;
+}
+
+.gallery-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 170;
+}
+
+.gallery-lightbox-backdrop {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: rgba(3, 3, 3, 0.9);
+  backdrop-filter: blur(14px);
+  cursor: pointer;
+}
+
+.gallery-lightbox-panel {
+  position: relative;
+  width: min(1200px, calc(100% - 48px));
+  margin: 4vh auto;
+  padding: 18px;
+}
+
+.gallery-lightbox-head {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.gallery-lightbox-head .section-kicker,
+.gallery-lightbox-head .gallery-stage-counter {
+  margin: 0;
+}
+
+.gallery-lightbox-stage {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: calc(100dvh - 140px);
+}
+
+.gallery-lightbox-image {
+  max-width: 100%;
+  max-height: calc(100dvh - 180px);
+  width: auto;
+  height: auto;
+  display: block;
+  object-fit: contain;
 }
 
 .product-gallery-thumbs {
@@ -2297,6 +2357,25 @@ html.home-transition-armed body[data-page="home"].is-home-entered .hero-copy > h
 
   .gallery-nav-next {
     right: 10px;
+  }
+
+  .gallery-lightbox-panel {
+    width: calc(100% - 20px);
+    margin: 6vh auto;
+    padding: 12px;
+  }
+
+  .gallery-lightbox-head {
+    grid-template-columns: 1fr auto;
+    align-items: start;
+  }
+
+  .gallery-lightbox-stage {
+    min-height: calc(100dvh - 120px);
+  }
+
+  .gallery-lightbox-image {
+    max-height: calc(100dvh - 150px);
   }
 
   .product-gallery-thumbs {

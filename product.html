@@ -167,6 +167,25 @@
         <span>Online curated secondhand archive</span>
       </div>
     </footer>
+    <div class="gallery-lightbox" data-gallery-lightbox hidden>
+      <button class="gallery-lightbox-backdrop" type="button" data-gallery-lightbox-close aria-hidden="true" tabindex="-1"></button>
+      <div class="gallery-lightbox-panel" role="dialog" aria-modal="true" aria-labelledby="gallery-lightbox-counter">
+        <div class="gallery-lightbox-head">
+          <p class="section-kicker">Image view</p>
+          <span class="gallery-stage-counter" id="gallery-lightbox-counter" data-gallery-lightbox-counter>01 / 03</span>
+          <button class="search-close" type="button" data-gallery-lightbox-close aria-label="Close image view">Close</button>
+        </div>
+        <div class="gallery-lightbox-stage">
+          <button class="gallery-nav gallery-nav-prev" type="button" data-gallery-lightbox-prev aria-label="Previous image">
+            <span aria-hidden="true">‹</span>
+          </button>
+          <img class="gallery-lightbox-image" src="assets/editorial-model.jpg" alt="" data-gallery-lightbox-image>
+          <button class="gallery-nav gallery-nav-next" type="button" data-gallery-lightbox-next aria-label="Next image">
+            <span aria-hidden="true">›</span>
+          </button>
+        </div>
+      </div>
+    </div>
     <div class="search-overlay" data-search-overlay hidden>
       <button class="search-overlay-backdrop" type="button" data-search-close aria-hidden="true" tabindex="-1"></button>
       <div class="search-panel" role="dialog" aria-modal="true" aria-labelledby="search-title">
