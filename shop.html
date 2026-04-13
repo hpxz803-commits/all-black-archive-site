@@ -133,6 +133,32 @@
       <section class="shop-grid" data-shop-grid data-reveal></section>
     </main>
 
+    <div class="quick-view-overlay" data-quick-view-overlay hidden>
+      <button class="quick-view-backdrop" type="button" data-quick-view-close aria-hidden="true" tabindex="-1"></button>
+      <div class="quick-view-panel" role="dialog" aria-modal="true" aria-labelledby="quick-view-title">
+        <div class="quick-view-head">
+          <p class="section-kicker" data-quick-view-kicker>Quick view</p>
+          <button class="search-close" type="button" data-quick-view-close aria-label="Close quick view">Close</button>
+        </div>
+        <div class="quick-view-body">
+          <div class="quick-view-media">
+            <img src="assets/editorial-model.jpg" alt="" data-quick-view-image>
+          </div>
+          <div class="quick-view-copy">
+            <p class="section-kicker" data-quick-view-category></p>
+            <h2 class="editorial-title" id="quick-view-title" data-quick-view-title></h2>
+            <p class="product-price" data-quick-view-price></p>
+            <p class="section-copy" data-quick-view-caption></p>
+            <p class="section-copy" data-quick-view-intro></p>
+            <div class="quick-view-actions">
+              <a class="button button-primary" href="product.html" data-quick-view-details>View details</a>
+              <button class="button button-secondary" type="button" data-quick-view-close>Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <footer class="footer" id="contact">
       <p>ALL BLACK</p>
       <div>

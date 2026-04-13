@@ -78,6 +78,27 @@ function normalizeCatalogProduct(product) {
 
 const catalogProducts = rawCatalogProducts.map(normalizeCatalogProduct);
 
+const catalogInteractionCopy = {
+  en: {
+    quickView: "Quick view",
+    close: "Close",
+    viewDetails: "View details",
+    previous: "Previous piece",
+    next: "Next piece",
+  },
+  zh: {
+    quickView: "快速查看",
+    close: "关闭",
+    viewDetails: "查看详情",
+    previous: "上一件单品",
+    next: "下一件单品",
+  },
+};
+
+function getCatalogInteractionPack() {
+  return catalogInteractionCopy[currentLanguageCode] || catalogInteractionCopy.en;
+}
+
 function pickCatalogText(value, languageCode = currentLanguageCode) {
   if (typeof value === "string") {
     return value;
@@ -512,6 +533,7 @@ function renderShopCatalog() {
   }
 
   const ui = getCatalogUiPack();
+  const interactionUi = getCatalogInteractionPack();
   shopGrid.innerHTML = catalogProducts
     .map((product) => {
       const name = pickCatalogText(product.name);
@@ -526,7 +548,10 @@ function renderShopCatalog() {
             <h3 class="editorial-title">${name}</h3>
             <span class="product-price">${product.price}</span>
             <span class="product-caption">${caption}</span>
-            <a class="inline-link" href="${href}">${ui.viewDetails}</a>
+            <div class="product-card-actions">
+              <button class="inline-link inline-link-button" type="button" data-quick-view-trigger data-item="${product.slug}">${interactionUi.quickView}</button>
+              <a class="inline-link" href="${href}">${ui.viewDetails}</a>
+            </div>
           </div>
         </article>
       `;
@@ -560,6 +585,8 @@ function renderShopCatalog() {
       window.location.href = href;
     });
   });
+
+  bindQuickViewTriggers();
 }
 
 function getActiveProduct() {
@@ -591,6 +618,9 @@ function renderProductCatalog() {
   const condition = productPanel.querySelector("[data-product-condition]");
   const source = productPanel.querySelector("[data-product-source]");
   const backLink = productPanel.querySelector("[data-product-back]");
+  const prevLink = productPanel.querySelector("[data-product-prev]");
+  const nextLink = productPanel.querySelector("[data-product-next]");
+  const interactionUi = getCatalogInteractionPack();
 
   if (image) {
     image.src = product.image;
@@ -621,12 +651,32 @@ function renderProductCatalog() {
       .join("");
   }
 
+  const currentIndex = catalogProducts.findIndex((item) => item.slug === product.slug);
+  const previousProduct = currentIndex > 0 ? catalogProducts[currentIndex - 1] : catalogProducts[catalogProducts.length - 1];
+  const nextProduct = currentIndex < catalogProducts.length - 1 ? catalogProducts[currentIndex + 1] : catalogProducts[0];
+
+  if (prevLink && previousProduct) {
+    prevLink.href = `product.html?item=${previousProduct.slug}`;
+    prevLink.textContent = `${interactionUi.previous} / ${pickCatalogText(previousProduct.name)}`;
+  }
+
+  if (nextLink && nextProduct) {
+    nextLink.href = `product.html?item=${nextProduct.slug}`;
+    nextLink.textContent = `${interactionUi.next} / ${pickCatalogText(nextProduct.name)}`;
+  }
+
   return product;
 }
 
 function updateCatalogUi() {
   renderShopCatalog();
   activeCatalogProduct = renderProductCatalog();
+  if (activeQuickViewProduct) {
+    const refreshed = catalogProducts.find((item) => item.slug === activeQuickViewProduct.slug);
+    if (refreshed) {
+      renderQuickView(refreshed);
+    }
+  }
   if (window.applyShopFilters) {
     window.applyShopFilters();
   }
@@ -634,6 +684,108 @@ function updateCatalogUi() {
     window.rebindProductInteractions();
   }
   return activeCatalogProduct;
+}
+
+const quickViewOverlay = document.querySelector("[data-quick-view-overlay]");
+const quickViewImage = document.querySelector("[data-quick-view-image]");
+const quickViewCategory = document.querySelector("[data-quick-view-category]");
+const quickViewTitle = document.querySelector("[data-quick-view-title]");
+const quickViewPrice = document.querySelector("[data-quick-view-price]");
+const quickViewCaption = document.querySelector("[data-quick-view-caption]");
+const quickViewIntro = document.querySelector("[data-quick-view-intro]");
+const quickViewDetails = document.querySelector("[data-quick-view-details]");
+const quickViewKicker = document.querySelector("[data-quick-view-kicker]");
+const quickViewCloseButtons = document.querySelectorAll("[data-quick-view-close]");
+let activeQuickViewProduct = null;
+
+function renderQuickView(product) {
+  if (!product || !quickViewOverlay) {
+    return;
+  }
+
+  const interactionUi = getCatalogInteractionPack();
+  activeQuickViewProduct = product;
+
+  if (quickViewKicker) {
+    quickViewKicker.textContent = interactionUi.quickView;
+  }
+
+  if (quickViewImage) {
+    quickViewImage.src = product.image;
+    quickViewImage.alt = pickCatalogText(product.name);
+  }
+
+  if (quickViewCategory) {
+    quickViewCategory.textContent = pickCatalogText(product.cardCategory);
+  }
+
+  if (quickViewTitle) {
+    quickViewTitle.textContent = pickCatalogText(product.name);
+  }
+
+  if (quickViewPrice) {
+    quickViewPrice.textContent = product.price;
+  }
+
+  if (quickViewCaption) {
+    quickViewCaption.textContent = pickCatalogText(product.cardCaption);
+  }
+
+  if (quickViewIntro) {
+    quickViewIntro.textContent = pickCatalogText(product.intro);
+  }
+
+  if (quickViewDetails) {
+    quickViewDetails.href = `product.html?item=${product.slug}`;
+    quickViewDetails.textContent = interactionUi.viewDetails;
+  }
+
+  quickViewCloseButtons.forEach((button) => {
+    if (button.classList.contains("search-close") || button.classList.contains("button")) {
+      button.textContent = interactionUi.close;
+    }
+  });
+}
+
+function closeQuickView() {
+  if (!quickViewOverlay) {
+    return;
+  }
+
+  quickViewOverlay.hidden = true;
+  document.body.classList.remove("is-quick-view-open");
+}
+
+function openQuickView(product) {
+  if (!product || !quickViewOverlay) {
+    return;
+  }
+
+  renderQuickView(product);
+  quickViewOverlay.hidden = false;
+  document.body.classList.add("is-quick-view-open");
+}
+
+function bindQuickViewTriggers() {
+  if (!quickViewOverlay) {
+    return;
+  }
+
+  document.querySelectorAll("[data-quick-view-trigger]").forEach((trigger) => {
+    trigger.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      const slug = trigger.dataset.item;
+      const product = catalogProducts.find((item) => item.slug === slug);
+      openQuickView(product || null);
+    });
+  });
+}
+
+if (quickViewOverlay) {
+  quickViewCloseButtons.forEach((button) => {
+    button.addEventListener("click", closeQuickView);
+  });
 }
 
 function createSearchResult(entry) {
@@ -723,6 +875,7 @@ function updateSearchUi() {
 if (searchOverlay && searchInput && searchResults) {
   const openSearch = () => {
     closeMobileHeaderMenus();
+    closeQuickView();
     searchOverlay.hidden = false;
     document.body.classList.add("is-search-open");
     updateSearchUi();
@@ -763,6 +916,11 @@ if (searchOverlay && searchInput && searchResults) {
 
     if (event.key === "Escape" && !searchOverlay.hidden) {
       closeSearch();
+      return;
+    }
+
+    if (event.key === "Escape" && quickViewOverlay && !quickViewOverlay.hidden) {
+      closeQuickView();
     }
   });
 }
