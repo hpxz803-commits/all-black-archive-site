@@ -637,6 +637,11 @@ function bindProductGallery(product) {
   let startPointerY = 0;
   let startPanX = 0;
   let startPanY = 0;
+  let pinchStartDistance = 0;
+  let pinchStartScale = 1;
+  let touchPanStartX = 0;
+  let touchPanStartY = 0;
+  let lastTapTime = 0;
 
   thumbs.innerHTML = gallery
     .map((item, index) => {
@@ -688,6 +693,14 @@ function bindProductGallery(product) {
   };
 
   const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+  const getTouchDistance = (touches) => {
+    if (touches.length < 2) {
+      return 0;
+    }
+
+    const [first, second] = touches;
+    return Math.hypot(second.clientX - first.clientX, second.clientY - first.clientY);
+  };
 
   const applyZoomTransform = () => {
     if (!lightboxImage || !lightboxViewport) {
@@ -814,10 +827,10 @@ function bindProductGallery(product) {
     openLightbox();
   };
 
-  if (lightboxPrev) {
-    lightboxPrev.onclick = () => {
-      currentDirection = "prev";
-      activeIndex = (activeIndex - 1 + gallery.length) % gallery.length;
+    if (lightboxPrev) {
+      lightboxPrev.onclick = () => {
+        currentDirection = "prev";
+        activeIndex = (activeIndex - 1 + gallery.length) % gallery.length;
       renderGallery(false);
       resetZoomState();
     };
@@ -837,6 +850,19 @@ function bindProductGallery(product) {
   });
 
   if (lightboxViewport && lightboxImage) {
+    lightboxViewport.ondblclick = () => {
+      if (!zoomOpen) {
+        return;
+      }
+
+      zoomScale = zoomScale > 1.2 ? 1 : 2;
+      if (zoomScale === 1) {
+        panX = 0;
+        panY = 0;
+      }
+      applyZoomTransform();
+    };
+
     lightboxViewport.onwheel = (event) => {
       if (!zoomOpen) {
         return;
@@ -853,7 +879,7 @@ function bindProductGallery(product) {
     };
 
     lightboxViewport.onpointerdown = (event) => {
-      if (!zoomOpen || zoomScale <= 1.02) {
+      if (!zoomOpen || zoomScale <= 1.02 || event.pointerType === "touch") {
         return;
       }
 
@@ -867,7 +893,7 @@ function bindProductGallery(product) {
     };
 
     lightboxViewport.onpointermove = (event) => {
-      if (!isPanning || zoomScale <= 1.02) {
+      if (!isPanning || zoomScale <= 1.02 || event.pointerType === "touch") {
         return;
       }
 
@@ -877,7 +903,7 @@ function bindProductGallery(product) {
     };
 
     lightboxViewport.onpointerup = (event) => {
-      if (!isPanning) {
+      if (!isPanning || event.pointerType === "touch") {
         return;
       }
 
@@ -893,6 +919,87 @@ function bindProductGallery(product) {
 
       isPanning = false;
       applyZoomTransform();
+    };
+
+    lightboxViewport.ontouchstart = (event) => {
+      if (!zoomOpen) {
+        return;
+      }
+
+      if (event.touches.length === 2) {
+        pinchStartDistance = getTouchDistance(event.touches);
+        pinchStartScale = zoomScale;
+        isPanning = false;
+        return;
+      }
+
+      if (event.touches.length === 1 && zoomScale > 1.02) {
+        const touch = event.touches[0];
+        isPanning = true;
+        touchPanStartX = touch.clientX;
+        touchPanStartY = touch.clientY;
+        startPanX = panX;
+        startPanY = panY;
+      }
+    };
+
+    lightboxViewport.ontouchmove = (event) => {
+      if (!zoomOpen) {
+        return;
+      }
+
+      if (event.touches.length === 2) {
+        event.preventDefault();
+        const distance = getTouchDistance(event.touches);
+        if (!pinchStartDistance) {
+          pinchStartDistance = distance;
+          pinchStartScale = zoomScale;
+        }
+
+        const ratio = distance / pinchStartDistance;
+        zoomScale = clamp(pinchStartScale * ratio, 1, 3);
+        if (zoomScale <= 1.02) {
+          panX = 0;
+          panY = 0;
+        }
+        applyZoomTransform();
+        return;
+      }
+
+      if (event.touches.length === 1 && isPanning && zoomScale > 1.02) {
+        event.preventDefault();
+        const touch = event.touches[0];
+        panX = startPanX + (touch.clientX - touchPanStartX);
+        panY = startPanY + (touch.clientY - touchPanStartY);
+        applyZoomTransform();
+      }
+    };
+
+    lightboxViewport.ontouchend = (event) => {
+      if (!zoomOpen) {
+        return;
+      }
+
+      if (event.touches.length < 2) {
+        pinchStartDistance = 0;
+      }
+
+      if (event.touches.length === 0) {
+        const now = Date.now();
+        if (now - lastTapTime < 260) {
+          zoomScale = zoomScale > 1.2 ? 1 : 2;
+          if (zoomScale === 1) {
+            panX = 0;
+            panY = 0;
+          }
+          applyZoomTransform();
+          lastTapTime = 0;
+        } else {
+          lastTapTime = now;
+        }
+        isPanning = false;
+        applyZoomTransform();
+      }
     };
   }
 

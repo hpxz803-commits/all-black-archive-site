@@ -1691,10 +1691,12 @@ html.home-transition-armed body[data-page="home"].is-home-entered .hero-copy > h
   min-height: calc(100dvh - 180px);
   overflow: hidden;
   cursor: zoom-in;
+  touch-action: manipulation;
 }
 
 .gallery-lightbox-viewport.is-zoomed {
   cursor: grab;
+  touch-action: none;
 }
 
 .gallery-lightbox-viewport.is-panning {
