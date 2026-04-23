@@ -615,6 +615,8 @@ function bindProductGallery(product) {
   const lightboxImage = document.querySelector("[data-gallery-lightbox-image]");
   const lightboxViewport = document.querySelector("[data-gallery-lightbox-viewport]");
   const lightboxCounter = document.querySelector("[data-gallery-lightbox-counter]");
+  const lightboxHint = document.querySelector("[data-gallery-lightbox-hint]");
+  const lightboxThumbs = document.querySelector("[data-gallery-lightbox-thumbs]");
   const lightboxPrev = document.querySelector("[data-gallery-lightbox-prev]");
   const lightboxNext = document.querySelector("[data-gallery-lightbox-next]");
   const lightboxCloseButtons = document.querySelectorAll("[data-gallery-lightbox-close]");
@@ -642,6 +644,11 @@ function bindProductGallery(product) {
   let touchPanStartX = 0;
   let touchPanStartY = 0;
   let lastTapTime = 0;
+
+  const zoomHintCopy = {
+    en: "Double-click or pinch to zoom. Drag to inspect detail.",
+    zh: "双击或双指缩放查看细节，放大后可拖动查看局部。",
+  };
 
   thumbs.innerHTML = gallery
     .map((item, index) => {
@@ -687,6 +694,33 @@ function bindProductGallery(product) {
       const current = String(activeIndex + 1).padStart(2, "0");
       const total = String(gallery.length).padStart(2, "0");
       lightboxCounter.textContent = `${current} / ${total}`;
+    }
+
+    if (lightboxHint) {
+      lightboxHint.textContent = zoomHintCopy[currentLanguageCode] || zoomHintCopy.en;
+    }
+
+    if (lightboxThumbs) {
+      lightboxThumbs.innerHTML = gallery
+        .map((item, index) => {
+          const isActive = index === activeIndex;
+          return `
+            <button class="gallery-thumb gallery-thumb-lightbox${isActive ? " is-active" : ""}" type="button" data-gallery-lightbox-index="${index}" aria-pressed="${isActive}" aria-label="View image ${index + 1}">
+              <img src="${item.src}" alt="${item.alt || pickCatalogText(product.name)}">
+            </button>
+          `;
+        })
+        .join("");
+
+      lightboxThumbs.querySelectorAll("[data-gallery-lightbox-index]").forEach((button) => {
+        button.onclick = () => {
+          const nextIndex = Number(button.dataset.galleryLightboxIndex) || 0;
+          currentDirection = nextIndex >= activeIndex ? "next" : "prev";
+          activeIndex = nextIndex;
+          renderGallery(false);
+          resetZoomState();
+        };
+      });
     }
 
     applyZoomTransform();
