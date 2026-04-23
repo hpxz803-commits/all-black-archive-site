@@ -1683,6 +1683,24 @@ html.home-transition-armed body[data-page="home"].is-home-entered .hero-copy > h
   min-height: calc(100dvh - 140px);
 }
 
+.gallery-lightbox-viewport {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  min-height: calc(100dvh - 180px);
+  overflow: hidden;
+  cursor: zoom-in;
+}
+
+.gallery-lightbox-viewport.is-zoomed {
+  cursor: grab;
+}
+
+.gallery-lightbox-viewport.is-panning {
+  cursor: grabbing;
+}
+
 .gallery-lightbox-image {
   max-width: 100%;
   max-height: calc(100dvh - 180px);
@@ -1690,6 +1708,15 @@ html.home-transition-armed body[data-page="home"].is-home-entered .hero-copy > h
   height: auto;
   display: block;
   object-fit: contain;
+  transform-origin: center center;
+  transition: transform 160ms ease;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
+}
+
+.gallery-lightbox-viewport.is-panning .gallery-lightbox-image {
+  transition: none;
 }
 
 .product-gallery-thumbs {
@@ -2372,6 +2399,10 @@ html.home-transition-armed body[data-page="home"].is-home-entered .hero-copy > h
 
   .gallery-lightbox-stage {
     min-height: calc(100dvh - 120px);
+  }
+
+  .gallery-lightbox-viewport {
+    min-height: calc(100dvh - 150px);
   }
 
   .gallery-lightbox-image {

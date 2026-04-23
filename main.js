@@ -613,6 +613,7 @@ function bindProductGallery(product) {
   const counter = document.querySelector("[data-gallery-counter]");
   const lightbox = document.querySelector("[data-gallery-lightbox]");
   const lightboxImage = document.querySelector("[data-gallery-lightbox-image]");
+  const lightboxViewport = document.querySelector("[data-gallery-lightbox-viewport]");
   const lightboxCounter = document.querySelector("[data-gallery-lightbox-counter]");
   const lightboxPrev = document.querySelector("[data-gallery-lightbox-prev]");
   const lightboxNext = document.querySelector("[data-gallery-lightbox-next]");
@@ -628,6 +629,14 @@ function bindProductGallery(product) {
   let currentDirection = "next";
   let transitionTimer = 0;
   let zoomOpen = false;
+  let zoomScale = 1;
+  let panX = 0;
+  let panY = 0;
+  let isPanning = false;
+  let startPointerX = 0;
+  let startPointerY = 0;
+  let startPanX = 0;
+  let startPanY = 0;
 
   thumbs.innerHTML = gallery
     .map((item, index) => {
@@ -674,6 +683,34 @@ function bindProductGallery(product) {
       const total = String(gallery.length).padStart(2, "0");
       lightboxCounter.textContent = `${current} / ${total}`;
     }
+
+    applyZoomTransform();
+  };
+
+  const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+
+  const applyZoomTransform = () => {
+    if (!lightboxImage || !lightboxViewport) {
+      return;
+    }
+
+    const maxOffsetX = zoomScale > 1 ? ((zoomScale - 1) * lightboxViewport.clientWidth) / 2 : 0;
+    const maxOffsetY = zoomScale > 1 ? ((zoomScale - 1) * lightboxViewport.clientHeight) / 2 : 0;
+
+    panX = clamp(panX, -maxOffsetX, maxOffsetX);
+    panY = clamp(panY, -maxOffsetY, maxOffsetY);
+
+    lightboxImage.style.transform = `translate(${panX}px, ${panY}px) scale(${zoomScale})`;
+    lightboxViewport.classList.toggle("is-zoomed", zoomScale > 1.02);
+    lightboxViewport.classList.toggle("is-panning", isPanning && zoomScale > 1.02);
+  };
+
+  const resetZoomState = () => {
+    zoomScale = 1;
+    panX = 0;
+    panY = 0;
+    isPanning = false;
+    applyZoomTransform();
   };
 
   const closeLightbox = () => {
@@ -684,6 +721,7 @@ function bindProductGallery(product) {
     zoomOpen = false;
     lightbox.hidden = true;
     document.body.classList.remove("is-gallery-zoom-open");
+    resetZoomState();
   };
 
   const openLightbox = () => {
@@ -695,6 +733,7 @@ function bindProductGallery(product) {
     renderLightbox();
     lightbox.hidden = false;
     document.body.classList.add("is-gallery-zoom-open");
+    resetZoomState();
   };
 
   const renderGallery = (withTransition = false) => {
@@ -780,6 +819,7 @@ function bindProductGallery(product) {
       currentDirection = "prev";
       activeIndex = (activeIndex - 1 + gallery.length) % gallery.length;
       renderGallery(false);
+      resetZoomState();
     };
   }
 
@@ -788,12 +828,73 @@ function bindProductGallery(product) {
       currentDirection = "next";
       activeIndex = (activeIndex + 1) % gallery.length;
       renderGallery(false);
+      resetZoomState();
     };
   }
 
   lightboxCloseButtons.forEach((button) => {
     button.onclick = closeLightbox;
   });
+
+  if (lightboxViewport && lightboxImage) {
+    lightboxViewport.onwheel = (event) => {
+      if (!zoomOpen) {
+        return;
+      }
+
+      event.preventDefault();
+      const delta = event.deltaY < 0 ? 0.18 : -0.18;
+      zoomScale = clamp(zoomScale + delta, 1, 3);
+      if (zoomScale <= 1.02) {
+        panX = 0;
+        panY = 0;
+      }
+      applyZoomTransform();
+    };
+
+    lightboxViewport.onpointerdown = (event) => {
+      if (!zoomOpen || zoomScale <= 1.02) {
+        return;
+      }
+
+      isPanning = true;
+      startPointerX = event.clientX;
+      startPointerY = event.clientY;
+      startPanX = panX;
+      startPanY = panY;
+      lightboxViewport.setPointerCapture?.(event.pointerId);
+      applyZoomTransform();
+    };
+
+    lightboxViewport.onpointermove = (event) => {
+      if (!isPanning || zoomScale <= 1.02) {
+        return;
+      }
+
+      panX = startPanX + (event.clientX - startPointerX);
+      panY = startPanY + (event.clientY - startPointerY);
+      applyZoomTransform();
+    };
+
+    lightboxViewport.onpointerup = (event) => {
+      if (!isPanning) {
+        return;
+      }
+
+      isPanning = false;
+      lightboxViewport.releasePointerCapture?.(event.pointerId);
+      applyZoomTransform();
+    };
+
+    lightboxViewport.onpointerleave = () => {
+      if (!isPanning) {
+        return;
+      }
+
+      isPanning = false;
+      applyZoomTransform();
+    };
+  }
 
   renderGallery(false);
 }
