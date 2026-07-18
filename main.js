@@ -5,7 +5,7 @@ const languageStorageKey = "site-language";
 const siteContactConfig = Object.freeze({
   whatsapp: Object.freeze({
     phone: "393485397763",
-    message: "您好请问您需要什么",
+    customerPrefill: "",
   }),
 });
 let currentLanguageCode = "zh";
@@ -1565,7 +1565,7 @@ if (productPanel) {
 
 function mountWhatsAppContact() {
   const phone = siteContactConfig.whatsapp.phone.replace(/\D/g, "");
-  const message = siteContactConfig.whatsapp.message.trim();
+  const customerPrefill = siteContactConfig.whatsapp.customerPrefill.trim();
 
   if (!phone || document.querySelector("[data-whatsapp-contact]")) {
     return;
@@ -1574,7 +1574,7 @@ function mountWhatsAppContact() {
   const contactLink = document.createElement("a");
   contactLink.className = "whatsapp-contact";
   contactLink.dataset.whatsappContact = "";
-  contactLink.href = `https://wa.me/${phone}${message ? `?text=${encodeURIComponent(message)}` : ""}`;
+  contactLink.href = `https://wa.me/${phone}${customerPrefill ? `?text=${encodeURIComponent(customerPrefill)}` : ""}`;
   contactLink.target = "_blank";
   contactLink.rel = "noopener noreferrer";
   contactLink.setAttribute("aria-label", "Contact ALL BLACK on WhatsApp");
