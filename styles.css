@@ -1983,35 +1983,83 @@ html.home-transition-armed body[data-page="home"].is-home-entered .hero-copy > h
   z-index: 115;
   display: inline-flex;
   align-items: center;
-  gap: 11px;
-  min-height: 52px;
-  padding: 9px 16px 9px 10px;
-  border: 1px solid rgba(255, 255, 255, 0.17);
+  gap: 12px;
+  min-height: 54px;
+  padding: 10px 18px 10px 10px;
+  overflow: hidden;
+  isolation: isolate;
+  border: 1px solid rgba(255, 255, 255, 0.27);
   border-radius: 999px;
-  background: rgba(18, 18, 18, 0.86);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.045) 44%, rgba(255, 255, 255, 0.1)),
+    rgba(20, 20, 22, 0.42);
   color: var(--text);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.08),
-    0 14px 34px rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
+    inset 0 1px 0 rgba(255, 255, 255, 0.38),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.07),
+    inset 12px 0 24px rgba(255, 255, 255, 0.025),
+    0 18px 46px rgba(0, 0, 0, 0.38);
+  backdrop-filter: blur(26px) saturate(165%) contrast(1.06);
+  -webkit-backdrop-filter: blur(26px) saturate(165%) contrast(1.06);
   text-decoration: none;
-  opacity: 0;
-  transform: translateY(10px);
-  animation: whatsapp-contact-enter 700ms cubic-bezier(0.16, 1, 0.3, 1) 700ms forwards;
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  animation: whatsapp-contact-enter 700ms cubic-bezier(0.16, 1, 0.3, 1) 700ms backwards;
   transition:
     transform 320ms cubic-bezier(0.16, 1, 0.3, 1),
     opacity 240ms ease,
     border-color 240ms ease,
-    background 240ms ease;
+    background 320ms ease,
+    box-shadow 320ms ease;
+}
+
+.whatsapp-contact::before,
+.whatsapp-contact::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+}
+
+.whatsapp-contact::before {
+  z-index: 0;
+  inset: 1px;
+  border-radius: inherit;
+  background:
+    radial-gradient(circle at 18% -20%, rgba(255, 255, 255, 0.38), transparent 48%),
+    linear-gradient(110deg, rgba(255, 255, 255, 0.12), transparent 30%, transparent 70%, rgba(255, 255, 255, 0.07));
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.045);
+}
+
+.whatsapp-contact::after {
+  z-index: 0;
+  top: -70%;
+  left: -52%;
+  width: 48%;
+  height: 240%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.22), transparent);
+  opacity: 0.48;
+  transform: rotate(18deg) translate3d(0, 0, 0);
+  transition: transform 850ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .whatsapp-contact:hover,
 .whatsapp-contact:focus-visible {
-  border-color: rgba(255, 255, 255, 0.32);
-  background: rgba(28, 28, 28, 0.94);
+  border-color: rgba(255, 255, 255, 0.46);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.21), rgba(255, 255, 255, 0.075) 44%, rgba(255, 255, 255, 0.13)),
+    rgba(24, 24, 27, 0.5);
   color: #fff;
-  transform: translateY(-3px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.48),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.09),
+    inset 14px 0 28px rgba(255, 255, 255, 0.035),
+    0 20px 50px rgba(0, 0, 0, 0.42);
+  transform: translate3d(0, -3px, 0);
+}
+
+.whatsapp-contact:hover::after,
+.whatsapp-contact:focus-visible::after {
+  transform: rotate(18deg) translate3d(410%, 0, 0);
 }
 
 .whatsapp-contact:focus-visible {
@@ -2020,17 +2068,24 @@ html.home-transition-armed body[data-page="home"].is-home-entered .hero-copy > h
 }
 
 .whatsapp-contact:active {
-  transform: translateY(0) scale(0.98);
+  transform: translate3d(0, 0, 0) scale(0.98);
 }
 
 .whatsapp-contact-icon {
+  position: relative;
+  z-index: 1;
   display: grid;
   place-items: center;
-  width: 32px;
-  height: 32px;
-  border: 1px solid rgba(255, 255, 255, 0.16);
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.06);
+  background:
+    radial-gradient(circle at 30% 18%, rgba(255, 255, 255, 0.26), transparent 42%),
+    rgba(255, 255, 255, 0.075);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.18);
 }
 
 .whatsapp-contact-icon svg {
@@ -2043,6 +2098,8 @@ html.home-transition-armed body[data-page="home"].is-home-entered .hero-copy > h
 }
 
 .whatsapp-contact-copy {
+  position: relative;
+  z-index: 1;
   display: grid;
   gap: 2px;
 }
@@ -2054,7 +2111,7 @@ html.home-transition-armed body[data-page="home"].is-home-entered .hero-copy > h
 }
 
 .whatsapp-contact-copy small {
-  color: rgba(244, 244, 240, 0.55);
+  color: rgba(244, 244, 240, 0.64);
   font-size: 8px;
   font-weight: 500;
   letter-spacing: 0.13em;
@@ -2072,13 +2129,19 @@ body.is-quick-view-open .whatsapp-contact,
 body.is-gallery-zoom-open .whatsapp-contact {
   pointer-events: none;
   opacity: 0;
-  transform: translateY(10px);
+  transform: translate3d(0, 10px, 0);
 }
 
 @keyframes whatsapp-contact-enter {
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  from {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0);
+  }
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .whatsapp-contact {
+    background: rgba(26, 26, 28, 0.94);
   }
 }
 
@@ -2430,14 +2493,14 @@ body.is-gallery-zoom-open .whatsapp-contact {
     right: 14px;
     bottom: calc(14px + env(safe-area-inset-bottom));
     justify-content: center;
-    width: 48px;
-    min-height: 48px;
-    padding: 7px;
+    width: 50px;
+    min-height: 50px;
+    padding: 8px;
   }
 
   .whatsapp-contact-icon {
-    width: 32px;
-    height: 32px;
+    width: 34px;
+    height: 34px;
   }
 
   .whatsapp-contact-copy {
