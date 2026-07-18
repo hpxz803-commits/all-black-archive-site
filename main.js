@@ -2,6 +2,12 @@ const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
 const prefersReducedMotion = reducedMotionQuery.matches;
 const homeTransitionFlag = "home-entry-transition";
 const languageStorageKey = "site-language";
+const siteContactConfig = Object.freeze({
+  whatsapp: Object.freeze({
+    phone: "393485397763",
+    message: "您好请问您需要什么",
+  }),
+});
 let currentLanguageCode = "zh";
 const supportedLanguages = {
   en: { label: "English", tag: "en" },
@@ -1556,3 +1562,36 @@ if (productPanel) {
     });
   }
 }
+
+function mountWhatsAppContact() {
+  const phone = siteContactConfig.whatsapp.phone.replace(/\D/g, "");
+  const message = siteContactConfig.whatsapp.message.trim();
+
+  if (!phone || document.querySelector("[data-whatsapp-contact]")) {
+    return;
+  }
+
+  const contactLink = document.createElement("a");
+  contactLink.className = "whatsapp-contact";
+  contactLink.dataset.whatsappContact = "";
+  contactLink.href = `https://wa.me/${phone}${message ? `?text=${encodeURIComponent(message)}` : ""}`;
+  contactLink.target = "_blank";
+  contactLink.rel = "noopener noreferrer";
+  contactLink.setAttribute("aria-label", "Contact ALL BLACK on WhatsApp");
+  contactLink.innerHTML = `
+    <span class="whatsapp-contact-icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none">
+        <path d="M20 11.5a8 8 0 0 1-11.5 7.2L4 20l1.3-4.1A8 8 0 1 1 20 11.5Z"></path>
+        <path d="M8.7 8.1c.3-.3.8-.2 1 .2l.8 1.6c.2.3.1.7-.2.9l-.7.5a6.8 6.8 0 0 0 3.1 3.1l.5-.7c.2-.3.6-.4.9-.2l1.6.8c.4.2.5.7.2 1-.6.7-1.5 1-2.4.8a8.2 8.2 0 0 1-6.6-6.6c-.2-.9.1-1.8.8-2.4Z"></path>
+      </svg>
+    </span>
+    <span class="whatsapp-contact-copy">
+      <small>Private enquiry</small>
+      <strong>WhatsApp</strong>
+    </span>
+  `;
+
+  document.body.appendChild(contactLink);
+}
+
+mountWhatsAppContact();
