@@ -1579,7 +1579,6 @@ function mountWhatsAppContact() {
   contactLink.rel = "noopener noreferrer";
   contactLink.setAttribute("aria-label", "Contact ALL BLACK on WhatsApp");
   contactLink.innerHTML = `
-    <span class="whatsapp-contact-refraction" aria-hidden="true"></span>
     <span class="whatsapp-contact-icon" aria-hidden="true">
       <svg viewBox="0 0 24 24" fill="none">
         <path d="M20 11.5a8 8 0 0 1-11.5 7.2L4 20l1.3-4.1A8 8 0 1 1 20 11.5Z"></path>
@@ -1590,17 +1589,6 @@ function mountWhatsAppContact() {
       <small>Private enquiry</small>
       <strong>WhatsApp</strong>
     </span>
-    <svg class="whatsapp-contact-filter" aria-hidden="true" focusable="false">
-      <defs>
-        <filter id="whatsapp-container-glass" x="0%" y="0%" width="100%" height="100%" color-interpolation-filters="sRGB">
-          <feTurbulence type="fractalNoise" baseFrequency="0.05 0.05" numOctaves="1" seed="1" result="turbulence"></feTurbulence>
-          <feGaussianBlur in="turbulence" stdDeviation="2" result="blurredNoise"></feGaussianBlur>
-          <feDisplacementMap in="SourceGraphic" in2="blurredNoise" scale="70" xChannelSelector="R" yChannelSelector="B" result="displaced"></feDisplacementMap>
-          <feGaussianBlur in="displaced" stdDeviation="4" result="finalBlur"></feGaussianBlur>
-          <feComposite in="finalBlur" in2="finalBlur" operator="over"></feComposite>
-        </filter>
-      </defs>
-    </svg>
   `;
 
   document.body.appendChild(contactLink);
