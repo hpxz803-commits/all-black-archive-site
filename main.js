@@ -4,7 +4,7 @@ const homeTransitionFlag = "home-entry-transition";
 const languageStorageKey = "site-language";
 const siteContactConfig = Object.freeze({
   whatsapp: Object.freeze({
-    phone: "393485397763",
+    phone: "393475681155",
     customerPrefill: "",
   }),
 });
