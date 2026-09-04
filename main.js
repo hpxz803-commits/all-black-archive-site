@@ -126,7 +126,7 @@ function getCatalogInteractionPack() {
 const homeArrivalsCopy = {
   en: {
     kicker: "Current arrivals / 2026",
-    title: "New pieces, kept in motion.",
+    title: "Current arrivals.",
     copy: "A continuous edit of seasonal selections and newly listed archive pieces.",
     pause: "Pause",
     resume: "Resume",
@@ -138,7 +138,7 @@ const homeArrivalsCopy = {
   },
   zh: {
     kicker: "当季新入 / 2026",
-    title: "当季新入，持续流动。",
+    title: "当季新入",
     copy: "把本季精选与刚上新的单品放进一条不断更新的编辑流。",
     pause: "暂停",
     resume: "继续",
@@ -150,7 +150,7 @@ const homeArrivalsCopy = {
   },
   de: {
     kicker: "Neu eingetroffen / 2026",
-    title: "Neue Stücke, in Bewegung.",
+    title: "Neu eingetroffen.",
     copy: "Eine fortlaufende Auswahl saisonaler und neu eingetroffener Archivstücke.",
     pause: "Pause",
     resume: "Weiter",
@@ -162,7 +162,7 @@ const homeArrivalsCopy = {
   },
   it: {
     kicker: "Nuovi arrivi / 2026",
-    title: "Nuovi pezzi, sempre in movimento.",
+    title: "Nuovi arrivi.",
     copy: "Una selezione continua di pezzi stagionali e nuovi arrivi d'archivio.",
     pause: "Pausa",
     resume: "Riprendi",
@@ -174,7 +174,7 @@ const homeArrivalsCopy = {
   },
   fr: {
     kicker: "Nouveautés / 2026",
-    title: "De nouvelles pièces, en mouvement.",
+    title: "Nouveautés.",
     copy: "Une sélection continue de pièces saisonnières et de nouvelles archives.",
     pause: "Pause",
     resume: "Reprendre",
@@ -186,7 +186,7 @@ const homeArrivalsCopy = {
   },
   ja: {
     kicker: "新着 / 2026",
-    title: "新しいピースを、流れの中に。",
+    title: "今季の新着。",
     copy: "今季のセレクトと新着アーカイブを、絶えず更新されるエディットで紹介します。",
     pause: "一時停止",
     resume: "再開",
@@ -198,7 +198,7 @@ const homeArrivalsCopy = {
   },
   es: {
     kicker: "Novedades / 2026",
-    title: "Nuevas piezas, siempre en movimiento.",
+    title: "Novedades.",
     copy: "Una edición continua de selecciones de temporada y nuevas piezas de archivo.",
     pause: "Pausar",
     resume: "Continuar",
@@ -210,7 +210,7 @@ const homeArrivalsCopy = {
   },
   ru: {
     kicker: "Новые поступления / 2026",
-    title: "Новые вещи в постоянном движении.",
+    title: "Новые поступления.",
     copy: "Непрерывная подборка сезонных и недавно добавленных архивных вещей.",
     pause: "Пауза",
     resume: "Продолжить",
@@ -222,7 +222,7 @@ const homeArrivalsCopy = {
   },
   ko: {
     kicker: "신상품 / 2026",
-    title: "새로운 피스, 계속되는 흐름.",
+    title: "이번 시즌 신상품.",
     copy: "시즌 셀렉션과 새로 입고된 아카이브 피스를 하나의 흐름으로 소개합니다.",
     pause: "일시 정지",
     resume: "계속",
