@@ -869,7 +869,7 @@ function createHomeArrivalsController() {
     lastFrame = timestamp;
 
     if (shouldMove(timestamp) && cycleWidth) {
-      viewport.scrollLeft += delta * 0.055;
+      viewport.scrollLeft += delta * 0.065;
       normalizeScrollPosition();
     }
 
