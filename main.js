@@ -760,6 +760,11 @@ function createHomeArrivalsController() {
 
   const desktopMotionQuery = window.matchMedia("(min-width: 721px)");
   let cycleWidth = 0;
+  let preciseScrollPosition = 0;
+  let motionSpeed = 0.05;
+  let tickerTrack = null;
+  let tickerCycleWidth = 0;
+  let lastTickerPosition = null;
   let lastFrame = performance.now();
   let forcedPaused = false;
   let hoveredCard = false;
@@ -780,16 +785,48 @@ function createHomeArrivalsController() {
     && document.visibilityState === "visible"
   );
 
+  const updateMotionSpeed = () => {
+    tickerTrack = document.querySelector(".ticker-track");
+    if (!tickerTrack) {
+      return;
+    }
+
+    const durationValue = getComputedStyle(tickerTrack).animationDuration.split(",")[0].trim();
+    const parsedDuration = Number.parseFloat(durationValue);
+    const durationMs = durationValue.endsWith("ms") ? parsedDuration : parsedDuration * 1000;
+    tickerCycleWidth = tickerTrack.scrollWidth / 2;
+
+    if (Number.isFinite(durationMs) && durationMs > 0 && tickerCycleWidth > 0) {
+      motionSpeed = tickerCycleWidth / durationMs;
+    }
+
+    lastTickerPosition = null;
+  };
+
+  const getTickerPosition = () => {
+    if (!tickerTrack) {
+      return null;
+    }
+
+    try {
+      return new DOMMatrixReadOnly(getComputedStyle(tickerTrack).transform).m41;
+    } catch (error) {
+      return null;
+    }
+  };
+
   const normalizeScrollPosition = () => {
     if (!cycleWidth) {
       return;
     }
 
-    if (viewport.scrollLeft >= cycleWidth * 2) {
-      viewport.scrollLeft -= cycleWidth;
-    } else if (viewport.scrollLeft <= 0) {
-      viewport.scrollLeft += cycleWidth;
+    if (preciseScrollPosition >= cycleWidth * 2) {
+      preciseScrollPosition -= cycleWidth;
+    } else if (preciseScrollPosition <= 0) {
+      preciseScrollPosition += cycleWidth;
     }
+
+    viewport.scrollLeft = Math.round(preciseScrollPosition);
   };
 
   const measureCycle = (resetPosition = false) => {
@@ -802,13 +839,14 @@ function createHomeArrivalsController() {
 
     if (resetPosition || !cycleWidth) {
       cycleWidth = nextWidth;
-      viewport.scrollLeft = cycleWidth;
+      preciseScrollPosition = cycleWidth;
+      viewport.scrollLeft = Math.round(preciseScrollPosition);
       return;
     }
 
-    const progress = (viewport.scrollLeft - cycleWidth) / cycleWidth;
+    const progress = (preciseScrollPosition - cycleWidth) / cycleWidth;
     cycleWidth = nextWidth;
-    viewport.scrollLeft = cycleWidth + progress * cycleWidth;
+    preciseScrollPosition = cycleWidth + progress * cycleWidth;
     normalizeScrollPosition();
   };
 
@@ -861,15 +899,30 @@ function createHomeArrivalsController() {
 
     track.innerHTML = sequences;
     updateToggle();
-    window.requestAnimationFrame(() => measureCycle(true));
+    window.requestAnimationFrame(() => {
+      updateMotionSpeed();
+      measureCycle(true);
+    });
   };
 
   const animate = (timestamp) => {
     const delta = Math.min(timestamp - lastFrame, 48);
+    const tickerPosition = getTickerPosition();
+    let frameDistance = delta * motionSpeed;
     lastFrame = timestamp;
 
+    if (tickerPosition !== null && lastTickerPosition !== null) {
+      const tickerDelta = tickerPosition - lastTickerPosition;
+      const isContinuousFrame = tickerDelta <= 0 && Math.abs(tickerDelta) < tickerCycleWidth / 4;
+      if (isContinuousFrame) {
+        frameDistance = Math.abs(tickerDelta);
+      }
+    }
+
+    lastTickerPosition = tickerPosition;
+
     if (shouldMove(timestamp) && cycleWidth) {
-      viewport.scrollLeft += delta * 0.065;
+      preciseScrollPosition += frameDistance;
       normalizeScrollPosition();
     }
 
@@ -909,6 +962,7 @@ function createHomeArrivalsController() {
     suppressClick = false;
     dragStartX = event.clientX;
     dragStartScroll = viewport.scrollLeft;
+    preciseScrollPosition = dragStartScroll;
     viewport.classList.add("is-dragging");
     viewport.setPointerCapture(event.pointerId);
   });
@@ -924,9 +978,15 @@ function createHomeArrivalsController() {
       event.preventDefault();
     }
 
-    viewport.scrollLeft = dragStartScroll - distance;
+    preciseScrollPosition = dragStartScroll - distance;
     normalizeScrollPosition();
   });
+
+  viewport.addEventListener("wheel", () => {
+    window.requestAnimationFrame(() => {
+      preciseScrollPosition = viewport.scrollLeft;
+    });
+  }, { passive: true });
 
   const endDrag = (event) => {
     if (!dragging) {
@@ -966,7 +1026,10 @@ function createHomeArrivalsController() {
   }
 
   if ("ResizeObserver" in window) {
-    const resizeObserver = new ResizeObserver(() => measureCycle(false));
+    const resizeObserver = new ResizeObserver(() => {
+      updateMotionSpeed();
+      measureCycle(false);
+    });
     resizeObserver.observe(viewport);
   } else {
     window.addEventListener("resize", () => measureCycle(false));
