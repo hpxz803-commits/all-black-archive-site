@@ -768,6 +768,7 @@ function createHomeArrivalsController() {
   let lastFrame = performance.now();
   let forcedPaused = false;
   let hoveredCard = false;
+  let pointerPressed = false;
   let dragging = false;
   let visible = true;
   let dragStartX = 0;
@@ -780,6 +781,7 @@ function createHomeArrivalsController() {
     && visible
     && !forcedPaused
     && !hoveredCard
+    && !pointerPressed
     && !dragging
     && timestamp >= interactionPausedUntil
     && document.visibilityState === "visible"
@@ -958,26 +960,32 @@ function createHomeArrivalsController() {
       return;
     }
 
-    dragging = true;
+    pointerPressed = true;
+    dragging = false;
     suppressClick = false;
     dragStartX = event.clientX;
     dragStartScroll = viewport.scrollLeft;
     preciseScrollPosition = dragStartScroll;
-    viewport.classList.add("is-dragging");
-    viewport.setPointerCapture(event.pointerId);
   });
 
   viewport.addEventListener("pointermove", (event) => {
-    if (!dragging) {
+    if (!pointerPressed) {
       return;
     }
 
     const distance = event.clientX - dragStartX;
-    if (Math.abs(distance) > 5) {
-      suppressClick = true;
-      event.preventDefault();
+    if (Math.abs(distance) <= 5) {
+      return;
     }
 
+    if (!dragging) {
+      dragging = true;
+      suppressClick = true;
+      viewport.classList.add("is-dragging");
+      viewport.setPointerCapture(event.pointerId);
+    }
+
+    event.preventDefault();
     preciseScrollPosition = dragStartScroll - distance;
     normalizeScrollPosition();
   });
@@ -989,13 +997,17 @@ function createHomeArrivalsController() {
   }, { passive: true });
 
   const endDrag = (event) => {
-    if (!dragging) {
+    if (!pointerPressed && !dragging) {
       return;
     }
 
+    const wasDragging = dragging;
+    pointerPressed = false;
     dragging = false;
     viewport.classList.remove("is-dragging");
-    interactionPausedUntil = performance.now() + 900;
+    if (wasDragging) {
+      interactionPausedUntil = performance.now() + 900;
+    }
     if (viewport.hasPointerCapture(event.pointerId)) {
       viewport.releasePointerCapture(event.pointerId);
     }
@@ -1006,6 +1018,8 @@ function createHomeArrivalsController() {
 
   viewport.addEventListener("pointerup", endDrag);
   viewport.addEventListener("pointercancel", endDrag);
+  window.addEventListener("pointerup", endDrag);
+  window.addEventListener("pointercancel", endDrag);
   viewport.addEventListener("click", (event) => {
     if (suppressClick) {
       event.preventDefault();
