@@ -23,6 +23,262 @@
 
   const twice = (items) => [...items, ...items];
 
+  // Copy approved from the website content workbook and localized for every site language.
+  const syncedCopy = {
+    en: {
+      title: "all black - Customer Care",
+      meta: "Customer care",
+      aboutLink: "Customer care & delivery",
+      aboutOrigin: ["Our origin", "Born from independent designer retail.", "All Black began in independent designer retail. We remain committed to removing unnecessary layers so exceptional design can reach the people who truly value it more directly. Today our selection extends from clothing to jewelry, accessories, and everyday objects, but that principle remains unchanged."],
+      home: {
+        note: "Brand slogan: Design, without the distance.",
+        intro: "Removing unnecessary distance, so design worth seeing again reaches those who value it.",
+        title: "Design, without the distance.",
+        copy: "All Black began in independent designer retail and has held to one choice ever since: remove unnecessary distance so good design can reach the people who truly value it. Today our eye extends from clothing to jewelry, accessories, and everyday objects, but the principle remains unchanged: let the work itself carry the value.",
+      },
+      product: {
+        gallery: "Detailed Images",
+        specsKicker: "Product information",
+        specLabels: ["Product Type", "SKU", "Condition", "Origin", "Era", "Quantity"],
+        serviceLink: "Customer care",
+        addToCart: "Add to Cart",
+      },
+      service: {
+        hero: ["Customer care", "From first enquiry to delivery.", "We don't have physical storefronts, but our team is available 24/7, from your first inquiry to ongoing support."],
+        assurance: ["Products & service", "All Black continues to expand its selection of clothing, jewelry, and accessories, with clear availability for every piece, secure payment, and flexible international delivery options."],
+        shipping: ["Delivery", "Clear, consistent delivery expectations.", "We ship orders worldwide and want delivery expectations to be clear and consistent for every buyer.", "Back to shop"],
+        delivery: ["Estimated delivery", "Every order shows an estimated delivery window at checkout, based on the shipping method you choose. That estimate covers transit time in the carrier network and does not include customs clearance."],
+        lost: ["Lost parcels", "Sometimes a parcel goes quiet without tracking updates or delivery confirmation. If tracking has not updated for more than 15 days after the local carrier collected it, we treat it as potentially lost.", "We will either reship the order or issue a full refund to the original payment method. We file the carrier claim on our end, so you don't need to."],
+        customs: ["Customs delays", "If a parcel is held during customs clearance, we monitor the shipment, prepare and submit the necessary paperwork, and follow up with customs authorities on your behalf until it is released.", "Customs timing is set by government authorities and is therefore not included in the delivery estimate. We continue to monitor progress and keep you updated until it is resolved."],
+        contact: ["Need more help?", "Tell us what happened.", "Share more about your issue and get in touch with our support team.", "Contact via WhatsApp"],
+      },
+    },
+    zh: {
+      title: "all black - 客户服务",
+      meta: "客户服务",
+      aboutLink: "客户服务与配送说明",
+      aboutOrigin: ["品牌起点", "始于设计师买手店。", "All Black 始于设计师买手店。我们始终坚持减少不必要的中间环节，让优秀设计更直接地抵达真正欣赏它的人。如今，我们的选择从服装延伸至珠宝、配饰与日常物件，但这一核心从未改变。"],
+      home: {
+        note: "品牌标语：让设计，直接抵达。",
+        intro: "减少不必要的距离，让值得再次被看见的设计，直接抵达真正欣赏它的人。",
+        title: "Design, without the distance.",
+        copy: "All Black 始于设计师买手店，也始终坚持同一个选择：减少不必要的中间环节，让好设计更直接地抵达真正欣赏它的人。今天，我们的视野从服装延伸至珠宝、配饰与日常物件，但核心从未改变——让作品本身成为价值。",
+      },
+      product: {
+        gallery: "详细图片",
+        specsKicker: "商品信息",
+        specLabels: ["产品类别", "SKU码", "成色", "来源", "年代", "数量"],
+        serviceLink: "客户服务",
+        addToCart: "加入购物车",
+      },
+      service: {
+        hero: ["客户服务", "从首次咨询，到包裹送达。", "虽然我们没有实体门店，但我们的客服团队全天候为您服务，从您首次咨询到后续支持，我们始终在您身边。"],
+        assurance: ["产品与服务", "All Black 持续扩展精选服装、珠宝与配饰系列，为每件商品提供清晰的在售状态、安全支付方式，以及灵活的国际配送选择。"],
+        shipping: ["配送说明", "清晰、一致的全球配送预期。", "我们向全球发货，并希望每位买家都能清楚且一致地了解配送预期。", "返回商店"],
+        delivery: ["预计送达时间", "每笔订单在结账时都会显示预计送达时间范围，该时间范围基于您选择的运输方式。该估计时间涵盖包裹在承运商网络中的运输时间，不包括清关时间。"],
+        lost: ["丢失的包裹", "有时包裹的追踪信息会中断，既没有新的更新，也没有签收确认。如果当地承运商取件后超过 15 天没有追踪更新，我们会将包裹视为可能丢失。", "我们会重新发货，或将全额退款退还至您的原始支付方式。向承运商提交索赔由我们负责，您无需亲自操作。"],
+        customs: ["海关延误", "如果包裹在清关过程中被扣留，我们会跟踪物流、准备并提交所需文件，并代表您与海关部门保持联系，直至包裹放行。", "清关时间由目的地政府部门决定，因此不包含在预计送达时间中。我们会持续跟进并向您通报最新情况，直至问题解决。"],
+        contact: ["还需要帮助吗？", "告诉我们具体问题。", "请详细描述您的问题，并与我们的支持团队联系。", "通过 WhatsApp 联系"],
+      },
+    },
+    it: {
+      title: "all black - Servizio clienti",
+      meta: "Servizio clienti",
+      aboutLink: "Assistenza e consegne",
+      aboutOrigin: ["Le nostre origini", "Nato nel mondo delle boutique di designer.", "All Black nasce nel mondo delle boutique di designer. Continuiamo a ridurre i passaggi inutili, affinché il design di valore raggiunga più direttamente chi sa riconoscerlo. Oggi la nostra selezione si estende dall'abbigliamento ai gioielli, agli accessori e agli oggetti quotidiani, ma questo principio rimane immutato."],
+      home: {
+        note: "Brand slogan: Design, without the distance.",
+        intro: "Riduciamo le distanze inutili, affinché il design che merita di essere riscoperto raggiunga chi sa riconoscerlo.",
+        title: "Design, without the distance.",
+        copy: "All Black nasce nel mondo delle boutique di designer e da allora segue una scelta precisa: ridurre le distanze inutili, affinché il buon design raggiunga direttamente chi sa riconoscerlo. Oggi il nostro sguardo si estende dall'abbigliamento ai gioielli, agli accessori e agli oggetti quotidiani, ma il principio non cambia: lasciare che sia il prodotto a esprimere il proprio valore.",
+      },
+      product: {
+        gallery: "Immagini dettagliate",
+        specsKicker: "Informazioni sul prodotto",
+        specLabels: ["Categoria di prodotto", "SKU", "Condizione", "Provenienza", "Epoca", "Quantità"],
+        serviceLink: "Servizio clienti",
+        addToCart: "Aggiungi al carrello",
+      },
+      service: {
+        hero: ["Servizio clienti", "Dalla prima richiesta alla consegna.", "Non abbiamo negozi fisici, ma il nostro team è disponibile 24/7, dalla prima richiesta all'assistenza continuativa."],
+        assurance: ["Prodotti e servizio", "All Black continua ad ampliare la propria selezione di abbigliamento, gioielli e accessori, offrendo per ogni articolo disponibilità chiara, pagamenti sicuri e opzioni flessibili di spedizione internazionale."],
+        shipping: ["Consegna", "Aspettative di consegna chiare e coerenti.", "Spediamo ordini in tutto il mondo e desideriamo che le aspettative di consegna siano chiare e coerenti per ogni acquirente.", "Torna allo shop"],
+        delivery: ["Consegna stimata", "Ogni ordine mostra una finestra di consegna stimata al momento del checkout, in base al metodo di spedizione scelto. La stima copre il tempo nella rete del corriere e non include lo sdoganamento."],
+        lost: ["Pacchi smarriti", "A volte il tracciamento di un pacco si interrompe senza nuovi aggiornamenti né conferma di consegna. Se non viene aggiornato per oltre 15 giorni dopo il ritiro del corriere locale, consideriamo il pacco potenzialmente smarrito.", "Procederemo con una nuova spedizione oppure con un rimborso completo sul metodo di pagamento originale. Ci occupiamo noi del reclamo al corriere."],
+        customs: ["Ritardi doganali", "Se un pacco viene trattenuto durante lo sdoganamento, monitoriamo la spedizione, prepariamo e presentiamo i documenti necessari e contattiamo le autorità doganali per tuo conto fino al rilascio.", "I tempi di sdoganamento sono stabiliti dalle autorità pubbliche e non sono inclusi nella stima di consegna. Continueremo a monitorare la situazione e a tenerti aggiornato fino alla risoluzione."],
+        contact: ["Hai bisogno di ulteriore assistenza?", "Raccontaci cosa è successo.", "Descrivi in dettaglio il tuo problema e contatta il nostro team di assistenza.", "Contattaci su WhatsApp"],
+      },
+    },
+    de: {
+      title: "all black - Kundenservice",
+      meta: "Kundenservice",
+      aboutLink: "Kundenservice & Lieferung",
+      aboutOrigin: ["Unser Ursprung", "Im Designhandel verwurzelt.", "All Black begann im unabhängigen Designerhandel. Wir reduzieren weiterhin unnötige Zwischenstufen, damit außergewöhnliches Design die Menschen, die seinen Wert erkennen, direkter erreicht. Heute reicht unsere Auswahl von Kleidung über Schmuck und Accessoires bis zu Alltagsobjekten, doch dieses Prinzip bleibt unverändert."],
+      home: {
+        note: "Markenclaim: Design, ohne Distanz.",
+        intro: "Wir reduzieren unnötige Distanz, damit Design, das einen zweiten Blick verdient, jene erreicht, die seinen Wert erkennen.",
+        title: "Design, ohne Distanz.",
+        copy: "All Black entstand im unabhängigen Designerhandel und folgt seither einer klaren Haltung: unnötige Distanz abbauen, damit gutes Design die Menschen direkter erreicht, die es wirklich schätzen. Heute umfasst unser Blick Kleidung, Schmuck, Accessoires und Alltagsobjekte. Das Prinzip bleibt: Das Werk selbst trägt den Wert.",
+      },
+      product: {
+        gallery: "Detailbilder",
+        specsKicker: "Produktinformationen",
+        specLabels: ["Produkttyp", "SKU", "Zustand", "Herkunft", "Epoche", "Menge"],
+        serviceLink: "Kundenservice",
+        addToCart: "In den Warenkorb",
+      },
+      service: {
+        hero: ["Kundenservice", "Von der ersten Anfrage bis zur Lieferung.", "Wir haben keine physischen Geschäfte, doch unser Team ist rund um die Uhr für dich da, von der ersten Anfrage bis zur weiteren Unterstützung."],
+        assurance: ["Produkte & Service", "All Black erweitert fortlaufend seine Auswahl an Kleidung, Schmuck und Accessoires. Für jedes Stück bieten wir klare Angaben zur Verfügbarkeit, sichere Zahlungsmethoden und flexible internationale Lieferoptionen."],
+        shipping: ["Lieferung", "Klare und verlässliche Liefererwartungen.", "Wir versenden weltweit und möchten, dass die Liefererwartungen für alle Käufer klar und einheitlich sind.", "Zurück zum Shop"],
+        delivery: ["Voraussichtliche Lieferung", "Für jede Bestellung wird beim Checkout ein voraussichtliches Lieferfenster angezeigt, das auf der gewählten Versandart basiert. Es umfasst die Transportzeit im Netzwerk des Versanddienstleisters, nicht jedoch die Zollabfertigung."],
+        lost: ["Verlorene Pakete", "Manchmal endet die Sendungsverfolgung ohne neue Aktualisierung oder Zustellbestätigung. Wenn sich der Status länger als 15 Tage nach der Übergabe an den lokalen Versanddienstleister nicht ändert, behandeln wir das Paket als möglicherweise verloren.", "Wir versenden die Bestellung erneut oder erstatten den vollen Betrag über die ursprüngliche Zahlungsart. Die Reklamation beim Versanddienstleister übernehmen wir."],
+        customs: ["Zollverzögerungen", "Wenn ein Paket beim Zoll festgehalten wird, verfolgen wir die Sendung, bereiten die erforderlichen Dokumente vor und bleiben in deinem Namen mit den Zollbehörden in Kontakt, bis es freigegeben wird.", "Die Dauer der Zollabfertigung wird von staatlichen Behörden bestimmt und ist daher nicht Teil der Lieferprognose. Wir verfolgen den Fortschritt und halten dich bis zur Klärung auf dem Laufenden."],
+        contact: ["Brauchst du weitere Hilfe?", "Erzähl uns, was passiert ist.", "Beschreibe dein Anliegen genauer und kontaktiere unser Support-Team.", "Über WhatsApp kontaktieren"],
+      },
+    },
+    fr: {
+      title: "all black - Service client",
+      meta: "Service client",
+      aboutLink: "Service client & livraison",
+      aboutOrigin: ["Nos origines", "Né dans l'univers des boutiques de créateurs.", "All Black est né dans l'univers des boutiques de créateurs indépendants. Nous continuons à supprimer les intermédiaires inutiles afin que les créations remarquables atteignent plus directement celles et ceux qui savent les apprécier. Aujourd'hui, notre sélection s'étend des vêtements aux bijoux, accessoires et objets du quotidien, mais ce principe reste inchangé."],
+      home: {
+        note: "Signature de marque : le design, sans distance.",
+        intro: "Réduire les distances inutiles pour que les créations qui méritent un nouveau regard atteignent celles et ceux qui les apprécient.",
+        title: "Le design, sans distance.",
+        copy: "All Black est né dans l'univers des boutiques de créateurs indépendants avec une conviction claire : réduire les distances inutiles afin que le bon design atteigne plus directement celles et ceux qui le reconnaissent. Notre regard s'étend aujourd'hui aux vêtements, bijoux, accessoires et objets du quotidien, mais le principe demeure : laisser l'œuvre porter sa propre valeur.",
+      },
+      product: {
+        gallery: "Images détaillées",
+        specsKicker: "Informations produit",
+        specLabels: ["Type de produit", "SKU", "État", "Origine", "Époque", "Quantité"],
+        serviceLink: "Service client",
+        addToCart: "Ajouter au panier",
+      },
+      service: {
+        hero: ["Service client", "De la première demande à la livraison.", "Nous n'avons pas de boutique physique, mais notre équipe est disponible 24 h/24 et 7 j/7, de votre première demande au suivi continu."],
+        assurance: ["Produits & service", "All Black enrichit constamment sa sélection de vêtements, bijoux et accessoires, avec une disponibilité clairement indiquée pour chaque pièce, des paiements sécurisés et des options de livraison internationale flexibles."],
+        shipping: ["Livraison", "Des délais clairs et cohérents.", "Nous expédions dans le monde entier et souhaitons offrir à chaque acheteur des attentes de livraison claires et cohérentes.", "Retour à la boutique"],
+        delivery: ["Livraison estimée", "Chaque commande affiche au moment du paiement une fenêtre de livraison estimée selon le mode d'expédition choisi. Cette estimation couvre le temps de transport dans le réseau du transporteur, mais pas le dédouanement."],
+        lost: ["Colis perdus", "Il arrive que le suivi d'un colis cesse sans nouvelle mise à jour ni confirmation de livraison. Si le suivi reste inchangé plus de 15 jours après la prise en charge par le transporteur local, nous considérons le colis comme potentiellement perdu.", "Nous réexpédierons la commande ou effectuerons un remboursement intégral sur le moyen de paiement initial. Nous nous chargeons de la réclamation auprès du transporteur."],
+        customs: ["Retards douaniers", "Si un colis est retenu en douane, nous suivons l'envoi, préparons les documents nécessaires et échangeons avec les autorités douanières en votre nom jusqu'à sa libération.", "Les délais de dédouanement dépendent des autorités publiques et ne sont donc pas inclus dans l'estimation de livraison. Nous suivons la situation et vous tenons informé jusqu'à sa résolution."],
+        contact: ["Besoin d'aide supplémentaire ?", "Dites-nous ce qui s'est passé.", "Décrivez votre problème et contactez notre équipe d'assistance.", "Nous contacter sur WhatsApp"],
+      },
+    },
+    ja: {
+      title: "all black - カスタマーケア",
+      meta: "カスタマーケア",
+      aboutLink: "カスタマーケアと配送",
+      aboutOrigin: ["ブランドの原点", "デザイナーズセレクトショップから始まった。", "All Blackは独立系デザイナーズセレクトショップから始まりました。不要な中間工程を減らし、優れたデザインを、その価値を理解する人へより直接届ける姿勢を今も大切にしています。現在は衣服からジュエリー、アクセサリー、日用品へと選択の幅を広げていますが、この原則は変わりません。"],
+      home: {
+        note: "ブランドスローガン：距離のないデザイン。",
+        intro: "不要な距離を減らし、もう一度見つめる価値のあるデザインを、その価値を知る人へ届けます。",
+        title: "距離のないデザイン。",
+        copy: "All Blackは独立系デザイナーズセレクトショップから始まり、ひとつの姿勢を守ってきました。不要な距離をなくし、優れたデザインを本当に理解する人へより直接届けること。現在、私たちの視点は衣服からジュエリー、アクセサリー、日用品へと広がっていますが、作品そのものに価値を語らせるという原則は変わりません。",
+      },
+      product: {
+        gallery: "詳細画像",
+        specsKicker: "商品情報",
+        specLabels: ["商品カテゴリー", "SKU", "コンディション", "出所", "年代", "数量"],
+        serviceLink: "カスタマーケア",
+        addToCart: "カートに追加",
+      },
+      service: {
+        hero: ["カスタマーケア", "最初のお問い合わせからお届けまで。", "実店舗はありませんが、最初のお問い合わせから継続的なサポートまで、チームが24時間年中無休で対応します。"],
+        assurance: ["商品とサービス", "All Blackは衣服、ジュエリー、アクセサリーのセレクションを継続的に拡充し、各商品の在庫状況、安全な支払い方法、柔軟な国際配送オプションを明確にご案内します。"],
+        shipping: ["配送", "明確で一貫した配送目安。", "世界各地へ発送し、すべてのお客様に明確で一貫した配送目安をお伝えします。", "ショップへ戻る"],
+        delivery: ["お届け予定", "チェックアウト時に、選択した配送方法に基づくお届け予定期間が表示されます。この期間には配送業者のネットワーク内での輸送時間が含まれますが、通関時間は含まれません。"],
+        lost: ["紛失した荷物", "追跡情報の更新や配達確認が途絶える場合があります。現地の配送業者が荷物を受け取ってから15日以上追跡情報が更新されない場合、紛失の可能性があるものとして対応します。", "再発送または元のお支払い方法への全額返金を行います。配送業者への請求手続きは私たちが行います。"],
+        customs: ["通関の遅延", "荷物が通関で保留された場合、配送状況を追跡し、必要書類を準備・提出し、荷物が解放されるまでお客様に代わって税関当局へ連絡します。", "通関にかかる時間は各国当局によって決まるため、お届け予定には含まれません。解決するまで状況を追跡し、進捗をお知らせします。"],
+        contact: ["さらにサポートが必要ですか？", "状況をお聞かせください。", "問題の詳細をお知らせのうえ、サポートチームへご連絡ください。", "WhatsAppで問い合わせる"],
+      },
+    },
+    es: {
+      title: "all black - Atención al cliente",
+      meta: "Atención al cliente",
+      aboutLink: "Atención al cliente y envíos",
+      aboutOrigin: ["Nuestro origen", "Nacido en el comercio independiente de diseñadores.", "All Black nació en el comercio independiente de diseñadores. Seguimos eliminando intermediarios innecesarios para que el diseño excepcional llegue de forma más directa a quienes saben apreciarlo. Hoy nuestra selección abarca ropa, joyería, accesorios y objetos cotidianos, pero este principio permanece intacto."],
+      home: {
+        note: "Lema de marca: diseño sin distancia.",
+        intro: "Reducimos la distancia innecesaria para que el diseño que merece otra mirada llegue a quienes saben apreciarlo.",
+        title: "Diseño sin distancia.",
+        copy: "All Black nació en el comercio independiente de diseñadores y desde entonces mantiene una idea clara: eliminar distancias innecesarias para que el buen diseño llegue directamente a quienes de verdad lo valoran. Hoy nuestra mirada abarca ropa, joyería, accesorios y objetos cotidianos, pero el principio no cambia: dejar que la obra exprese su propio valor.",
+      },
+      product: {
+        gallery: "Imágenes detalladas",
+        specsKicker: "Información del producto",
+        specLabels: ["Tipo de producto", "SKU", "Estado", "Origen", "Época", "Cantidad"],
+        serviceLink: "Atención al cliente",
+        addToCart: "Añadir al carrito",
+      },
+      service: {
+        hero: ["Atención al cliente", "Desde la primera consulta hasta la entrega.", "No tenemos tiendas físicas, pero nuestro equipo está disponible las 24 horas, desde tu primera consulta hasta el soporte posterior."],
+        assurance: ["Productos y servicio", "All Black amplía continuamente su selección de ropa, joyería y accesorios, con disponibilidad clara para cada pieza, pagos seguros y opciones flexibles de envío internacional."],
+        shipping: ["Envíos", "Expectativas de entrega claras y coherentes.", "Enviamos a todo el mundo y queremos que cada comprador tenga expectativas de entrega claras y coherentes.", "Volver a la tienda"],
+        delivery: ["Entrega estimada", "Cada pedido muestra durante el pago un plazo estimado de entrega según el método de envío elegido. La estimación incluye el tiempo de tránsito en la red del transportista, pero no el despacho de aduanas."],
+        lost: ["Paquetes perdidos", "A veces el seguimiento se detiene sin nuevas actualizaciones ni confirmación de entrega. Si no se actualiza durante más de 15 días después de que el transportista local recoja el paquete, lo consideramos potencialmente perdido.", "Volveremos a enviar el pedido o emitiremos un reembolso completo al método de pago original. Nosotros gestionamos la reclamación con el transportista."],
+        customs: ["Retrasos aduaneros", "Si un paquete queda retenido en aduanas, supervisamos el envío, preparamos y presentamos la documentación necesaria y contactamos con las autoridades en tu nombre hasta que sea liberado.", "Los plazos de aduanas dependen de las autoridades públicas y no se incluyen en la estimación de entrega. Seguiremos el proceso y te mantendremos informado hasta que se resuelva."],
+        contact: ["¿Necesitas más ayuda?", "Cuéntanos qué ha ocurrido.", "Describe tu problema y ponte en contacto con nuestro equipo de asistencia.", "Contactar por WhatsApp"],
+      },
+    },
+    ru: {
+      title: "all black - Поддержка клиентов",
+      meta: "Поддержка клиентов",
+      aboutLink: "Поддержка и доставка",
+      aboutOrigin: ["Наше начало", "Из дизайнерского ритейла.", "All Black начинался в сфере независимого дизайнерского ритейла. Мы по-прежнему убираем лишние промежуточные звенья, чтобы выдающийся дизайн напрямую находил тех, кто умеет его ценить. Сегодня наша подборка охватывает одежду, украшения, аксессуары и предметы повседневной жизни, но этот принцип остается неизменным."],
+      home: {
+        note: "Слоган бренда: дизайн без дистанции.",
+        intro: "Мы сокращаем лишнюю дистанцию, чтобы дизайн, достойный нового взгляда, находил тех, кто его ценит.",
+        title: "Дизайн без дистанции.",
+        copy: "All Black вырос из независимого дизайнерского ритейла и всегда следовал одной идее: убрать лишнюю дистанцию, чтобы хороший дизайн напрямую достигал тех, кто действительно его ценит. Сегодня наш взгляд охватывает одежду, украшения, аксессуары и предметы повседневной жизни, но принцип остается прежним: ценность должна говорить через саму вещь.",
+      },
+      product: {
+        gallery: "Подробные изображения",
+        specsKicker: "Информация о товаре",
+        specLabels: ["Тип товара", "SKU", "Состояние", "Происхождение", "Эпоха", "Количество"],
+        serviceLink: "Поддержка клиентов",
+        addToCart: "Добавить в корзину",
+      },
+      service: {
+        hero: ["Поддержка клиентов", "От первого обращения до доставки.", "У нас нет физических магазинов, но команда доступна круглосуточно: от первого обращения до дальнейшей поддержки."],
+        assurance: ["Товары и сервис", "All Black постоянно расширяет подборку одежды, украшений и аксессуаров, указывая наличие каждой вещи и предлагая безопасную оплату и гибкие варианты международной доставки."],
+        shipping: ["Доставка", "Понятные и единые сроки доставки.", "Мы отправляем заказы по всему миру и хотим, чтобы ожидания по доставке были понятны каждому покупателю.", "Вернуться в магазин"],
+        delivery: ["Ожидаемая доставка", "При оформлении каждого заказа отображается предполагаемый срок доставки в зависимости от выбранного способа. Он включает время перевозки в сети перевозчика, но не включает таможенное оформление."],
+        lost: ["Потерянные посылки", "Иногда отслеживание прекращается без обновлений и подтверждения доставки. Если статус не меняется более 15 дней после передачи местному перевозчику, мы считаем посылку потенциально потерянной.", "Мы повторно отправим заказ или полностью вернем оплату исходным способом. Претензию перевозчику оформляем мы."],
+        customs: ["Задержки на таможне", "Если посылка задержана при таможенном оформлении, мы отслеживаем ее, готовим и подаем необходимые документы и связываемся с таможенными органами от вашего имени до выпуска отправления.", "Сроки таможенного оформления устанавливают государственные органы, поэтому они не входят в прогноз доставки. Мы продолжаем следить за ситуацией и сообщать новости до ее разрешения."],
+        contact: ["Нужна дополнительная помощь?", "Расскажите, что произошло.", "Опишите проблему подробнее и свяжитесь с нашей службой поддержки.", "Связаться через WhatsApp"],
+      },
+    },
+    ko: {
+      title: "all black - 고객 지원",
+      meta: "고객 지원",
+      aboutLink: "고객 지원 및 배송",
+      aboutOrigin: ["브랜드의 시작", "독립 디자이너 셀렉트숍에서 시작되었습니다.", "All Black은 독립 디자이너 셀렉트숍에서 시작되었습니다. 불필요한 중간 단계를 줄여 뛰어난 디자인이 그 가치를 알아보는 사람에게 더 직접 닿도록 한다는 원칙을 지금도 지키고 있습니다. 오늘날 셀렉션은 의류에서 주얼리, 액세서리, 일상 오브제로 확장되었지만 이 원칙은 변하지 않았습니다."],
+      home: {
+        note: "브랜드 슬로건: 거리 없는 디자인.",
+        intro: "불필요한 거리를 줄여 다시 볼 가치가 있는 디자인을 그 가치를 알아보는 사람에게 전합니다.",
+        title: "거리 없는 디자인.",
+        copy: "All Black은 독립 디자이너 셀렉트숍에서 시작해 한 가지 태도를 지켜왔습니다. 불필요한 거리를 줄여 좋은 디자인이 진정으로 가치를 알아보는 사람에게 더 직접 닿게 하는 것입니다. 오늘날 우리의 시선은 의류에서 주얼리, 액세서리, 일상 오브제로 확장되었지만, 작품 자체가 가치를 말하게 한다는 원칙은 변하지 않습니다.",
+      },
+      product: {
+        gallery: "상세 이미지",
+        specsKicker: "상품 정보",
+        specLabels: ["상품 유형", "SKU", "상태", "출처", "시대", "수량"],
+        serviceLink: "고객 지원",
+        addToCart: "장바구니에 추가",
+      },
+      service: {
+        hero: ["고객 지원", "첫 문의부터 배송까지.", "오프라인 매장은 없지만 첫 문의부터 이후 지원까지 팀이 연중무휴 24시간 함께합니다."],
+        assurance: ["상품 및 서비스", "All Black은 의류, 주얼리, 액세서리 셀렉션을 지속적으로 확장하며 각 상품의 명확한 재고 상태, 안전한 결제, 유연한 국제 배송 옵션을 제공합니다."],
+        shipping: ["배송", "명확하고 일관된 배송 안내.", "전 세계로 주문을 발송하며 모든 구매자에게 명확하고 일관된 배송 예상 정보를 제공합니다.", "숍으로 돌아가기"],
+        delivery: ["예상 배송", "결제 시 선택한 배송 방법에 따라 예상 배송 기간이 표시됩니다. 이 기간은 운송사 네트워크 내 이동 시간을 포함하지만 통관 시간은 포함하지 않습니다."],
+        lost: ["분실된 소포", "때때로 추적 정보가 더 이상 업데이트되지 않고 배송 확인도 나타나지 않을 수 있습니다. 현지 운송사가 수거한 뒤 15일 이상 갱신되지 않으면 분실 가능성이 있는 것으로 처리합니다.", "주문을 다시 발송하거나 원래 결제 수단으로 전액 환불합니다. 운송사에 대한 보상 청구는 저희가 진행합니다."],
+        customs: ["통관 지연", "소포가 통관 중 보류되면 배송을 추적하고 필요한 서류를 준비·제출하며, 통관이 완료될 때까지 고객을 대신해 세관 당국과 연락합니다.", "통관 시간은 각국 정부 기관이 결정하므로 예상 배송 기간에 포함되지 않습니다. 문제가 해결될 때까지 진행 상황을 확인하고 계속 안내합니다."],
+        contact: ["도움이 더 필요하신가요?", "상황을 알려주세요.", "문제를 자세히 설명하고 지원팀에 문의해 주세요.", "WhatsApp으로 문의"],
+      },
+    },
+  };
+
   const copy = {
     en: {
       titles: { home: "all black", shop: "all black - Shop", collection: "all black - Collection", product: "all black - Product", about: "all black - About", archive: "all black - Archive" },
@@ -329,12 +585,15 @@
         ["Neu", "Neueste Archivzugänge als einzelne Ergänzungen.", "Dieser Einstieg betont Archivknappheit: Wenn ein Stück ankommt, kehrt es womöglich nicht zurück."],
         ["Gespeichert / Tasche", "Behalte relevante Stücke zuerst im Blick, bevor du dich für den Kauf entscheidest.", "Diese Bereiche vervollständigen vorerst die Navigation und können später zu echten Saved- und Bag-Interaktionen ausgebaut werden."],
       ],
-      filters: ["Kategorie", "Versand", "Alle", "Outerwear", "Set", "Layering", "Alle", "Sofort versandbereit", "Made to order"],
+      filters: ["Kategorie", "Versand", "Alle", "Outerwear", "Set", "Layering", "Brillen", "T-Shirt", "Schuhe", "Alle", "Sofort versandbereit", "Auf Anfrage"],
       cards: [
         ["Outerwear", "Archive Leather Trench", "Italienisches Archiv / Zustand A / sofort versandbereit", "Details ansehen"],
         ["Outerwear", "Structured Wool Coat", "Designer-Secondhand / Zustand A- / nur ein Stück", "Details ansehen"],
         ["Set", "Black Studio Set", "Archiv-Zweiteiler / Zustand B+ / wenig Bestand", "Details ansehen"],
         ["Layering", "After Dark Shell Top", "Layering Piece / Zustand A / Einzelstück", "Details ansehen"],
+        ["Brillen", "Noir Frame 02", "Archiv-Sonnenbrille / Zustand A / sofort versandbereit", "Details ansehen"],
+        ["T-Shirt", "Studio Essential Tee", "Designer-Basic / Zustand A- / Einzelstück", "Details ansehen"],
+        ["Schuhe", "Archive Square Heel", "Lederabsatz / Zustand B+ / Beschaffung auf Anfrage", "Details ansehen"],
       ],
     },
     collection: {
@@ -440,12 +699,15 @@
         ["Nuovi arrivi", "Ultimi ingressi archive aggiornati come aggiunte singole.", "Questo accesso sottolinea la scarsita archive: quando arriva un pezzo, potrebbe non tornare."],
         ["Salvati / Bag", "Tieni vicini i pezzi che ti interessano prima di decidere se acquistare.", "Per ora completano il livello di navigazione. Poi potranno diventare vere interazioni di preferiti e bag."],
       ],
-      filters: ["Categoria", "Spedizione", "Tutti", "Outerwear", "Set", "Layering", "Tutti", "Pronto da spedire", "Made to order"],
+      filters: ["Categoria", "Spedizione", "Tutti", "Capispalla", "Completo", "Layering", "Occhiali", "T-shirt", "Scarpe", "Tutti", "Pronto da spedire", "Su richiesta"],
       cards: [
         ["Outerwear", "Archive Leather Trench", "Archivio italiano / condizione A / pronto da spedire", "Vedi dettagli"],
         ["Outerwear", "Structured Wool Coat", "Designer secondhand / condizione A- / un solo pezzo", "Vedi dettagli"],
         ["Set", "Black Studio Set", "Set archive due pezzi / condizione B+ / stock basso", "Vedi dettagli"],
         ["Layering", "After Dark Shell Top", "Pezzo layering / condizione A / pezzo unico", "Vedi dettagli"],
+        ["Occhiali", "Noir Frame 02", "Occhiali da sole d'archivio / condizione A / pronta consegna", "Vedi dettagli"],
+        ["T-shirt", "Studio Essential Tee", "Basic designer / condizione A- / pezzo unico", "Vedi dettagli"],
+        ["Scarpe", "Archive Square Heel", "Tacco in pelle / condizione B+ / reperibile su richiesta", "Vedi dettagli"],
       ],
     },
     collection: {
@@ -551,12 +813,15 @@
         ["Nouveautés", "Dernières arrivées archive ajoutées à l'unité.", "Cette entrée souligne la rareté archive : une fois arrivée, une pièce peut ne pas revenir."],
         ["Favoris / Sac", "Garde près de toi les pièces qui comptent avant de décider d'acheter.", "Pour l'instant, ces entrées complètent la couche de navigation. Ensuite, elles peuvent devenir de vraies interactions de favoris et de sac."],
       ],
-      filters: ["Catégorie", "Livraison", "Tous", "Outerwear", "Set", "Layering", "Tous", "Prêt à expédier", "Made to order"],
+      filters: ["Catégorie", "Livraison", "Tous", "Manteaux", "Ensemble", "Superposition", "Lunettes", "T-shirt", "Chaussures", "Tous", "Prêt à expédier", "Sur demande"],
       cards: [
         ["Outerwear", "Archive Leather Trench", "Archive italienne / état A / prêt à expédier", "Voir les détails"],
         ["Outerwear", "Structured Wool Coat", "Créateur seconde main / état A- / une seule pièce", "Voir les détails"],
         ["Set", "Black Studio Set", "Ensemble archive deux pièces / état B+ / stock faible", "Voir les détails"],
         ["Layering", "After Dark Shell Top", "Pièce de layering / état A / article unique", "Voir les détails"],
+        ["Lunettes", "Noir Frame 02", "Lunettes de soleil d'archive / état A / expédition immédiate", "Voir les détails"],
+        ["T-shirt", "Studio Essential Tee", "Basique de créateur / état A- / pièce unique", "Voir les détails"],
+        ["Chaussures", "Archive Square Heel", "Talon en cuir / état B+ / sourcing sur demande", "Voir les détails"],
       ],
     },
     collection: {
@@ -662,12 +927,15 @@
         ["新着", "一点ずつ追加される最新の archive arrivals。", "この入口は archive の希少性を強調します。入ってきたら、二度と戻らないかもしれません。"],
         ["保存 / バッグ", "購入を決める前に、気になるピースを手元に留めておけます。", "今はナビゲーション層を完成させる役割ですが、次に本格的な保存・バッグ機能へ発展できます。"],
       ],
-      filters: ["カテゴリー", "配送", "すべて", "アウター", "セット", "レイヤリング", "すべて", "即発送", "受注対応"],
+      filters: ["カテゴリー", "配送", "すべて", "アウター", "セット", "レイヤリング", "アイウェア", "Tシャツ", "シューズ", "すべて", "即発送", "お取り寄せ"],
       cards: [
         ["アウター", "Archive Leather Trench", "イタリアンアーカイブ / 状態 A / 即発送", "詳細を見る"],
         ["アウター", "Structured Wool Coat", "デザイナー中古 / 状態 A- / 1点のみ", "詳細を見る"],
         ["セット", "Black Studio Set", "2ピース archive set / 状態 B+ / 在庫少", "詳細を見る"],
         ["レイヤリング", "After Dark Shell Top", "レイヤリングピース / 状態 A / 単品", "詳細を見る"],
+        ["アイウェア", "Noir Frame 02", "アーカイブサングラス / コンディションA / 即発送", "詳細を見る"],
+        ["Tシャツ", "Studio Essential Tee", "デザイナーベーシック / コンディションA- / 一点物", "詳細を見る"],
+        ["シューズ", "Archive Square Heel", "レザーヒール / コンディションB+ / お取り寄せ", "詳細を見る"],
       ],
     },
     collection: {
@@ -773,12 +1041,15 @@
         ["Novedades", "Últimas llegadas archive actualizadas como incorporaciones únicas.", "Esta entrada subraya la escasez archive: una vez que llega, puede no volver."],
         ["Guardados / Bolsa", "Mantén cerca las piezas que te importan antes de decidir si comprar.", "Por ahora completan la capa de navegación. Después pueden convertirse en interacciones completas de guardados y bolsa."],
       ],
-      filters: ["Categoría", "Envío", "Todos", "Outerwear", "Set", "Layering", "Todos", "Listo para enviar", "Hecho por encargo"],
+      filters: ["Categoría", "Envío", "Todos", "Abrigos", "Conjunto", "Capas", "Gafas", "Camiseta", "Calzado", "Todos", "Listo para enviar", "Bajo pedido"],
       cards: [
         ["Outerwear", "Archive Leather Trench", "Archivo italiano / estado A / listo para enviar", "Ver detalles"],
         ["Outerwear", "Structured Wool Coat", "Diseñador secondhand / estado A- / una sola pieza", "Ver detalles"],
         ["Set", "Black Studio Set", "Set archive de dos piezas / estado B+ / stock bajo", "Ver detalles"],
         ["Layering", "After Dark Shell Top", "Pieza de layering / estado A / artículo único", "Ver detalles"],
+        ["Gafas", "Noir Frame 02", "Gafas de sol de archivo / estado A / envío inmediato", "Ver detalles"],
+        ["Camiseta", "Studio Essential Tee", "Básico de diseñador / estado A- / pieza única", "Ver detalles"],
+        ["Calzado", "Archive Square Heel", "Tacón de piel / estado B+ / sourcing bajo pedido", "Ver detalles"],
       ],
     },
     collection: {
@@ -884,12 +1155,15 @@
         ["Новое", "Последние archive-поступления как единичные добавления.", "Этот вход подчеркивает archive-дефицит: если вещь появилась, она может уже не вернуться."],
         ["Сохранено / Сумка", "Сначала оставь рядом вещи, которые тебе важны, а потом решай, покупать ли их.", "Пока эти разделы завершают навигационный слой. Позже они могут стать полноценными Saved и Bag."],
       ],
-      filters: ["Категория", "Доставка", "Все", "Верхняя одежда", "Комплект", "Слои", "Все", "Готово к отправке", "Под заказ"],
+      filters: ["Категория", "Доставка", "Все", "Верхняя одежда", "Комплект", "Многослойность", "Очки", "Футболка", "Обувь", "Все", "Готово к отправке", "Под заказ"],
       cards: [
         ["Верхняя одежда", "Archive Leather Trench", "Итальянский архив / состояние A / готово к отправке", "Смотреть детали"],
         ["Верхняя одежда", "Structured Wool Coat", "Дизайнерский secondhand / состояние A- / только один экземпляр", "Смотреть детали"],
         ["Комплект", "Black Studio Set", "Архивный комплект из двух вещей / состояние B+ / мало в наличии", "Смотреть детали"],
         ["Слои", "After Dark Shell Top", "Вещь для layering / состояние A / единичный экземпляр", "Смотреть детали"],
+        ["Очки", "Noir Frame 02", "Архивные солнцезащитные очки / состояние A / готово к отправке", "Подробнее"],
+        ["Футболка", "Studio Essential Tee", "Дизайнерская база / состояние A- / один экземпляр", "Подробнее"],
+        ["Обувь", "Archive Square Heel", "Кожаный каблук / состояние B+ / поиск под заказ", "Подробнее"],
       ],
     },
     collection: {
@@ -915,7 +1189,7 @@
         "Выбрана по силуэту, состоянию и долгосрочной ценности носки",
       ],
       actions: ["В сумку", "Сохранить на потом"],
-      links: ["Назад в shop", "Смотреть collection"],
+      links: ["Назад в магазин", "Смотреть коллекцию"],
       details: [
         ["Состояние", "Secondhand-состояние уровня A с легкими следами хранения и без заметных структурных повреждений."],
         ["Источник", "Кураторски выбрано из частного архива и возвращено в магазин как единичная вещь."],
@@ -995,12 +1269,15 @@
         ["뉴 인", "단독 입고 방식으로 업데이트되는 최신 archive arrivals.", "이 입구는 archive의 희소성을 강조합니다. 한 번 들어오면 다시 돌아오지 않을 수 있습니다."],
         ["저장 / 백", "구매를 결정하기 전에 중요한 피스를 먼저 가까이에 두세요.", "지금은 내비게이션 레이어를 완성하는 역할이지만, 다음에는 실제 저장 및 백 인터랙션으로 확장할 수 있습니다."],
       ],
-      filters: ["카테고리", "배송", "전체", "아우터", "세트", "레이어링", "전체", "즉시 발송", "오더 제작"],
+      filters: ["카테고리", "배송", "전체", "아우터", "세트", "레이어링", "아이웨어", "티셔츠", "슈즈", "전체", "즉시 발송", "요청 시 소싱"],
       cards: [
         ["아우터", "Archive Leather Trench", "이탈리아 archive / A 컨디션 / 즉시 발송", "상세 보기"],
         ["아우터", "Structured Wool Coat", "디자이너 세컨핸드 / A- 컨디션 / 단 한 점", "상세 보기"],
         ["세트", "Black Studio Set", "투피스 archive set / B+ 컨디션 / 재고 적음", "상세 보기"],
         ["레이어링", "After Dark Shell Top", "레이어링 피스 / A 컨디션 / 단품", "상세 보기"],
+        ["아이웨어", "Noir Frame 02", "아카이브 선글라스 / 컨디션 A / 즉시 배송", "상세 보기"],
+        ["티셔츠", "Studio Essential Tee", "디자이너 베이식 / 컨디션 A- / 단 한 점", "상세 보기"],
+        ["슈즈", "Archive Square Heel", "레더 힐 / 컨디션 B+ / 요청 시 소싱", "상세 보기"],
       ],
     },
     collection: {
@@ -1052,7 +1329,7 @@
   const renderGlobal = (pack, currentPage) => {
     document.title = pack.titles[currentPage] || pack.titles.home;
     setTexts(".nav > .nav-item > .nav-link", [pack.nav[0], pack.nav[1], pack.nav[2], pack.nav[10], pack.nav[11], pack.nav[12]]);
-    setTexts(".nav > .nav-item.nav-dropdown > .nav-menu .nav-link", [pack.nav[3], pack.nav[4], pack.nav[5], pack.nav[6], pack.nav[7], pack.nav[8], pack.nav[9]]);
+    setTexts(".nav > .nav-item.nav-dropdown > .nav-menu .nav-link:not([data-category-nav])", [pack.nav[3], pack.nav[4], pack.nav[5], pack.nav[6], pack.nav[7], pack.nav[8], pack.nav[9]]);
     setTexts(".header-tools a", pack.tools.slice(1));
     document.querySelectorAll("[data-search-trigger]").forEach((trigger) => {
       trigger.setAttribute("aria-label", pack.tools[0]);
@@ -1161,6 +1438,41 @@
     setText('.info-grid article:nth-child(2) .section-copy', p.panels[1][2]);
   };
 
+  const renderSyncedProduct = (synced) => {
+    setText("[data-detailed-images-label]", synced.product.gallery);
+    setText("[data-product-spec-kicker]", synced.product.specsKicker);
+    document.querySelectorAll("[data-product-spec-label]").forEach((label, index) => {
+      if (synced.product.specLabels[index]) label.textContent = synced.product.specLabels[index];
+    });
+    setText("[data-product-service-link]", synced.product.serviceLink);
+    setText("[data-add-to-bag]", synced.product.addToCart);
+  };
+
+  const renderSyncedHome = (synced) => {
+    setText(".hero-copy .intro", synced.home.intro);
+    setText(".hero-copy .hero-notes span:last-child", synced.home.note);
+    setText(".story-copy h2", synced.home.title);
+    setText(".story-copy p:last-of-type", synced.home.copy);
+  };
+
+  const renderSyncedAbout = (synced) => {
+    setText("[data-about-service-link]", synced.aboutLink);
+    setTexts("[data-about-origin-kicker], [data-about-origin-title], [data-about-origin-copy]", synced.aboutOrigin);
+  };
+
+  const renderService = (synced) => {
+    const p = synced.service;
+    document.title = synced.title;
+    setText(".meta", synced.meta);
+    setTexts("[data-service-hero-kicker], [data-service-hero-title], [data-service-hero-copy]", p.hero);
+    setTexts("[data-service-assurance-kicker], [data-service-assurance-copy]", p.assurance);
+    setTexts("[data-service-shipping-kicker], [data-service-shipping-title], [data-service-shipping-intro], [data-service-shop-link]", p.shipping);
+    setTexts("[data-service-delivery-title], [data-service-delivery-copy]", p.delivery);
+    setTexts("[data-service-lost-title], [data-service-lost-copy], [data-service-lost-resolution]", p.lost);
+    setTexts("[data-service-customs-title], [data-service-customs-copy], [data-service-customs-note]", p.customs);
+    setTexts("[data-service-contact-kicker], [data-service-contact-title], [data-service-contact-copy], [data-service-contact-action]", p.contact);
+  };
+
   const renderArchive = (pack) => {
     const p = pack.archive;
     setTexts(".page-hero > *", p.hero);
@@ -1175,14 +1487,25 @@
   window.siteTranslator = {
     render(languageCode) {
       const pack = copy[languageCode] || copy.zh;
+      const synced = syncedCopy[languageCode] || syncedCopy.en;
       const current = pageKey();
       renderGlobal(pack, current);
-      if (current === "home") renderHome(pack);
+      if (current === "home") {
+        renderHome(pack);
+        renderSyncedHome(synced);
+      }
       if (current === "shop") renderShop(pack);
       if (current === "collection") renderCollection(pack);
-      if (current === "product") renderProduct(pack);
-      if (current === "about") renderAbout(pack);
+      if (current === "product") {
+        renderProduct(pack);
+        renderSyncedProduct(synced);
+      }
+      if (current === "about") {
+        renderAbout(pack);
+        renderSyncedAbout(synced);
+      }
       if (current === "archive") renderArchive(pack);
+      if (current === "service") renderService(synced);
     },
     getRuntime(languageCode) {
       return (copy[languageCode] || copy.zh).runtime;

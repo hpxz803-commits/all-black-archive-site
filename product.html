@@ -7,12 +7,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500;6..96,700;6..96,800&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20260719-whatsapp-black">
+  <link rel="stylesheet" href="styles.css?v=20260904-arrivals-v23">
 </head>
 <body data-page="product">
   <div class="page-shell">
     <header class="subpage-topbar" data-mobile-header>
-      <div class="brand-mark">ALL BLACK</div>
+      <a class="brand-mark" href="index.html" aria-label="ALL BLACK home">ALL BLACK</a>
       <div class="mobile-header-actions">
         <button class="header-tool-button search-trigger mobile-search-trigger" type="button" data-search-trigger aria-label="Search">
           <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -43,6 +43,7 @@
             <a class="nav-link" href="shop.html?category=eyewear" role="menuitem">Eyewear</a>
             <a class="nav-link" href="shop.html?category=tshirt" role="menuitem">T-Shirt</a>
             <a class="nav-link" href="shop.html?category=shoes" role="menuitem">Shoes</a>
+            <a class="nav-link" href="shop.html?category=jewelry" role="menuitem" data-category-nav="jewelry">Jewelry</a>
             <a class="nav-link" href="shop.html?delivery=ready" role="menuitem">Ready to ship</a>
           </div>
         </div>
@@ -93,7 +94,7 @@
         <div class="product-gallery">
           <div class="product-gallery-stage">
             <div class="gallery-stage-meta">
-              <span class="gallery-stage-kicker">Archive views</span>
+              <span class="gallery-stage-kicker" data-detailed-images-label>详细图片</span>
               <span class="gallery-stage-counter" data-gallery-counter>01 / 03</span>
             </div>
             <button class="gallery-nav gallery-nav-prev" type="button" data-gallery-prev aria-label="Previous image">
@@ -140,6 +141,7 @@
           <div class="hero-actions">
             <a class="button button-secondary" href="shop.html" data-product-back>Back to shop</a>
             <a class="button button-secondary" href="collection.html">View collection</a>
+            <a class="button button-secondary" href="service.html" data-product-service-link>Customer care</a>
           </div>
           <p class="product-feedback" data-product-feedback aria-live="polite"></p>
           <div class="product-details">
@@ -152,6 +154,17 @@
               <p data-product-source></p>
             </div>
           </div>
+          <section class="product-specifications" aria-labelledby="product-specifications-title">
+            <p class="section-kicker" id="product-specifications-title" data-product-spec-kicker>商品信息</p>
+            <dl class="specification-list">
+              <div><dt data-product-spec-label="type">产品类别</dt><dd data-product-spec-value="type">外套</dd></div>
+              <div><dt data-product-spec-label="sku">SKU码</dt><dd data-product-spec-value="sku">P-001</dd></div>
+              <div><dt data-product-spec-label="condition">成色</dt><dd data-product-spec-value="condition">A</dd></div>
+              <div><dt data-product-spec-label="origin">来源</dt><dd data-product-spec-value="origin">意大利</dd></div>
+              <div><dt data-product-spec-label="era">年代</dt><dd data-product-spec-value="era">2010 年代早期</dd></div>
+              <div><dt data-product-spec-label="quantity">数量</dt><dd data-product-spec-value="quantity">现货</dd></div>
+            </dl>
+          </section>
           <div class="product-switcher" data-product-switcher>
             <a class="switcher-link" href="shop.html" data-product-prev>Previous piece</a>
             <a class="switcher-link" href="shop.html" data-product-next>Next piece</a>
@@ -211,8 +224,9 @@
       </div>
     </div>
   </div>
-  <script src="products.js"></script>
-  <script src="translations.js"></script>
-  <script src="main.js?v=20260719-whatsapp-number-3475681155"></script>
+  <script src="products.js?v=20260904-jewelry-v15"></script>
+  <script src="translations.js?v=20260904-jewelry-v14"></script>
+  <script src="main.js?v=20260904-arrivals-v23"></script>
+  <script src="support-chat.js?v=20260904-support-v18"></script>
 </body>
 </html>

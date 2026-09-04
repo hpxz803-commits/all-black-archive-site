@@ -16,14 +16,14 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500;6..96,700;6..96,800&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20260719-whatsapp-black">
+  <link rel="stylesheet" href="styles.css?v=20260904-arrivals-v23">
 </head>
 <body data-page="home">
   <div class="page-shell">
     <main>
       <section class="hero" data-motion-hero>
         <header class="topbar hero-topbar" data-mobile-header>
-          <div class="brand-mark">ALL BLACK</div>
+      <a class="brand-mark" href="index.html" aria-label="ALL BLACK home">ALL BLACK</a>
           <div class="mobile-header-actions">
             <button class="header-tool-button search-trigger mobile-search-trigger" type="button" data-search-trigger aria-label="Search">
               <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -54,6 +54,7 @@
             <a class="nav-link" href="shop.html?category=eyewear" role="menuitem">Eyewear</a>
             <a class="nav-link" href="shop.html?category=tshirt" role="menuitem">T-Shirt</a>
             <a class="nav-link" href="shop.html?category=shoes" role="menuitem">Shoes</a>
+            <a class="nav-link" href="shop.html?category=jewelry" role="menuitem" data-category-nav="jewelry">Jewelry</a>
             <a class="nav-link" href="shop.html?delivery=ready" role="menuitem">Ready to ship</a>
               </div>
             </div>
@@ -104,8 +105,7 @@
             <p class="eyebrow">Curated secondhand selection</p>
             <h1 class="editorial-title">All<br>Black</h1>
             <p class="intro">
-              all black 是一个展示精品二手服装的网站，专注于黑色系、冷调轮廓和具有收藏价值的旧季单品。
-              这里的每一件衣服都不是批量新品，而是经过筛选之后重新进入视野的 archive piece。
+              减少不必要的距离，让值得再次被看见的设计，直接抵达真正欣赏它的人。
             </p>
             <div class="hero-actions">
               <a class="button button-primary" href="shop.html">Shop</a>
@@ -114,7 +114,7 @@
             </div>
             <div class="hero-notes">
               <span>Curated archive / secondhand luxury / monochrome order</span>
-              <span>Brand slogan: selected for a second life</span>
+              <span>品牌标语：让设计，直接抵达。</span>
             </div>
           </div>
 
@@ -156,35 +156,29 @@
         </div>
       </section>
 
-      <section class="section-grid" id="collection-home" data-reveal>
-        <article class="feature-card large-card">
-          <div class="section-heading">
-            <p class="section-kicker">Featured archive</p>
-            <h2>重点展示的是那些已经停产、但依然足够锋利的精品二手单品。</h2>
+      <section class="arrivals-showcase" id="collection-home" data-arrivals-showcase data-reveal>
+        <header class="arrivals-head">
+          <div class="arrivals-heading">
+            <p class="section-kicker" data-arrivals-kicker>Current arrivals / 2026</p>
+            <h2 class="editorial-title" data-arrivals-title>当季新入，持续流动。</h2>
           </div>
-          <p class="section-copy">
-            all black 不追求大量上新，而是用更克制的方式筛选旧季精品、黑色系单品和更耐看的轮廓。
-            首页先展示氛围和精选方向，再让用户进入系列页与商品页查看具体单品状态。
-          </p>
-          <ul class="feature-list">
-            <li>主打 archive coat、structured outerwear 和黑色系设计师单品</li>
-            <li>强调稀缺性、成色、品牌出处和二手再流通价值</li>
-            <li>系列页负责策展，商店页负责查看在售状态与价格</li>
-          </ul>
-          <div class="section-actions">
-            <a class="button button-primary" href="collection.html">View Collection</a>
-            <a class="button button-secondary" href="shop.html">Shop the Edit</a>
+          <div class="arrivals-intro">
+            <p data-arrivals-copy>把本季精选与刚上新的单品放进一条不断更新的编辑流。</p>
+            <div class="arrivals-controls">
+              <button type="button" data-arrivals-toggle aria-pressed="false">暂停</button>
+              <a href="shop.html#new-in" data-arrivals-view>查看全部</a>
+            </div>
           </div>
-        </article>
+        </header>
 
-        <article class="feature-card image-card">
-          <img src="assets/editorial-model.jpg" alt="Scarlet Edition campaign look">
-          <div class="image-card-copy">
-            <p>Archive selection</p>
-            <h3>展示型首页更像一本黑色系二手服装目录，先给氛围，再给入口。</h3>
-            <a class="inline-link" href="collection.html">Explore the archive</a>
-          </div>
-        </article>
+        <div class="arrivals-viewport" data-arrivals-viewport aria-label="当季与新品轮播">
+          <div class="arrivals-track" data-arrivals-track></div>
+        </div>
+
+        <footer class="arrivals-foot">
+          <span data-arrivals-drag>按住拖动浏览</span>
+          <span data-arrivals-status>08 件单品 / 实时精选</span>
+        </footer>
       </section>
 
       <section class="lookbook" id="shop" data-reveal>
@@ -230,10 +224,10 @@
       <section class="story-band" id="about-home" data-reveal>
         <div class="story-copy">
           <p class="section-kicker">Brand slogan</p>
-          <h2 class="editorial-title">Selected for a second life.</h2>
+          <h2 class="editorial-title">Design, without the distance.</h2>
           <p>
-            all black 关注的不只是“二手”，而是那些重新进入视野后依然成立的服装。
-            我们用更安静的版式和更精选的单品，让这个网站更像精品 archive 空间，而不是普通转卖列表。
+            All Black 始于设计师买手店，也始终坚持同一个选择：减少不必要的中间环节，让好设计更直接地抵达真正欣赏它的人。
+            今天，我们的视野从服装延伸至珠宝、配饰与日常物件，但核心从未改变——让作品本身成为价值。
           </p>
           <div class="section-actions">
             <a class="button button-primary" href="about.html">Read About</a>
@@ -283,8 +277,9 @@
       </div>
     </div>
   </div>
-  <script src="products.js"></script>
-  <script src="translations.js"></script>
-  <script src="main.js?v=20260719-whatsapp-number-3475681155"></script>
+  <script src="products.js?v=20260904-jewelry-v15"></script>
+  <script src="translations.js?v=20260904-jewelry-v14"></script>
+  <script src="main.js?v=20260904-arrivals-v23"></script>
+  <script src="support-chat.js?v=20260904-support-v18"></script>
 </body>
 </html>

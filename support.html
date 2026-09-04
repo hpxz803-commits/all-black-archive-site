@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ALL BLACK - Client Service Console</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500;6..96,700;6..96,800&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=20260904-arrivals-v23">
+</head>
+<body class="support-desk-body" data-page="support-desk">
+  <div class="support-desk-shell">
+    <header class="support-desk-topbar">
+      <span class="support-desk-brand">ALL BLACK</span>
+      <span class="support-desk-mode">Client service console / Local preview</span>
+      <a class="support-desk-return" href="index.html">Return to storefront</a>
+    </header>
+
+    <main class="support-desk-layout">
+      <aside class="support-desk-sidebar">
+        <div class="support-desk-sidebar-head">
+          <p>Private client service</p>
+          <h1>Conversations</h1>
+        </div>
+        <div class="support-conversation-list" data-support-conversation-list></div>
+      </aside>
+
+      <section class="support-desk-workspace">
+        <div class="support-desk-empty" data-support-empty>
+          <span>AB</span>
+          <p>No customer enquiries yet</p>
+        </div>
+
+        <div class="support-desk-detail" data-support-detail hidden>
+          <header class="support-desk-detail-head">
+            <div>
+              <p data-support-meta>0 messages / OPEN</p>
+              <h2 data-support-title>Client</h2>
+            </div>
+            <button class="support-desk-status" type="button" data-support-status>Resolve</button>
+          </header>
+
+          <div class="support-desk-messages" data-support-messages></div>
+
+          <form class="support-desk-reply" data-support-reply-form>
+            <label>
+              Reply to client
+              <textarea rows="2" maxlength="1000" placeholder="Write a concise response" data-support-reply-input></textarea>
+            </label>
+            <button type="submit">Send reply</button>
+          </form>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="support-chat.js?v=20260904-support-v18"></script>
+</body>
+</html>
