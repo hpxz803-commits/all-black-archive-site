@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500;6..96,700;6..96,800&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20260904-arrivals-v23">
+  <link rel="stylesheet" href="styles.css?v=20260918-preferences-v35">
 </head>
 <body data-page="product">
   <div class="page-shell">
@@ -44,6 +44,7 @@
             <a class="nav-link" href="shop.html?category=tshirt" role="menuitem">T-Shirt</a>
             <a class="nav-link" href="shop.html?category=shoes" role="menuitem">Shoes</a>
             <a class="nav-link" href="shop.html?category=jewelry" role="menuitem" data-category-nav="jewelry">Jewelry</a>
+            <a class="nav-link" href="shop.html?category=objects" role="menuitem" data-category-nav="objects">Everyday objects</a>
             <a class="nav-link" href="shop.html?delivery=ready" role="menuitem">Ready to ship</a>
           </div>
         </div>
@@ -135,13 +136,15 @@
           </div>
           <ul class="feature-list" data-product-features></ul>
           <div class="product-actions">
-            <button class="button button-primary" type="button" data-add-to-bag>Add to bag</button>
+            <button class="button button-secondary" type="button" data-add-to-bag>Add to bag</button>
             <button class="button button-secondary" type="button" data-save-item aria-pressed="false">Save for later</button>
           </div>
           <div class="hero-actions">
-            <a class="button button-secondary" href="shop.html" data-product-back>Back to shop</a>
-            <a class="button button-secondary" href="collection.html">View collection</a>
+            <a class="button button-secondary" href="collection.html" data-product-collection-link>View collection</a>
             <a class="button button-secondary" href="service.html" data-product-service-link>Customer care</a>
+          </div>
+          <div class="product-purchase-action">
+            <a class="button product-buy-button" href="checkout.html" data-buy-now>Buy now</a>
           </div>
           <p class="product-feedback" data-product-feedback aria-live="polite"></p>
           <div class="product-details">
@@ -224,9 +227,9 @@
       </div>
     </div>
   </div>
-  <script src="products.js?v=20260904-jewelry-v15"></script>
-  <script src="translations.js?v=20260904-jewelry-v14"></script>
-  <script src="main.js?v=20260904-arrivals-v30"></script>
-  <script src="support-chat.js?v=20260904-support-v18"></script>
+  <script src="products.js?v=20260918-cigar-v20"></script>
+  <script src="translations.js?v=20260905-product-actions-v15"></script>
+<script src="main.js?v=20260918-preferences-v40"></script>
+<script src="support-chat.js?v=20260918-variants-v21"></script>
 </body>
 </html>

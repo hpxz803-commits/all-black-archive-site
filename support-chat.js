@@ -231,6 +231,9 @@
     if (label) return label;
     const amount = Number(product.pricing?.amount);
     if (!Number.isFinite(amount)) return "";
+    if (window.allBlackPreferences?.format) {
+      return window.allBlackPreferences.format(amount, product.pricing?.currency || window.catalogData?.currency || "EUR");
+    }
     const localeByLanguage = { en: "en-GB", zh: "zh-CN", de: "de-DE", it: "it-IT", fr: "fr-FR", ja: "ja-JP", es: "es-ES", ru: "ru-RU", ko: "ko-KR" };
     try {
       return new Intl.NumberFormat(localeByLanguage[language] || "en-GB", {
@@ -249,15 +252,17 @@
     const product = window.catalogData?.products?.find((item) => item.slug === slug);
     if (!product) return null;
     const language = getLanguageCode();
+    const selection = document.querySelector("[data-product-panel]")?.dataset.selectedSize || product.sizing?.default || "";
     return {
       id: product.id,
       slug: product.slug,
       sku: product.attributes?.sku || product.id,
-      selection: document.querySelector("[data-product-panel]")?.dataset.selectedSize || product.sizing?.default || "",
+      selection: pickText(product.sizing?.optionLabels?.[selection], language) || selection,
+      selectionId: selection,
       name: pickText(product.copy?.name, language),
       price: formatPrice(product, language),
-      image: product.media?.cover || "",
-      url: new URL(`product.html?item=${encodeURIComponent(product.slug)}`, window.location.href).href,
+      image: product.media?.variants?.[selection]?.cover || product.media?.cover || "",
+      url: new URL(`product.html?item=${encodeURIComponent(product.slug)}&size=${encodeURIComponent(selection)}`, window.location.href).href,
     };
   }
 
@@ -510,6 +515,11 @@
       if (pendingProduct) pendingProduct = getCurrentProductContext() || pendingProduct;
       renderReference();
       renderThread();
+    });
+
+    window.addEventListener("allblack-preferences-change", () => {
+      if (pendingProduct) pendingProduct = getCurrentProductContext() || pendingProduct;
+      renderReference();
     });
 
     conversationStore.subscribe(renderThread);

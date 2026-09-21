@@ -1422,7 +1422,8 @@
     setText(".size-selector > .meta-label", p.size);
     setTexts(".product-copy .feature-list li", p.features);
     setTexts(".product-actions button", p.actions);
-    setTexts(".product-copy .hero-actions a", p.links);
+    setText("[data-product-collection-link]", p.links[1]);
+    setText("[data-product-service-link]", p.links[2]);
     setTexts(".product-details .meta-label", [p.details[0][0], p.details[1][0]]);
     setTexts(".product-details p", [p.details[0][1], p.details[1][1]]);
   };

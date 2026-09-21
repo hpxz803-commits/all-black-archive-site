@@ -2,6 +2,8 @@ const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
 const prefersReducedMotion = reducedMotionQuery.matches;
 const homeTransitionFlag = "home-entry-transition";
 const languageStorageKey = "site-language";
+const regionStorageKey = "site-region";
+const currencyStorageKey = "site-currency";
 const siteContactConfig = Object.freeze({
   whatsapp: Object.freeze({
     phone: "393475681155",
@@ -9,6 +11,8 @@ const siteContactConfig = Object.freeze({
   }),
 });
 let currentLanguageCode = "zh";
+let currentRegionCode = "IT";
+let currentCurrencyCode = "EUR";
 const supportedLanguages = {
   en: { label: "English", tag: "en" },
   zh: { label: "中文", tag: "zh-CN" },
@@ -21,7 +25,58 @@ const supportedLanguages = {
   ko: { label: "한국어", tag: "ko" },
 };
 
+const supportedRegions = {
+  IT: { currency: "EUR", labels: { en: "Italy", zh: "意大利", de: "Italien", it: "Italia", fr: "Italie", ja: "イタリア", es: "Italia", ru: "Италия", ko: "이탈리아" } },
+  DE: { currency: "EUR", labels: { en: "Germany", zh: "德国", de: "Deutschland", it: "Germania", fr: "Allemagne", ja: "ドイツ", es: "Alemania", ru: "Германия", ko: "독일" } },
+  FR: { currency: "EUR", labels: { en: "France", zh: "法国", de: "Frankreich", it: "Francia", fr: "France", ja: "フランス", es: "Francia", ru: "Франция", ko: "프랑스" } },
+  ES: { currency: "EUR", labels: { en: "Spain", zh: "西班牙", de: "Spanien", it: "Spagna", fr: "Espagne", ja: "スペイン", es: "España", ru: "Испания", ko: "스페인" } },
+  GB: { currency: "GBP", labels: { en: "United Kingdom", zh: "英国", de: "Vereinigtes Königreich", it: "Regno Unito", fr: "Royaume-Uni", ja: "イギリス", es: "Reino Unido", ru: "Великобритания", ko: "영국" } },
+  US: { currency: "USD", labels: { en: "United States", zh: "美国", de: "Vereinigte Staaten", it: "Stati Uniti", fr: "États-Unis", ja: "アメリカ", es: "Estados Unidos", ru: "США", ko: "미국" } },
+  JP: { currency: "JPY", labels: { en: "Japan", zh: "日本", de: "Japan", it: "Giappone", fr: "Japon", ja: "日本", es: "Japón", ru: "Япония", ko: "일본" } },
+  KR: { currency: "KRW", labels: { en: "South Korea", zh: "韩国", de: "Südkorea", it: "Corea del Sud", fr: "Corée du Sud", ja: "韓国", es: "Corea del Sur", ru: "Южная Корея", ko: "대한민국" } },
+  CN: { currency: "CNY", labels: { en: "China", zh: "中国", de: "China", it: "Cina", fr: "Chine", ja: "中国", es: "China", ru: "Китай", ko: "중국" } },
+  INTL: { currency: "EUR", labels: { en: "Other destination", zh: "其他地区", de: "Anderes Ziel", it: "Altra destinazione", fr: "Autre destination", ja: "その他の地域", es: "Otro destino", ru: "Другой регион", ko: "기타 지역" } },
+};
+
+const supportedCurrencies = {
+  EUR: { label: "EUR", symbol: "€" },
+  USD: { label: "USD", symbol: "$" },
+  GBP: { label: "GBP", symbol: "£" },
+  JPY: { label: "JPY", symbol: "¥" },
+  CNY: { label: "CNY", symbol: "¥" },
+  KRW: { label: "KRW", symbol: "₩" },
+};
+
+// Fixed preview rates keep the prototype deterministic. Live checkout must price server-side.
+const currencyRatesPerEuro = Object.freeze({ EUR: 1, USD: 1.08, GBP: 0.86, JPY: 164, CNY: 7.82, KRW: 1580 });
+const preferenceCopy = {
+  en: { title: "Regional settings", language: "Language", region: "Ship to", currency: "Currency", defaultCurrency: "Regional default", note: "Region selects a local currency automatically. You can change it manually; final pricing is confirmed at checkout." },
+  zh: { title: "区域设置", language: "语言", region: "配送地区", currency: "货币", defaultCurrency: "地区默认", note: "选择地区会自动匹配当地货币，也可手动调整；最终价格将在结账时确认。" },
+  de: { title: "Regionale Einstellungen", language: "Sprache", region: "Versand nach", currency: "Währung", defaultCurrency: "Regionaler Standard", note: "Die Region wählt automatisch die lokale Währung. Eine manuelle Änderung ist jederzeit möglich." },
+  it: { title: "Impostazioni regionali", language: "Lingua", region: "Spedisci a", currency: "Valuta", defaultCurrency: "Predefinita locale", note: "La regione seleziona automaticamente la valuta locale, modificabile manualmente." },
+  fr: { title: "Paramètres régionaux", language: "Langue", region: "Livrer vers", currency: "Devise", defaultCurrency: "Devise locale", note: "La région sélectionne automatiquement la devise locale, qui reste modifiable manuellement." },
+  ja: { title: "地域設定", language: "言語", region: "配送先", currency: "通貨", defaultCurrency: "地域の既定通貨", note: "地域に応じて通貨が自動選択されます。通貨は手動でも変更できます。" },
+  es: { title: "Configuración regional", language: "Idioma", region: "Enviar a", currency: "Moneda", defaultCurrency: "Predeterminada local", note: "La región selecciona la moneda local automáticamente; también puedes cambiarla manualmente." },
+  ru: { title: "Региональные настройки", language: "Язык", region: "Доставка", currency: "Валюта", defaultCurrency: "Валюта региона", note: "Регион автоматически выбирает местную валюту, но ее можно изменить вручную." },
+  ko: { title: "지역 설정", language: "언어", region: "배송 지역", currency: "통화", defaultCurrency: "지역 기본 통화", note: "지역을 선택하면 현지 통화가 자동 적용되며, 통화는 직접 변경할 수도 있습니다." },
+};
+
+try {
+  const savedRegion = window.localStorage.getItem(regionStorageKey);
+  const savedCurrency = window.localStorage.getItem(currencyStorageKey);
+  if (savedRegion && supportedRegions[savedRegion]) currentRegionCode = savedRegion;
+  if (savedCurrency && supportedCurrencies[savedCurrency]) currentCurrencyCode = savedCurrency;
+} catch (error) {
+  // Storage is optional; the site still works with the defaults above.
+}
+
 const rawCatalogProducts = window.catalogData?.products || [];
+
+function convertCatalogAmount(amount, fromCurrency, toCurrency = currentCurrencyCode) {
+  const sourceRate = currencyRatesPerEuro[fromCurrency] || 1;
+  const targetRate = currencyRatesPerEuro[toCurrency] || 1;
+  return (Number(amount) / sourceRate) * targetRate;
+}
 
 function formatCatalogPrice(pricing, fallbackCurrency = window.catalogData?.currency || "EUR") {
   if (!pricing || typeof pricing !== "object") {
@@ -33,17 +88,19 @@ function formatCatalogPrice(pricing, fallbackCurrency = window.catalogData?.curr
     return "";
   }
 
-  const currency = pricing.currency || fallbackCurrency;
-  const locale = window.catalogData?.locale || "en-US";
+  const sourceCurrency = pricing.currency || fallbackCurrency;
+  const currency = supportedCurrencies[currentCurrencyCode] ? currentCurrencyCode : sourceCurrency;
+  const locale = supportedLanguages[currentLanguageCode]?.tag || window.catalogData?.locale || "en-US";
+  const convertedAmount = convertCatalogAmount(amount, sourceCurrency, currency);
 
   try {
     return new Intl.NumberFormat(locale, {
       style: "currency",
       currency,
       maximumFractionDigits: 0,
-    }).format(amount);
+    }).format(convertedAmount);
   } catch (error) {
-    return `${currency} ${amount}`;
+    return `${currency} ${Math.round(convertedAmount)}`;
   }
 }
 
@@ -61,7 +118,11 @@ function normalizeCatalogProduct(product) {
     category: product.category,
     image: product.media?.cover || "",
     gallery,
-    price: product.pricing?.label || formatCatalogPrice(product.pricing),
+    variantMedia: product.media?.variants || {},
+    galleryLayout: product.media?.layout || "",
+    price: product.pricing?.label || "",
+    priceAmount: Number.isFinite(Number(product.pricing?.amount)) ? Number(product.pricing.amount) : null,
+    priceCurrency: product.pricing?.currency || window.catalogData?.currency || "EUR",
     delivery: product.fulfillment?.type || "ready",
     color: product.attributes?.color || "",
     availability: product.inventory?.quantityLabel || "",
@@ -69,6 +130,7 @@ function normalizeCatalogProduct(product) {
     sizes: product.sizing?.options || [],
     defaultSize: product.sizing?.default || "",
     sizeLabel: product.sizing?.label || "",
+    optionLabels: product.sizing?.optionLabels || {},
     selectionMessages: product.sizing?.messages || null,
     name: product.copy?.name || "",
     cardCategory: product.copy?.categoryLabel || "",
@@ -78,6 +140,8 @@ function normalizeCatalogProduct(product) {
     details: {
       condition: product.notes?.condition || "",
       source: product.notes?.source || "",
+      conditionLabel: product.notes?.conditionLabel || "",
+      sourceLabel: product.notes?.sourceLabel || "",
     },
     metadata: {
       conditionGrade: product.attributes?.conditionGrade || "",
@@ -94,6 +158,13 @@ function normalizeCatalogProduct(product) {
 }
 
 const catalogProducts = rawCatalogProducts.map(normalizeCatalogProduct);
+
+function getProductDisplayPrice(product) {
+  if (product?.priceAmount !== null && Number.isFinite(Number(product?.priceAmount))) {
+    return formatCatalogPrice({ amount: product.priceAmount, currency: product.priceCurrency });
+  }
+  return pickCatalogText(product?.price);
+}
 
 const catalogInteractionCopy = {
   en: {
@@ -118,6 +189,30 @@ const catalogInteractionCopy = {
   ru: { quickView: "Быстрый просмотр", close: "Закрыть", viewDetails: "Подробнее", previous: "Предыдущая вещь", next: "Следующая вещь" },
   ko: { quickView: "빠른 보기", close: "닫기", viewDetails: "상세 보기", previous: "이전 상품", next: "다음 상품" },
 };
+
+const purchaseStateCopy = {
+  en: { buy: "Buy now", inquiry: "Request price", reserved: "Reserved / Join waitlist", sold: "Sold / View similar", notify: "Notify me" },
+  zh: { buy: "立即购买", inquiry: "咨询价格", reserved: "已被预订 / 候补咨询", sold: "已售出 / 查看相似", notify: "到货通知" },
+  de: { buy: "Jetzt kaufen", inquiry: "Preis anfragen", reserved: "Reserviert / Warteliste", sold: "Verkauft / Ähnliche ansehen", notify: "Verfügbarkeit melden" },
+  it: { buy: "Acquista ora", inquiry: "Richiedi il prezzo", reserved: "Riservato / Lista d'attesa", sold: "Venduto / Vedi simili", notify: "Avvisami" },
+  fr: { buy: "Acheter maintenant", inquiry: "Demander le prix", reserved: "Réservé / Liste d'attente", sold: "Vendu / Voir similaire", notify: "M'alerter" },
+  ja: { buy: "今すぐ購入", inquiry: "価格を問い合わせる", reserved: "予約済み / 順番待ち", sold: "売り切れ / 類似商品を見る", notify: "入荷通知" },
+  es: { buy: "Comprar ahora", inquiry: "Consultar precio", reserved: "Reservado / Lista de espera", sold: "Vendido / Ver similares", notify: "Avisarme" },
+  ru: { buy: "Купить сейчас", inquiry: "Узнать цену", reserved: "Зарезервировано / Лист ожидания", sold: "Продано / Похожие вещи", notify: "Сообщить о наличии" },
+  ko: { buy: "바로 구매", inquiry: "가격 문의", reserved: "예약됨 / 대기 문의", sold: "판매 완료 / 유사 상품", notify: "입고 알림" },
+};
+
+function getProductPurchaseState(product) {
+  const status = product?.metadata?.status || "";
+  const purchasableStock = status === "in_stock" || status === "low_stock";
+
+  if (status === "sold_out") return "sold";
+  if (status === "reserved") return "reserved";
+  if (status === "restockable") return "notify";
+  if (status === "paused" || status === "sourcing") return "inquiry";
+  if (!purchasableStock || product?.priceAmount === null) return "inquiry";
+  return "buy";
+}
 
 function getCatalogInteractionPack() {
   return catalogInteractionCopy[currentLanguageCode] || catalogInteractionCopy.en;
@@ -250,6 +345,119 @@ function pickCatalogText(value, languageCode = currentLanguageCode) {
   return value[languageCode] || value.en || value.zh || Object.values(value)[0] || "";
 }
 
+function getRegionLabel(regionCode, languageCode = currentLanguageCode) {
+  const region = supportedRegions[regionCode] || supportedRegions.INTL;
+  return region.labels[languageCode] || region.labels.en;
+}
+
+function buildPreferencePickers() {
+  document.querySelectorAll("[data-language-picker]").forEach((picker) => {
+    picker.classList.add("preferences-picker");
+    const menu = picker.querySelector(".language-menu");
+    if (!menu) return;
+
+    menu.classList.add("preferences-menu");
+    menu.setAttribute("role", "dialog");
+    menu.innerHTML = `
+      <div class="preferences-head">
+        <span>ALL BLACK / GLOBAL</span>
+        <strong data-preferences-title></strong>
+      </div>
+      <section class="preferences-group">
+        <span class="preferences-label" data-preferences-language-label></span>
+        <div class="preferences-options preferences-languages">
+          ${Object.entries(supportedLanguages).map(([code, language]) => `<button class="language-option preference-option" type="button" data-language-option data-lang="${code}" role="menuitemradio" aria-checked="false">${language.label}</button>`).join("")}
+        </div>
+      </section>
+      <section class="preferences-group">
+        <span class="preferences-label" data-preferences-region-label></span>
+        <div class="preferences-options preferences-regions">
+          ${Object.keys(supportedRegions).map((code) => `<button class="preference-option" type="button" data-region-option="${code}" role="menuitemradio" aria-checked="false"></button>`).join("")}
+        </div>
+      </section>
+      <section class="preferences-group">
+        <span class="preferences-label" data-preferences-currency-label></span>
+        <div class="preferences-options preferences-currencies">
+          ${Object.entries(supportedCurrencies).map(([code, currency]) => `<button class="preference-option currency-option" type="button" data-currency-option="${code}" role="menuitemradio" aria-checked="false"><span>${currency.symbol}</span><b>${currency.label}</b><small data-currency-default></small></button>`).join("")}
+        </div>
+      </section>
+      <p class="preferences-note" data-preferences-note></p>
+    `;
+  });
+}
+
+function updatePreferencePickers() {
+  const copy = preferenceCopy[currentLanguageCode] || preferenceCopy.en;
+  const language = supportedLanguages[currentLanguageCode] || supportedLanguages.en;
+
+  document.querySelectorAll("[data-language-picker]").forEach((picker) => {
+    const summary = picker.querySelector("[data-language-current]");
+    if (summary) summary.textContent = `${language.label} · ${currentRegionCode} · ${currentCurrencyCode}`;
+    const title = picker.querySelector("[data-preferences-title]");
+    const languageLabel = picker.querySelector("[data-preferences-language-label]");
+    const regionLabel = picker.querySelector("[data-preferences-region-label]");
+    const currencyLabel = picker.querySelector("[data-preferences-currency-label]");
+    const note = picker.querySelector("[data-preferences-note]");
+    if (title) title.textContent = copy.title;
+    if (languageLabel) languageLabel.textContent = copy.language;
+    if (regionLabel) regionLabel.textContent = copy.region;
+    if (currencyLabel) currencyLabel.textContent = copy.currency;
+    if (note) note.textContent = copy.note;
+
+    picker.querySelectorAll("[data-region-option]").forEach((option) => {
+      const code = option.dataset.regionOption;
+      const isActive = code === currentRegionCode;
+      option.textContent = getRegionLabel(code);
+      option.classList.toggle("is-active", isActive);
+      option.setAttribute("aria-checked", String(isActive));
+    });
+    picker.querySelectorAll("[data-currency-option]").forEach((option) => {
+      const isActive = option.dataset.currencyOption === currentCurrencyCode;
+      const isRegionalDefault = option.dataset.currencyOption === supportedRegions[currentRegionCode]?.currency;
+      option.classList.toggle("is-active", isActive);
+      option.classList.toggle("is-regional-default", isRegionalDefault);
+      option.setAttribute("aria-checked", String(isActive));
+      const defaultLabel = option.querySelector("[data-currency-default]");
+      if (defaultLabel) defaultLabel.textContent = isRegionalDefault ? copy.defaultCurrency : "";
+    });
+  });
+}
+
+function applyRegionalPreference(next = {}, emit = true) {
+  if (next.region && supportedRegions[next.region]) {
+    currentRegionCode = next.region;
+    if (!next.currency) currentCurrencyCode = supportedRegions[next.region].currency;
+  }
+  if (next.currency && supportedCurrencies[next.currency]) currentCurrencyCode = next.currency;
+
+  try {
+    window.localStorage.setItem(regionStorageKey, currentRegionCode);
+    window.localStorage.setItem(currencyStorageKey, currentCurrencyCode);
+  } catch (error) {
+    // Keep the in-memory preference if storage is unavailable.
+  }
+
+  updatePreferencePickers();
+  updateCatalogUi();
+  updateSearchUi();
+  if (emit) {
+    window.dispatchEvent(new CustomEvent("allblack-preferences-change", {
+      detail: { language: currentLanguageCode, region: currentRegionCode, currency: currentCurrencyCode },
+    }));
+  }
+}
+
+window.allBlackPreferences = {
+  get: () => ({ language: currentLanguageCode, region: currentRegionCode, currency: currentCurrencyCode }),
+  setRegion: (region) => applyRegionalPreference({ region }),
+  setCurrency: (currency) => applyRegionalPreference({ currency }),
+  convert: (amount, fromCurrency = "EUR", toCurrency = currentCurrencyCode) => convertCatalogAmount(amount, fromCurrency, toCurrency),
+  format: (amount, fromCurrency = "EUR") => formatCatalogPrice({ amount, currency: fromCurrency }),
+  getRegionLabel,
+};
+
+buildPreferencePickers();
+
 const languagePickers = document.querySelectorAll("[data-language-picker]");
 
 if (languagePickers.length > 0) {
@@ -297,6 +505,8 @@ if (languagePickers.length > 0) {
       picker.classList.remove("is-open");
     });
 
+    updatePreferencePickers();
+
     window.siteTranslator?.render(currentLanguageCode);
     window.requestAnimationFrame(() => {
       updateCatalogUi();
@@ -335,7 +545,17 @@ if (languagePickers.length > 0) {
         }
 
         applyLanguageSelection(activeLanguage);
+        picker.classList.add("is-open");
+        trigger?.setAttribute("aria-expanded", "true");
       });
+    });
+
+    picker.querySelectorAll("[data-region-option]").forEach((option) => {
+      option.addEventListener("click", () => applyRegionalPreference({ region: option.dataset.regionOption }));
+    });
+
+    picker.querySelectorAll("[data-currency-option]").forEach((option) => {
+      option.addEventListener("click", () => applyRegionalPreference({ currency: option.dataset.currencyOption }));
     });
   });
 
@@ -453,10 +673,16 @@ if (mobileHeaders.length > 0) {
 
 if (navDropdowns.length > 0) {
   const closeMobileNavMenus = () => {
-    navDropdowns.forEach((dropdown) => dropdown.classList.remove("is-open"));
+    navDropdowns.forEach((dropdown) => {
+      dropdown.classList.remove("is-open");
+      dropdown.querySelector("[data-language-trigger]")?.setAttribute("aria-expanded", "false");
+    });
   };
 
   navDropdowns.forEach((dropdown) => {
+    // Preference pickers already own their toggle behavior on every screen size.
+    if (dropdown.matches("[data-language-picker]")) return;
+
     const trigger = dropdown.querySelector(":scope > .nav-link");
     const menu = dropdown.querySelector(".nav-menu");
 
@@ -642,7 +868,8 @@ const categoryLabels = {
   shoes: { en: "Shoes", zh: "鞋子", de: "Schuhe", it: "Scarpe", fr: "Chaussures", ja: "シューズ", es: "Calzado", ru: "Обувь", ko: "슈즈" },
   jewelry: { en: "Jewelry", zh: "首饰", de: "Schmuck", it: "Gioielli", fr: "Bijoux", ja: "ジュエリー", es: "Joyería", ru: "Украшения", ko: "주얼리" },
 };
-const catalogCategories = ["outerwear", "set", "layering", "eyewear", "tshirt", "shoes", "jewelry"];
+categoryLabels.objects = { en: "Everyday objects", zh: "生活器物", de: "Alltagsobjekte", it: "Oggetti quotidiani", fr: "Objets du quotidien", ja: "暮らしの道具", es: "Objetos cotidianos", ru: "Предметы быта", ko: "생활 오브제" };
+const catalogCategories = ["outerwear", "set", "layering", "eyewear", "tshirt", "shoes", "jewelry", "objects"];
 let activeCatalogProduct = null;
 
 const searchCatalog = [
@@ -702,12 +929,13 @@ function getInterfaceUiPack() {
 
 function updateInterfaceUi() {
   const labels = getInterfaceUiPack();
+  const preferences = preferenceCopy[currentLanguageCode] || preferenceCopy.en;
   document.querySelectorAll("[data-mobile-menu-button]").forEach((button) => button.setAttribute("aria-label", labels.openMenu));
   document.querySelector(".nav")?.setAttribute("aria-label", labels.primaryNav);
   document.querySelector(".nav-dropdown .nav-menu")?.setAttribute("aria-label", labels.shopCategories);
   document.querySelector(".header-tools")?.setAttribute("aria-label", labels.utilityNav);
-  document.querySelectorAll("[data-language-trigger]").forEach((button) => button.setAttribute("aria-label", labels.changeLanguage));
-  document.querySelectorAll(".language-menu").forEach((menu) => menu.setAttribute("aria-label", labels.languageSelector));
+  document.querySelectorAll("[data-language-trigger]").forEach((button) => button.setAttribute("aria-label", preferences.title));
+  document.querySelectorAll(".language-menu").forEach((menu) => menu.setAttribute("aria-label", preferences.title));
   document.querySelectorAll("[data-category-nav]").forEach((link) => {
     link.textContent = getCategoryLabel(link.dataset.categoryNav);
   });
@@ -877,7 +1105,7 @@ function createHomeArrivalsController() {
       const cards = products.map((product, productIndex) => {
         const name = pickCatalogText(product.name);
         const category = pickCatalogText(product.cardCategory) || getCategoryLabel(product.category);
-        const price = pickCatalogText(product.price);
+        const price = getProductDisplayPrice(product);
         const loading = accessible && productIndex < 2 ? "eager" : "lazy";
         const tabIndex = accessible ? "" : ' tabindex="-1"';
 
@@ -1080,7 +1308,7 @@ function renderShopCatalog() {
       const name = pickCatalogText(product.name);
       const category = pickCatalogText(product.cardCategory);
       const caption = pickCatalogText(product.cardCaption);
-      const price = pickCatalogText(product.price);
+      const price = getProductDisplayPrice(product);
       const href = `product.html?item=${product.slug}`;
       return `
         <article class="product-card is-clickable" data-category="${product.category}" data-delivery="${product.delivery}" data-item="${product.slug}" data-href="${href}" tabindex="0" role="link" aria-label="${name}">
@@ -1138,6 +1366,8 @@ function getActiveProduct() {
 }
 
 function bindProductGallery(product) {
+  // Cancel pending image decodes/animations before replacing a variant gallery.
+  bindProductGallery.dispose?.();
   const image = document.querySelector("[data-product-image]");
   const nextImage = document.querySelector("[data-product-image-next]");
   const shell = document.querySelector("[data-gallery-shell]");
@@ -1159,7 +1389,11 @@ function bindProductGallery(product) {
     return;
   }
 
-  const gallery = product.gallery?.length ? product.gallery : [{ src: product.image, alt: pickCatalogText(product.name) }];
+  const selection = document.querySelector("[data-product-panel]")?.dataset.selectedSize || product.defaultSize;
+  const variantGallery = product.variantMedia?.[selection]?.gallery;
+  const gallery = (variantGallery?.length ? variantGallery.map(src => ({ src }))
+    : product.gallery?.length ? product.gallery : [{ src: product.image }])
+    .map((item) => ({ ...item, alt: pickCatalogText(product.name) }));
   let activeIndex = 0;
   let thumbButtons = [];
   let currentDirection = "next";
@@ -1230,6 +1464,12 @@ function bindProductGallery(product) {
       button.classList.toggle("is-active", isActive);
       button.setAttribute("aria-pressed", String(isActive));
     });
+    if (thumbs.scrollWidth > thumbs.clientWidth) {
+      const activeThumb = thumbButtons[activeIndex]?.getBoundingClientRect();
+      const viewport = thumbs.getBoundingClientRect();
+      if (activeThumb?.left < viewport.left) thumbs.scrollLeft += activeThumb.left - viewport.left;
+      else if (activeThumb?.right > viewport.right) thumbs.scrollLeft += activeThumb.right - viewport.right;
+    }
   };
 
   const renderLightbox = () => {
@@ -1351,6 +1591,10 @@ function bindProductGallery(product) {
       return;
     }
 
+    languagePickers.forEach((picker) => {
+      picker.classList.remove("is-open");
+      picker.querySelector("[data-language-trigger]")?.setAttribute("aria-expanded", "false");
+    });
     zoomOpen = true;
     renderLightbox();
     lightbox.hidden = false;
@@ -1519,7 +1763,11 @@ function bindProductGallery(product) {
   }
 
   lightboxCloseButtons.forEach((button) => {
-    button.onclick = closeLightbox;
+    button.onclick = (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      closeLightbox();
+    };
   });
 
   if (lightboxViewport && lightboxImage) {
@@ -1737,6 +1985,10 @@ function bindProductGallery(product) {
     };
   }
 
+  bindProductGallery.dispose = () => {
+    cancelGalleryTransition(false);
+    closeLightbox();
+  };
   renderGallery(false);
 }
 
@@ -1764,9 +2016,12 @@ function renderProductCatalog() {
   const condition = productPanel.querySelector("[data-product-condition]");
   const source = productPanel.querySelector("[data-product-source]");
   const backLink = productPanel.querySelector("[data-product-back]");
+  const buyNowLink = productPanel.querySelector("[data-buy-now]");
   const prevLink = productPanel.querySelector("[data-product-prev]");
   const nextLink = productPanel.querySelector("[data-product-next]");
   const specificationList = productPanel.querySelector(".specification-list");
+  productPanel.dataset.productCategory = product.category;
+  productPanel.closest(".product-layout")?.classList.toggle("has-variant-gallery", product.galleryLayout === "filmstrip" || Object.keys(product.variantMedia).length > 0);
   const specificationValues = {
     type: product.cardCategory,
     sku: product.id,
@@ -1777,22 +2032,45 @@ function renderProductCatalog() {
   };
   const interactionUi = getCatalogInteractionPack();
 
+  const requestedOption = productPanel.dataset.productSlug === product.slug
+    ? productPanel.dataset.selectedSize : new URLSearchParams(window.location.search).get("size");
+  productPanel.dataset.productSlug = product.slug;
+  productPanel.dataset.selectedSize = product.sizes.includes(requestedOption) ? requestedOption : product.defaultSize;
   bindProductGallery(product);
 
   if (title) title.textContent = pickCatalogText(product.name);
   document.title = `all black - ${pickCatalogText(product.name)}`;
-  if (price) price.textContent = pickCatalogText(product.price);
+  if (price) price.textContent = getProductDisplayPrice(product);
   if (intro) intro.textContent = pickCatalogText(product.intro);
-  if (color) color.textContent = pickCatalogText(product.color);
+  if (color) color.textContent = product.variantMedia?.[productPanel.dataset.selectedSize]
+    ? pickCatalogText(product.optionLabels[productPanel.dataset.selectedSize]) : pickCatalogText(product.color);
   if (availability) availability.textContent = pickCatalogText(product.availability);
   if (shipping) shipping.textContent = pickCatalogText(product.shipping);
   if (condition) condition.textContent = pickCatalogText(product.details?.condition);
   if (source) source.textContent = pickCatalogText(product.details?.source);
+  [[condition, "conditionLabel"], [source, "sourceLabel"]].forEach(([element, key]) => {
+    const label = element?.parentElement.querySelector(".meta-label");
+    if (label && product.details?.[key]) label.textContent = pickCatalogText(product.details[key]);
+  });
   if (backLink) backLink.href = `shop.html?category=${product.category}`;
+  if (buyNowLink) {
+    const purchaseState = getProductPurchaseState(product);
+    const labels = purchaseStateCopy[currentLanguageCode] || purchaseStateCopy.en;
+    buyNowLink.dataset.purchaseState = purchaseState;
+    buyNowLink.textContent = labels[purchaseState];
+    buyNowLink.href = purchaseState === "buy"
+      ? `checkout.html?item=${encodeURIComponent(product.slug)}`
+      : purchaseState === "sold"
+        ? `shop.html?category=${encodeURIComponent(product.category)}`
+        : `service.html?item=${encodeURIComponent(product.slug)}`;
+  }
 
   Object.entries(specificationValues).forEach(([key, value]) => {
     const target = productPanel.querySelector(`[data-product-spec-value="${key}"]`);
-    if (target) target.textContent = pickCatalogText(value) || "-";
+    if (target) {
+      target.textContent = pickCatalogText(value) || "-";
+      target.parentElement.hidden = !pickCatalogText(value);
+    }
   });
 
   if (specificationList) {
@@ -1814,9 +2092,12 @@ function renderProductCatalog() {
   }
 
   if (sizes) {
+    const selected = product.sizes?.includes(productPanel.dataset.selectedSize)
+      ? productPanel.dataset.selectedSize : product.defaultSize;
     sizes.innerHTML = (product.sizes || []).map((size) => {
-      const active = size === product.defaultSize;
-      return `<button class="filter-chip${active ? " active" : ""}" type="button" data-size="${size}" aria-pressed="${active}">${size}</button>`;
+      const active = size === selected;
+      const label = pickCatalogText(product.optionLabels?.[size]) || size;
+      return `<button class="filter-chip${active ? " active" : ""}" type="button" data-size="${size}" aria-pressed="${active}">${label}</button>`;
     }).join("");
   }
 
@@ -1900,7 +2181,7 @@ function renderQuickView(product) {
   }
 
   if (quickViewPrice) {
-    quickViewPrice.textContent = pickCatalogText(product.price);
+  quickViewPrice.textContent = getProductDisplayPrice(product);
   }
 
   if (quickViewCaption) {
@@ -2229,6 +2510,7 @@ const productPanel = document.querySelector("[data-product-panel]");
 
 if (productPanel) {
   const addToBagButton = productPanel.querySelector("[data-add-to-bag]");
+  const buyNowLink = productPanel.querySelector("[data-buy-now]");
   const saveButton = productPanel.querySelector("[data-save-item]");
   const feedback = productPanel.querySelector("[data-product-feedback]");
   let selectedSize = activeCatalogProduct?.defaultSize || getActiveProduct()?.defaultSize || "S";
@@ -2239,7 +2521,7 @@ if (productPanel) {
     const template = pickCatalogText(productTemplate) || runtime?.[key] || "";
     return template
       .replace("Archive Leather Trench", pickCatalogText(currentProduct?.name) || "Archive Leather Trench")
-      .replace("{size}", size);
+      .replace("{size}", pickCatalogText(currentProduct?.optionLabels?.[size]) || size);
   };
 
   const updateFeedback = (message) => {
@@ -2251,11 +2533,12 @@ if (productPanel) {
   const bindSizeButtons = () => {
     const sizeButtons = Array.from(productPanel.querySelectorAll("[data-size]"));
     const currentProduct = activeCatalogProduct || getActiveProduct();
-    selectedSize = currentProduct?.defaultSize || sizeButtons.find((button) => button.classList.contains("active"))?.dataset.size || "S";
+    selectedSize = sizeButtons.find((button) => button.classList.contains("active"))?.dataset.size || currentProduct?.defaultSize || "S";
     productPanel.dataset.selectedSize = selectedSize;
 
     sizeButtons.forEach((button) => {
       button.addEventListener("click", () => {
+        const previousSize = selectedSize;
         selectedSize = button.dataset.size || selectedSize;
         productPanel.dataset.selectedSize = selectedSize;
 
@@ -2265,6 +2548,14 @@ if (productPanel) {
           item.setAttribute("aria-pressed", String(active));
         });
 
+        if (currentProduct?.variantMedia?.[selectedSize] && previousSize !== selectedSize) {
+          bindProductGallery(currentProduct);
+          const color = productPanel.querySelector("[data-product-color]");
+          if (color) color.textContent = pickCatalogText(currentProduct.optionLabels[selectedSize]);
+          const url = new URL(window.location.href);
+          url.searchParams.set("size", selectedSize);
+          window.history.replaceState(null, "", url);
+        }
         updateFeedback(runtimeText("selected", selectedSize));
       });
     });
@@ -2272,6 +2563,29 @@ if (productPanel) {
 
   window.rebindProductInteractions = bindSizeButtons;
   bindSizeButtons();
+
+  if (buyNowLink) {
+    buyNowLink.addEventListener("click", (event) => {
+      const currentProduct = activeCatalogProduct || getActiveProduct();
+      if (!currentProduct) {
+        return;
+      }
+
+      const purchaseState = getProductPurchaseState(currentProduct);
+      if (purchaseState === "buy") {
+        buyNowLink.href = `checkout.html?item=${encodeURIComponent(currentProduct.slug)}&size=${encodeURIComponent(selectedSize)}`;
+        return;
+      }
+
+      if (purchaseState !== "sold") {
+        const chatTrigger = document.querySelector(".site-chat-trigger");
+        if (chatTrigger) {
+          event.preventDefault();
+          chatTrigger.click();
+        }
+      }
+    });
+  }
 
   if (addToBagButton) {
     addToBagButton.addEventListener("click", () => {

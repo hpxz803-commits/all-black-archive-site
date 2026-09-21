@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>all black - Secure checkout</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500;6..96,700;6..96,800&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=20260918-preferences-v35">
+</head>
+<body data-page="checkout">
+  <div class="page-shell">
+    <header class="subpage-topbar" data-mobile-header>
+      <a class="brand-mark" href="index.html" aria-label="ALL BLACK home">ALL BLACK</a>
+      <div class="mobile-header-actions">
+        <button class="header-tool-button search-trigger mobile-search-trigger" type="button" data-search-trigger aria-label="Search">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"></circle><path d="M16 16L21 21"></path></svg>
+        </button>
+        <button class="mobile-menu-button" type="button" data-mobile-menu-button aria-expanded="false" aria-label="Open menu"><span></span><span></span><span></span></button>
+      </div>
+      <div class="header-menu-shell" data-mobile-menu-panel>
+        <nav class="nav" aria-label="Primary">
+          <div class="nav-item"><a class="nav-link" href="index.html">Home</a></div>
+          <div class="nav-item"><a class="nav-link" href="shop.html#new-in">New In</a></div>
+          <div class="nav-item nav-dropdown">
+            <a class="nav-link is-active" href="shop.html">Shop</a>
+            <div class="nav-menu" role="menu" aria-label="Shop categories">
+              <a class="nav-link" href="shop.html?category=outerwear" role="menuitem">Outerwear</a>
+              <a class="nav-link" href="shop.html?category=set" role="menuitem">Set</a>
+              <a class="nav-link" href="shop.html?category=layering" role="menuitem">Layering</a>
+              <a class="nav-link" href="shop.html?category=eyewear" role="menuitem">Eyewear</a>
+              <a class="nav-link" href="shop.html?category=tshirt" role="menuitem">T-Shirt</a>
+              <a class="nav-link" href="shop.html?category=shoes" role="menuitem">Shoes</a>
+              <a class="nav-link" href="shop.html?category=jewelry" role="menuitem" data-category-nav="jewelry">Jewelry</a>
+              <a class="nav-link" href="shop.html?category=objects" role="menuitem" data-category-nav="objects">Everyday objects</a>
+              <a class="nav-link" href="shop.html?delivery=ready" role="menuitem">Ready to ship</a>
+            </div>
+          </div>
+          <div class="nav-item"><a class="nav-link" href="collection.html">Collection</a></div>
+          <div class="nav-item"><a class="nav-link" href="archive.html">Archive</a></div>
+          <div class="nav-item"><a class="nav-link" href="about.html">About</a></div>
+        </nav>
+        <div class="header-side-right">
+          <div class="meta" data-checkout-header>Secure checkout</div>
+          <div class="header-tools" aria-label="Utility">
+            <button class="header-tool-button search-trigger" type="button" data-search-trigger aria-label="Search">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"></circle><path d="M16 16L21 21"></path></svg>
+            </button>
+            <a href="shop.html#saved">Saved</a>
+            <a class="is-active" href="checkout.html">Bag</a>
+          </div>
+          <div class="language-picker nav-dropdown" data-language-picker>
+            <button class="nav-link language-trigger" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Change language" data-language-trigger><span data-language-current>中文</span></button>
+            <div class="nav-menu language-menu" role="menu" aria-label="Language selector">
+              <button class="language-option" type="button" data-language-option data-lang="en" data-lang-tag="en" data-lang-label="English" role="menuitemradio" aria-checked="false">English</button>
+              <button class="language-option" type="button" data-language-option data-lang="zh" data-lang-tag="zh-CN" data-lang-label="中文" role="menuitemradio" aria-checked="false">中文</button>
+              <button class="language-option" type="button" data-language-option data-lang="de" data-lang-tag="de" data-lang-label="Deutsch" role="menuitemradio" aria-checked="false">Deutsch</button>
+              <button class="language-option" type="button" data-language-option data-lang="it" data-lang-tag="it" data-lang-label="Italiano" role="menuitemradio" aria-checked="false">Italiano</button>
+              <button class="language-option" type="button" data-language-option data-lang="fr" data-lang-tag="fr" data-lang-label="Français" role="menuitemradio" aria-checked="false">Français</button>
+              <button class="language-option" type="button" data-language-option data-lang="ja" data-lang-tag="ja" data-lang-label="日本語" role="menuitemradio" aria-checked="false">日本語</button>
+              <button class="language-option" type="button" data-language-option data-lang="es" data-lang-tag="es" data-lang-label="Español" role="menuitemradio" aria-checked="false">Español</button>
+              <button class="language-option" type="button" data-language-option data-lang="ru" data-lang-tag="ru" data-lang-label="Русский" role="menuitemradio" aria-checked="false">Русский</button>
+              <button class="language-option" type="button" data-language-option data-lang="ko" data-lang-tag="ko" data-lang-label="한국어" role="menuitemradio" aria-checked="false">한국어</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="checkout-main">
+      <header class="checkout-intro" data-reveal>
+        <div>
+          <p class="section-kicker" data-checkout-kicker>Private checkout / Guest</p>
+          <h1 class="editorial-title" data-checkout-title>Complete your order.</h1>
+        </div>
+        <div class="checkout-progress" aria-label="Checkout progress">
+          <span class="is-complete" data-progress-bag>Bag</span>
+          <span class="is-current" data-progress-details>Details</span>
+          <span data-progress-payment>Payment</span>
+        </div>
+      </header>
+
+      <div class="checkout-layout">
+        <form class="checkout-form" data-checkout-form novalidate>
+          <section class="checkout-section" aria-labelledby="checkout-contact-title">
+            <div class="checkout-section-head">
+              <span>01</span>
+              <div><p class="section-kicker" data-contact-kicker>Contact</p><h2 id="checkout-contact-title" data-contact-title>Where should we send your receipt?</h2></div>
+            </div>
+            <div class="checkout-fields checkout-fields-two">
+              <label class="checkout-field"><span data-label-email>Email address</span><input type="email" name="email" autocomplete="email" required placeholder="name@example.com"><small data-error-for="email"></small></label>
+              <label class="checkout-field"><span data-label-phone>Phone <em>optional</em></span><input type="tel" name="phone" autocomplete="tel" placeholder="+39"><small data-error-for="phone"></small></label>
+            </div>
+          </section>
+
+          <section class="checkout-section" aria-labelledby="checkout-delivery-title">
+            <div class="checkout-section-head">
+              <span>02</span>
+              <div><p class="section-kicker" data-delivery-kicker>Delivery</p><h2 id="checkout-delivery-title" data-delivery-title>International shipping details</h2></div>
+            </div>
+            <div class="checkout-fields checkout-fields-two">
+              <label class="checkout-field"><span data-label-first>First name</span><input type="text" name="firstName" autocomplete="given-name" required><small data-error-for="firstName"></small></label>
+              <label class="checkout-field"><span data-label-last>Last name</span><input type="text" name="lastName" autocomplete="family-name" required><small data-error-for="lastName"></small></label>
+              <label class="checkout-field checkout-field-wide"><span data-label-country>Country / Region</span><select name="country" autocomplete="country-name" required><option value="">Select destination</option><option value="IT">Italy</option><option value="DE">Germany</option><option value="FR">France</option><option value="ES">Spain</option><option value="GB">United Kingdom</option><option value="US">United States</option><option value="JP">Japan</option><option value="KR">South Korea</option><option value="CN">China</option><option value="OTHER">Other destination</option></select><small data-error-for="country"></small></label>
+              <label class="checkout-field checkout-field-wide"><span data-label-address>Street address</span><input type="text" name="address" autocomplete="street-address" required><small data-error-for="address"></small></label>
+              <label class="checkout-field"><span data-label-city>City</span><input type="text" name="city" autocomplete="address-level2" required><small data-error-for="city"></small></label>
+              <label class="checkout-field"><span data-label-postal>Postal code</span><input type="text" name="postalCode" autocomplete="postal-code" required><small data-error-for="postalCode"></small></label>
+            </div>
+          </section>
+
+          <section class="checkout-section" aria-labelledby="checkout-shipping-title">
+            <div class="checkout-section-head">
+              <span>03</span>
+              <div><p class="section-kicker" data-shipping-kicker>Shipping</p><h2 id="checkout-shipping-title" data-shipping-title>Choose a delivery pace</h2></div>
+            </div>
+            <div class="checkout-options" data-shipping-options>
+              <label class="checkout-option is-selected"><input type="radio" name="shipping" value="18" checked><span class="checkout-option-marker"></span><span><strong data-standard-title>Standard tracked</strong><small data-standard-time>5-8 business days</small></span><b>EUR 18</b></label>
+              <label class="checkout-option"><input type="radio" name="shipping" value="34"><span class="checkout-option-marker"></span><span><strong data-express-title>Express archive</strong><small data-express-time>2-4 business days</small></span><b>EUR 34</b></label>
+            </div>
+            <p class="checkout-caption" data-shipping-note>Final delivery availability and duties depend on destination.</p>
+          </section>
+
+          <section class="checkout-section" aria-labelledby="checkout-payment-title">
+            <div class="checkout-section-head">
+              <span>04</span>
+              <div><p class="section-kicker" data-payment-kicker>Payment</p><h2 id="checkout-payment-title" data-payment-title>Continue through a protected provider</h2></div>
+            </div>
+            <div class="payment-methods" role="radiogroup" aria-label="Payment method">
+              <button class="payment-method is-selected" type="button" role="radio" aria-checked="true" data-payment-method="card"><span data-card-label>Card / Wallet</span><small>VISA · MC · APPLE PAY</small></button>
+              <button class="payment-method" type="button" role="radio" aria-checked="false" data-payment-method="paypal"><span>PayPal</span><small data-paypal-label>PAYPAL ACCOUNT</small></button>
+            </div>
+            <div class="checkout-security-note">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="10" rx="1"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path></svg>
+              <p><strong data-security-title>No card details are stored here.</strong><span data-security-copy>This preview hands payment to Stripe or PayPal after your delivery details are confirmed.</span></p>
+            </div>
+          </section>
+
+          <label class="checkout-consent"><input type="checkbox" name="terms" required><span data-consent>I agree to the purchase, privacy and returns terms.</span></label>
+          <p class="checkout-form-status" data-checkout-status aria-live="polite"></p>
+          <button class="checkout-submit" type="submit" data-checkout-submit><span data-submit-label>Continue to secure payment</span><span aria-hidden="true">↗</span></button>
+          <a class="checkout-return" href="shop.html" data-return-shop>Return to shop</a>
+        </form>
+
+        <aside class="checkout-summary" aria-labelledby="checkout-summary-title">
+          <div class="checkout-summary-head"><p class="section-kicker" data-summary-kicker>Order summary</p><span data-summary-count>01 piece</span></div>
+          <article class="checkout-item">
+            <div class="checkout-item-image"><img src="assets/editorial-model.jpg" alt="" data-checkout-image><span>01</span></div>
+            <div class="checkout-item-copy"><h2 id="checkout-summary-title" data-checkout-product>Archive piece</h2><p data-checkout-meta>Selected size</p><strong data-checkout-price>EUR 0</strong><a href="product.html" data-edit-item>Edit selection</a></div>
+          </article>
+          <dl class="checkout-totals">
+            <div><dt data-subtotal-label>Subtotal</dt><dd data-checkout-subtotal>EUR 0</dd></div>
+            <div><dt data-shipping-label>Shipping</dt><dd data-checkout-shipping>EUR 18</dd></div>
+            <div><dt data-tax-label>Taxes & duties</dt><dd data-tax-value>Calculated next step</dd></div>
+            <div class="checkout-total"><dt data-total-label>Total</dt><dd data-checkout-total>EUR 18</dd></div>
+          </dl>
+          <div class="checkout-assurance"><span></span><p><strong data-reserve-title>Reserved while you complete checkout</strong><small data-reserve-copy>One-off pieces are held for this session only.</small></p></div>
+          <p class="checkout-preview-note" data-preview-note>Interface preview only. No payment will be initiated.</p>
+        </aside>
+      </div>
+    </main>
+
+    <footer class="footer"><p>ALL BLACK</p><div><a href="mailto:archive@allblack.store">archive@allblack.store</a><span>Private international checkout</span></div></footer>
+
+    <div class="checkout-demo" data-checkout-demo hidden>
+      <button class="checkout-demo-backdrop" type="button" data-demo-close aria-label="Close"></button>
+      <div class="checkout-demo-panel" role="dialog" aria-modal="true" aria-labelledby="checkout-demo-title">
+        <p class="section-kicker" data-demo-kicker>Prototype handoff</p>
+        <h2 id="checkout-demo-title" data-demo-title>Ready for secure payment.</h2>
+        <p data-demo-copy>Your information passed validation. A live version would now open the selected payment provider; this preview has not charged you.</p>
+        <div class="checkout-demo-line"><span data-demo-method>Method</span><strong data-demo-method-value>Card / Wallet</strong></div>
+        <button class="button button-primary" type="button" data-demo-close data-demo-action>Return to checkout</button>
+      </div>
+    </div>
+
+    <div class="search-overlay" data-search-overlay hidden>
+      <button class="search-overlay-backdrop" type="button" data-search-close aria-hidden="true" tabindex="-1"></button>
+      <div class="search-panel" role="dialog" aria-modal="true" aria-labelledby="search-title">
+        <div class="search-panel-head"><p class="section-kicker" id="search-title" data-search-title>Search archive</p><button class="search-close" type="button" data-search-close aria-label="Close search">Close</button></div>
+        <label class="search-input-wrap"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"></circle><path d="M16 16L21 21"></path></svg><input class="search-input" type="search" data-search-input autocomplete="off" placeholder="Search by item or category"></label>
+        <div class="search-tags" data-search-shortcuts></div><div class="search-results" data-search-results></div>
+      </div>
+    </div>
+  </div>
+  <script src="products.js?v=20260918-cigar-v20"></script>
+  <script src="translations.js?v=20260904-jewelry-v14"></script>
+<script src="main.js?v=20260918-preferences-v40"></script>
+<script src="checkout.js?v=20260918-variants-v4"></script>
+<script src="support-chat.js?v=20260918-variants-v21"></script>
+</body>
+</html>
